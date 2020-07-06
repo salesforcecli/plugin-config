@@ -1,6 +1,4 @@
-# plugin-<REPLACE ME>
-
-This repository provides a template for creating a plugin for the Salesforce CLI. (<REPLACE ME DESCRIPTION>)
+# plugin-config>
 
 ## Getting Started
 
@@ -9,8 +7,8 @@ To use, install the [Salesforce CLI](https://developer.salesforce.com/tools/sfdx
 ```
 Verify the CLI is installed
   $ sfdx (-v | --version)
-Install the <REPLACE ME> plugin
-  $ sfdx plugins:install <REPLACE ME>
+Install the config plugin
+  $ sfdx plugins:install config
 To run a command
   $ sfdx [command]
 ```
@@ -19,7 +17,7 @@ To build the plugin locally, make sure to have yarn installed and run the follow
 
 ```
 Clone the repository
-  $ git clone git@github.com:salesforcecli/plugin-<REPLACE ME>
+  $ git clone git@github.com:salesforcecli/plugin-config
 Install the dependencies and compile
   $ yarn install
   $ yarn prepack
