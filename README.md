@@ -1,4 +1,4 @@
-# plugin-config>
+# plugin-config
 
 ## Getting Started
 
