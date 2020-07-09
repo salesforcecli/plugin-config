@@ -58,22 +58,14 @@ export class Set extends SfdxCommand {
       await Set.setConfig(name, value, this.flags.global);
     }
   }
+
   static async setConfig(
     key: string,
     value: string,
     isGlobal: boolean = false
   ) {
     let config: Config;
-    try {
-      config = await Config.create(Config.getDefaultOptions(isGlobal));
-    } catch (err) {
-      if (err.name === 'InvalidProjectWorkspace') {
-        err['message'] = `${err.message} ${messages.getMessage(
-          'en_US.globalHelp'
-        )}`;
-      }
-      throw err;
-    }
+    config = await Config.create(Config.getDefaultOptions(isGlobal));
     return config
       .read()
       .then(result => {
