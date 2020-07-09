@@ -1,5 +1,10 @@
 import { flags, FlagsConfig, SfdxCommand } from '@salesforce/command';
-import { ConfigAggregator, ConfigInfo, Messages, SfdxError } from '@salesforce/core';
+import {
+  ConfigAggregator,
+  ConfigInfo,
+  Messages,
+  SfdxError
+} from '@salesforce/core';
 
 Messages.importMessagesDirectory(__dirname);
 // const messages = Messages.loadMessages('@salesforce/plugin-config', 'get');
@@ -23,7 +28,7 @@ export default class Get extends SfdxCommand {
 
     try {
       const results = await this.execute();
-      console.log(results);                                       // WAS LEGACY_OUTPUT(results)
+      console.log(results); // WAS LEGACY_OUTPUT(results)
       return results;
     } catch (error) {
       console.log(error);
@@ -32,14 +37,16 @@ export default class Get extends SfdxCommand {
   }
 
   protected async execute(): Promise<ConfigInfo[]> {
-
     const args = await this.consolidateArgs();
 
     if (!args || args.length === 0) {
-      throw SfdxError.create('@salesforce/plugin-config', 'get', 'NoConfigKeysFound', []);
-    }
-    else {
-
+      throw SfdxError.create(
+        '@salesforce/plugin-config',
+        'get',
+        'NoConfigKeysFound',
+        []
+      );
+    } else {
       const results: ConfigInfo[] = [];
       const aggregator = await ConfigAggregator.create();
 
@@ -69,5 +76,4 @@ export default class Get extends SfdxCommand {
 
     return argsToGet;
   }
-
 }
