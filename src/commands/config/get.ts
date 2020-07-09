@@ -59,7 +59,6 @@ export default class Get extends SfdxCommand {
   }
 
   protected async consolidateArgs(): Promise<string[]> {
-    const argsToGet: string[] = [];
 
     const { args, argv } = this.parse({
       flags: this.statics.flags,
@@ -68,11 +67,7 @@ export default class Get extends SfdxCommand {
     });
 
     const argVals: string[] = Object.values(args);
-    const varargs = argv.filter(val => !argVals.includes(val));
-
-    varargs.forEach(argKey => {
-      argsToGet.push(argKey);
-    });
+    const argsToGet = argv.filter(val => !argVals.includes(val));
 
     return argsToGet;
   }
