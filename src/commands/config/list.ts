@@ -1,9 +1,5 @@
 import { SfdxCommand } from '@salesforce/command';
-import {
-  ConfigAggregator,
-  ConfigInfo,
-  Messages
-} from '@salesforce/core';
+import { ConfigAggregator, ConfigInfo, Messages } from '@salesforce/core';
 
 Messages.importMessagesDirectory(__dirname);
 // const messages = Messages.loadMessages('@salesforce/plugin-config', 'list');
@@ -32,7 +28,6 @@ export default class List extends SfdxCommand {
   }
 
   protected async execute(): Promise<ConfigInfo[]> {
-
     const aggregator = await ConfigAggregator.create();
 
     return aggregator.getConfigInfo().map(c => {
@@ -40,5 +35,4 @@ export default class List extends SfdxCommand {
       return c;
     });
   }
-
 }
