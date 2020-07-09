@@ -1,0 +1,14 @@
+{
+  "en_US": {
+    "help": "Sets the configuration variables that the Salesforce CLI uses for various commands and tasks. \n Local variables apply only to your current project. Global variables apply in any directory. \n\nExamples: \n   $ sfdx force:config:unset defaultusername=me@my.org defaultdevhubusername=me@myhub.org \n  $ sfdx force:config:unset defaultdevhubusername=me@myhub.org -g",
+    "description": "set config vars for the Salesforce CLI",
+    "descriptionLong": "Sets the local and global configuration variables for the Salesforce CLI.",
+    "global": "set config var globally (to be used from any directory)",
+    "globalLong": "Sets the configuration variables globally, so they can be used from any directory.",
+    "globalHelp": "Add the --global flag to set config outside of a project.",
+    "InvalidOrgValue": "Unknown org value. Valid values are %s",
+    "NoConfigKeysFound": "Please provide config name(s) and value(s) to set.",
+    "InvalidConfigFormat": "Setting config vars must be in the format <key>=<value> but found %s",
+    "DuplicateConfigKey": "Trying to set config name \"%s\" twice in the same command"
+  }
+}
