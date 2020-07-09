@@ -37,9 +37,13 @@ export default class Get extends SfdxCommand {
   }
 
   protected async execute(): Promise<ConfigInfo[]> {
-    const args = await this.consolidateArgs();
+    const { argv } = this.parse({
+      flags: this.statics.flags,
+      args: this.statics.args,
+      strict: this.statics.strict
+    });
 
-    if (!args || args.length === 0) {
+    if (!argv || argv.length === 0) {
       throw SfdxError.create(
         '@salesforce/plugin-config',
         'get',
@@ -50,7 +54,7 @@ export default class Get extends SfdxCommand {
       const results: ConfigInfo[] = [];
       const aggregator = await ConfigAggregator.create();
 
-      args.forEach(configName => {
+      argv.forEach(configName => {
         results.push(aggregator.getInfo(configName));
       });
 
@@ -58,17 +62,4 @@ export default class Get extends SfdxCommand {
     }
   }
 
-  protected async consolidateArgs(): Promise<string[]> {
-
-    const { args, argv } = this.parse({
-      flags: this.statics.flags,
-      args: this.statics.args,
-      strict: this.statics.strict
-    });
-
-    const argVals: string[] = Object.values(args);
-    const argsToGet = argv.filter(val => !argVals.includes(val));
-
-    return argsToGet;
-  }
 }
