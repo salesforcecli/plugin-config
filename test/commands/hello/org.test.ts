@@ -1,9 +1,9 @@
 import { expect, test } from '@salesforce/command/lib/test';
 import { ensureJsonMap, ensureString } from '@salesforce/ts-types';
 
-describe('hello:org', () => {
+describe.only('hello:org', () => {
   test
-    .withOrg({ username: 'test@org.com' }, true)
+    .withOrg({ username: 'test@boop.com' }, true)
     .withConnectionRequest(request => {
       const requestMap = ensureJsonMap(request);
       if (ensureString(requestMap.url).match(/Organization/)) {
