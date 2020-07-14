@@ -67,11 +67,14 @@ export default class Get extends SfdxCommand {
       argv.forEach(configName => {
         const configInfo = aggregator.getInfo(configName);
         results.push(configInfo);
-        this.successes.push({ name: configInfo.key, value: <string | undefined>configInfo.value, location: configInfo.location });
+        this.successes.push({
+          name: configInfo.key,
+          value: <string | undefined>configInfo.value,
+          location: configInfo.location
+        });
       });
 
       return results;
     }
   }
-
 }

@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { JsonMap } from '@salesforce/ts-types'
+import { JsonMap } from '@salesforce/ts-types';
 import chalk from 'chalk';
 import { UX } from '@salesforce/command';
 
@@ -20,7 +20,13 @@ export interface FailureMsg extends JsonMap {
   message: string;
 }
 
-export function output(header: string, ux: UX, successes: SuccessMsg[], failures?: FailureMsg[], verbose?: boolean) {
+export function output(
+  header: string,
+  ux: UX,
+  successes: SuccessMsg[],
+  failures?: FailureMsg[],
+  verbose?: boolean
+) {
   console.log(failures);
   console.log(verbose);
 
