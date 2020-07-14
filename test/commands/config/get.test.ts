@@ -13,12 +13,10 @@
 // import * as _ from 'lodash';
 
 // // Local
-// import * as TestWorkspace from '../../../test/TestWorkspace';
-// import ConfigGetCommand = require('../../../lib/config/ConfigGetCommand');
-// import ConfigSetCommand = require('../../../lib/config/ConfigSetCommand');
-// import SfdxConfig = require('../../../lib/config/SfdxConfig');
-// import Org = require('../../../lib/core/scratchOrgApi');
-// import srcDevUtil = require('../../../lib/core/srcDevUtil');
+// import * as TestWorkspace from 'salesforce-alm';
+// import ConfigGetCommand = require('../../../lib/commands/config/get');
+// import ConfigSetCommand = require('../../../lib/commands/config/set');
+// import { Org, Config, srcDevUtil } from '@salesforce/core';
 
 // const urlGenerator = (function* urlGenerator() {
 //   // notice this is a function generator
@@ -53,7 +51,7 @@
 // })();
 
 // // map a list of properties into name then filter the list to non-org defaults.
-// const PROPS = SfdxConfig.getAllowedProperties()
+// const PROPS = Config.getAllowedProperties()
 //   .map(property => {
 //     const returnObj = Object.assign({}, property);
 //     switch (property.key) {
@@ -75,7 +73,7 @@
 //     return returnObj;
 //   })
 //   .filter(
-//     property => property.key !== SfdxConfig.OrgDefaults.DEVHUB && property.key !== SfdxConfig.OrgDefaults.USERNAME
+//     property => property.key !== Config.OrgDefaults.DEVHUB && property.key !== Config.OrgDefaults.USERNAME
 //   );
 
 // describe('ConfigGetCommand', () => {
@@ -100,7 +98,7 @@
 //     workspace.clean();
 //   });
 
-//   beforeEach(() => SfdxConfig.clear());
+//   beforeEach(() => Config.clear());
 
 //   describe('property tests', () => {
 //     const set = (key, value, isGlobal = true) => {
@@ -122,7 +120,7 @@
 //             return set(PROP.key, value)
 //               .then(() => {
 //                 if (PROP.encrypted) {
-//                   return srcDevUtil.readJSON(new SfdxConfig(true).path).then(configJson => {
+//                   return srcDevUtil.readJSON(new Config(true).path).then(configJson => {
 //                     // Value is encrypted, so they don't match
 //                     expect(configJson)
 //                       .to.have.property(PROP.key)
