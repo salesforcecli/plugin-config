@@ -27,9 +27,6 @@ export function output(
   failures?: FailureMsg[],
   verbose?: boolean
 ) {
-  console.log(failures);
-  console.log(verbose);
-
   if (successes.length > 0) {
     ux.styledHeader(chalk.blue(header));
     let values = {
