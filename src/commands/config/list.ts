@@ -17,7 +17,7 @@ export default class List extends SfdxCommand {
   async run(): Promise<ConfigInfo[]> {
     try {
       const results = await this.execute();
-      output('Config', this.ux, this.successes, undefined, true);
+      output('Config', this.ux, this.successes, [], true);
       return results;
     } catch (error) {
       console.log(error);
