@@ -31,10 +31,6 @@ export default class Get extends SfdxCommand {
   private successes: SuccessMsg[] = [];
 
   async run(): Promise<ConfigInfo[]> {
-    // if (this.statics.supportsPerfLogLevelFlag && this.flags.perflog === true) {
-    //   context.org.force.setCallOptions('perfOption', 'MINIMUM');
-    // }
-
     try {
       const results = await this.execute();
       output('Get Config', this.ux, this.successes, [], this.flags.verbose);
