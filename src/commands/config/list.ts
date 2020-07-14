@@ -1,5 +1,6 @@
 import { SfdxCommand } from '@salesforce/command';
 import { ConfigAggregator, ConfigInfo, Messages } from '@salesforce/core';
+import { output, SuccessMsg } from '../../helperFunctions';
 
 Messages.importMessagesDirectory(__dirname);
 // const messages = Messages.loadMessages('@salesforce/plugin-config', 'list');
@@ -11,15 +12,12 @@ export default class List extends SfdxCommand {
   // public static readonly longDescription = messages.getMessage('descriptionLong', []);
   // public static readonly help = messages.getMessage('help', []);
   public static readonly requiresProject = false;
+  private successes: SuccessMsg[] = [];
 
   async run(): Promise<ConfigInfo[]> {
-    // if (this.statics.supportsPerfLogLevelFlag && this.flags.perflog === true) {
-    //   context.org.force.setCallOptions('perfOption', 'MINIMUM');
-    // }
-
     try {
       const results = await this.execute();
-      console.log(results); // WAS LEGACY_OUTPUT(results)
+      output('Config', this.ux, this.successes, undefined, true);
       return results;
     } catch (error) {
       console.log(error);
@@ -32,6 +30,7 @@ export default class List extends SfdxCommand {
 
     return aggregator.getConfigInfo().map(c => {
       delete c.path;
+      this.successes.push({ name: c.key, value: <string | undefined>c.value, location: c.location });
       return c;
     });
   }
