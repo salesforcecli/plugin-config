@@ -37,7 +37,6 @@ export default class Get extends SfdxCommand {
 
     try {
       const results = await this.execute();
-      console.log(results); // WAS LEGACY_OUTPUT(results)
       output('Get Config', this.ux, this.successes, [], this.flags.verbose);
       return results;
     } catch (error) {
