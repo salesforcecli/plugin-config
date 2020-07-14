@@ -5,9 +5,10 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
+import { UX } from '@salesforce/command';
 import { JsonMap } from '@salesforce/ts-types';
 import chalk from 'chalk';
-import { UX } from '@salesforce/command';
+
 
 export interface SuccessMsg extends JsonMap {
   name: string;
@@ -29,7 +30,7 @@ export function output(
 ) {
   if (successes.length > 0) {
     ux.styledHeader(chalk.blue(header));
-    let values = {
+    const values = {
       columns: [
         { key: 'name', label: 'Name' },
         { key: 'value', label: 'Value' }

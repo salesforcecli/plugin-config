@@ -12,7 +12,7 @@ import {
   Messages,
   SfdxError
 } from '@salesforce/core';
-import { SuccessMsg, output } from '../../helperFunctions';
+import { output, SuccessMsg } from '../../helperFunctions';
 
 Messages.importMessagesDirectory(__dirname);
 // const messages = Messages.loadMessages('@salesforce/plugin-config', 'get');
@@ -64,7 +64,7 @@ export default class Get extends SfdxCommand {
         results.push(configInfo);
         this.successes.push({
           name: configInfo.key,
-          value: <string | undefined>configInfo.value,
+          value: configInfo.value as string | undefined,
           location: configInfo.location
         });
       });
