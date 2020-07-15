@@ -8,50 +8,51 @@
 import { JsonMap } from '@salesforce/ts-types';
 import chalk from 'chalk';
 import { UX } from '@salesforce/command';
+import { SfdxError } from '@salesforce/core';
 
-export interface SuccessMsg extends JsonMap {
+export interface Msg extends JsonMap {
   name: string;
   value?: string;
+  success: boolean;
   location?: string;
 }
 
-export interface FailureMsg extends JsonMap {
-  name: string;
-  message: string;
-}
-
+// add success to SuccessMsg
 export function output(
   header: string,
   ux: UX,
-  successes: SuccessMsg[],
-  failures?: FailureMsg[],
+  responses: Msg[],
   verbose?: boolean
 ) {
-  if (successes.length > 0) {
-    ux.styledHeader(chalk.blue(header));
-    let values = {
-      columns: [
-        { key: 'name', label: 'Name' },
-        { key: 'value', label: 'Value' }
-      ]
-    };
-    if (verbose) {
-      values.columns.push({ key: 'location', label: 'Location' });
-    }
-    ux.table(successes, values);
+  if (!responses || responses.length == 0) {
+    ux.log('noResultsFound');
+    return;
   }
 
-  if (failures && failures.length > 0) {
-    if (successes.length > 0) {
-      ux.log('');
-    }
+  ux.styledHeader(chalk.blue(header));
+  let values = {
+    columns: [
+      { key: 'name', label: 'Name' },
+      { key: 'value', label: 'Value' },
+      // check to see if success column outputs if no success info given
+      { key: 'success', label: 'Success' }
+    ]
+  };
 
-    ux.styledHeader(chalk.red('Failures'));
-    ux.table(failures, {
-      columns: [
-        { key: 'name', label: 'Name' },
-        { key: 'message', label: 'Message' }
-      ]
-    });
+  if (verbose) {
+    values.columns.push({ key: 'location', label: 'Location' });
   }
+
+  ux.table(responses, values);
+
+  responses.forEach(response => {
+    if (!response.success) {
+      throw SfdxError.create(
+        '@salesforce/plugin-config',
+        'set',
+        response.value!,
+        [response.name]
+      );
+    }
+  });
 }
