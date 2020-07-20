@@ -1,9 +1,9 @@
 {
   "name": "@salesforce/plugin-config",
-  "description": "sfdx config commands",
-  "version": "48.8.0",
+  "description": "configure the Salesforce CLI",
+  "version": "1.0.0",
   "author": "Salesforce",
-  "bugs": "https://github.com/salesforcecli/plugin-config/issues",
+  "bugs": "https://github.com/forcedotcom/cli",
   "dependencies": {
     "@oclif/config": "^1",
     "@salesforce/command": "^2.2.0",
@@ -33,7 +33,6 @@
   "files": [
     "/lib",
     "/messages",
-    "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
   "homepage": "https://github.com/salesforcecli/plugin-config",
@@ -54,8 +53,9 @@
       "@salesforce/plugin-command-reference"
     ],
     "topics": {
-      "hello": {
-        "description": "Commands to say hello."
+      "config": {
+        "description": "configure the Salesforce CLI",
+        "longDescription": "Use the config commands to view and set your Salesforce CLI configuration values. Set your default Dev Hub and scratch org, and your default instance URL, either globally or at the project level."
       }
     }
   },
