@@ -1,0 +1,82 @@
+---
+version: 2.1
+jobs:
+  node-latest: &test
+    docker:
+      - image: node:latest
+    steps:
+      - checkout
+      - restore_cache: &restore_cache
+          keys:
+            - v1-npm-{{checksum ".circleci/config.yml"}}-{{checksum "yarn.lock"}}
+            - v1-npm-{{checksum ".circleci/config.yml"}}
+      - run:
+          name: Install dependencies
+          command: yarn
+      - run: ./bin/run --version
+      - run: ./bin/run --help
+      - run:
+          name: Testing
+          command: yarn test
+  node-12:
+    <<: *test
+    docker:
+      - image: node:12
+  node-10:
+    <<: *test
+    docker:
+      - image: node:10
+  cache:
+    <<: *test
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: yarn
+      - save_cache:
+          key: v1-npm-{{checksum ".circleci/config.yml"}}-{{checksum "yarn.lock"}}
+          paths:
+            - ~/node_modules
+            - /usr/local/share/.cache/yarn
+            - /usr/local/share/.config/yarn
+  release:
+    <<: *test
+    steps:
+      - checkout
+      - restore_cache: &restore_cache
+          keys:
+            - v1-npm-{{checksum ".circleci/config.yml"}}-{{checksum "yarn.lock"}}
+            - v1-npm-{{checksum ".circleci/config.yml"}}
+      - run:
+          name: Install dependencies
+          command: yarn
+      - run:
+          name: Set credentials
+          command: |
+            echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > ~/.npmrc
+            echo ${SALESFORCE_KEY} > ~/salesforce-cli.key
+      - run:
+          name: Sign and publish
+          command: ./bin/publish
+
+workflows:
+  version: 2
+  'test-and-release':
+    jobs:
+      - node-latest
+      - node-12
+      - node-10
+      - cache:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - release:
+          requires:
+            - node-latest
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
