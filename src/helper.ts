@@ -34,7 +34,6 @@ export function output(
     columns: [
       { key: 'name', label: 'Name' },
       { key: 'value', label: 'Value' },
-      // check to see if success column outputs if no success info given
       { key: 'success', label: 'Success' }
     ]
   };
