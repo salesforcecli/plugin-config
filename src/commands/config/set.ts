@@ -5,103 +5,60 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-// Thirdparty
-import * as _ from 'lodash';
-
 import { flags, FlagsConfig, SfdxCommand } from '@salesforce/command';
 import { Config, Messages, Org } from '@salesforce/core';
-import { JsonMap } from '@salesforce/ts-types';
-import chalk from 'chalk';
+// import { JsonMap } from '@salesforce/ts-types';
+// import { Helper, Msg } from '../../helper';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'set');
 
-interface SuccessMsg extends JsonMap {
-  name: string;
-  value: string;
-}
-
-interface FailureMsg extends JsonMap {
-  name: string;
-  message: string;
-}
-
 export class Set extends SfdxCommand {
-  public static readonly theDescription = messages.getMessage(
-    'en_US.description'
-  );
+  public static readonly theDescription = messages.getMessage('description');
   public static readonly longDescription = messages.getMessage(
-    'en_US.descriptionLong'
+    'descriptionLong'
   );
-  public static readonly help = messages.getMessage('en_US.help');
+  public static readonly help = messages.getMessage('help');
   public static readonly requiresProject = false;
   public static readonly varargs = { required: true };
   public static readonly flagsConfig: FlagsConfig = {
     global: flags.boolean({
       char: 'g',
-      description: messages.getMessage('en_US.global'),
-      longDescription: messages.getMessage('en_US.globalLong'),
+      description: messages.getMessage('global'),
+      longDescription: messages.getMessage('globalLong'),
       required: false
     })
   };
 
-  private successes: SuccessMsg[] = [];
-  private failures: FailureMsg[] = [];
+  // private responses: Msg[] = [];
 
-  public async run(): Promise<JsonMap> {
+  public async run(): Promise<void> {
+    const config: Config = await Config.create(
+      Config.getDefaultOptions(this.flags.global)
+    );
+    config.read();
+    let value: string = '';
     for (const name of Object.keys(this.varargs!)) {
       try {
-        const value: string = (this.varargs![name] as unknown) as string;
+        value = (this.varargs![name] as unknown) as string;
         if (
-          name === Config.DEFAULT_DEV_HUB_USERNAME ||
-          name === Config.DEFAULT_USERNAME
+          (name === Config.DEFAULT_DEV_HUB_USERNAME ||
+            name === Config.DEFAULT_USERNAME) &&
+          value
         ) {
-          if (value) await Org.create({ aliasOrUsername: value });
+          await Org.create({ aliasOrUsername: value });
         }
-        await this.setConfig(name, value, this.flags.global);
-        this.successes.push({ name, value });
+        config.set(name, value);
+        // this.responses.push({ name, value, success: true });
       } catch (err) {
-        this.failures.push({ name, message: err.message });
+        // this.responses.push({ name, value, success: false, error: err.name });
       }
     }
-    this.output();
-    return { successes: this.successes, failures: this.failures };
-  }
-
-  async setConfig(key: string, value: string, isGlobal: boolean = false) {
-    let config: Config;
-    config = await Config.create(Config.getDefaultOptions(isGlobal));
-    return config
-      .read()
-      .then(result => {
-        config.set(key, value);
-      })
-      .then(() => config.write());
-  }
-
-  public output() {
-    if (this.successes.length > 0) {
-      this.ux.styledHeader(chalk.blue('Set Config'));
-      this.ux.table(this.successes, {
-        columns: [
-          { key: 'name', label: 'Name' },
-          { key: 'value', label: 'Value' }
-        ]
-      });
-    }
-
-    if (this.failures.length > 0) {
-      if (this.successes.length > 0) {
-        this.log('');
-      }
-
-      this.ux.styledHeader(chalk.red('Failures'));
-      this.ux.table(this.failures, {
-        columns: [
-          { key: 'name', label: 'Name' },
-          { key: 'message', label: 'Message' }
-        ]
-      });
-    }
+    config.write();
+    // Helper.output('Set Config', this.ux, this.responses);
+    // return {
+    //   successes: this.responses.filter(response => response.success),
+    //   failures: this.responses.filter(response => !response.success)
+    // };
   }
 }

@@ -5,8 +5,9 @@
   "author": "Salesforce",
   "bugs": "https://github.com/salesforcecli/plugin-config/issues",
   "dependencies": {
-    "@oclif/config": "^1",
-    "@salesforce/command": "^2.2.0",
+    "@oclif/config": "^1.14.0",
+    "@salesforce/ts-sinon": "1.1.3",
+    "@salesforce/command": "3.0.0",
     "@salesforce/core": "^2.6.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.2",
