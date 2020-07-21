@@ -52,12 +52,16 @@
     "devPlugins": [
       "@oclif/plugin-help"
     ],
+<<<<<<< HEAD
     "topics": {
       "config": {
         "description": "configure the Salesforce CLI",
         "longDescription": "Use the config commands to view and set your Salesforce CLI configuration values. Set your default Dev Hub and scratch org, and your default instance URL, either globally or at the project level."
       }
     }
+=======
+    "topics": {}
+>>>>>>> 919733a74ea1635db62d5e50e647dc26339a24fe
   },
   "repository": "salesforcecli/plugin-config",
   "scripts": {
