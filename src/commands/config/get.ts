@@ -5,19 +5,19 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { flags, FlagsConfig, SfdxCommand } from '@salesforce/command';
+import { flags, FlagsConfig } from '@salesforce/command';
 import {
   ConfigAggregator,
   ConfigInfo,
   Messages,
   SfdxError
 } from '@salesforce/core';
-import { output, SuccessMsg } from '../../helperFunctions';
+import { ConfigCommand } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 // const messages = Messages.loadMessages('@salesforce/plugin-config', 'get');
 
-export default class Get extends SfdxCommand {
+export default class Get extends ConfigCommand {
   protected static supportsPerfLogLevelFlag = false;
 
   // public static readonly theDescription = messages.getMessage('description', []);
@@ -28,20 +28,8 @@ export default class Get extends SfdxCommand {
   public static readonly flagsConfig: FlagsConfig = {
     verbose: flags.builtin()
   };
-  private successes: SuccessMsg[] = [];
 
   async run(): Promise<ConfigInfo[]> {
-    try {
-      const results = await this.execute();
-      output('Get Config', this.ux, this.successes, [], this.flags.verbose);
-      return results;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  }
-
-  protected async execute(): Promise<ConfigInfo[]> {
     const { argv } = this.parse({
       flags: this.statics.flags,
       args: this.statics.args,
@@ -60,15 +48,26 @@ export default class Get extends SfdxCommand {
       const aggregator = await ConfigAggregator.create();
 
       argv.forEach(configName => {
-        const configInfo = aggregator.getInfo(configName);
-        results.push(configInfo);
-        this.successes.push({
-          name: configInfo.key,
-          value: configInfo.value as string | undefined,
-          location: configInfo.location
-        });
+        try {
+          const configInfo = aggregator.getInfo(configName);
+          results.push(configInfo);
+          this.responses.push({
+            name: configInfo.key,
+            value: configInfo.value as string | undefined,
+            success: true,
+            location: configInfo.location
+          });
+        }
+        catch (err) {
+          this.responses.push({
+            name: configName,
+            success: false,
+            error: err
+          });
+        }
       });
 
+      this.output('Get Config');
       return results;
     }
   }
