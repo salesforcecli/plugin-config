@@ -5,29 +5,28 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { JsonMap } from '@salesforce/ts-types';
 import chalk from 'chalk';
-import { UX, SfdxCommand } from '@salesforce/command';
+import { SfdxCommand } from '@salesforce/command';
 import { SfdxError } from '@salesforce/core';
 
-export interface Msg extends JsonMap {
+export interface Msg {
   name: string;
   value?: string;
   success: boolean;
   location?: string;
-  error?: string;
+  error?: SfdxError;
 }
 
 export abstract class ConfigCommand extends SfdxCommand {
   protected responses: Msg[] = [];
 
-  output(header: string, ux: UX, responses: Msg[], verbose?: boolean) {
-    if (!responses || responses.length == 0) {
-      ux.log('noResultsFound');
+  output(header: string) {
+    if (this.responses.length == 0) {
+      this.ux.log('noResultsFound');
       return;
     }
 
-    ux.styledHeader(chalk.blue(header));
+    this.ux.styledHeader(chalk.blue(header));
     let values = {
       columns: [
         { key: 'name', label: 'Name' },
@@ -36,20 +35,15 @@ export abstract class ConfigCommand extends SfdxCommand {
       ]
     };
 
-    if (verbose) {
+    if (this.flags.verbose) {
       values.columns.push({ key: 'location', label: 'Location' });
     }
 
-    ux.table(responses, values);
+    this.ux.table(this.responses, values);
 
-    responses.forEach(response => {
-      if (!response.success) {
-        throw SfdxError.create(
-          '@salesforce/plugin-config',
-          header.substring(header.indexOf(':') + 1),
-          response.error!,
-          [response.name]
-        );
+    this.responses.forEach(response => {
+      if (response.error) {
+        throw response.error;
       }
     });
   }
