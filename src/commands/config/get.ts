@@ -57,8 +57,7 @@ export default class Get extends ConfigCommand {
             success: true,
             location: configInfo.location
           });
-        }
-        catch (err) {
+        } catch (err) {
           this.responses.push({
             name: configName,
             success: false,

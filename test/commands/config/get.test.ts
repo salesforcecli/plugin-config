@@ -38,7 +38,13 @@ describe('config:get', () => {
     });
 
   test
-    .command(['config:get', 'defaultdevhubusername', '--json', '--verbose', '--loglevel=warn'])
+    .command([
+      'config:get',
+      'defaultdevhubusername',
+      '--json',
+      '--verbose',
+      '--loglevel=warn'
+    ])
     .it('Does not get info for flag arguements', () => {
       expect(getInfoSpy.callCount).to.equal(1);
       expect(getInfoSpy.args[0][0]).to.equal('defaultdevhubusername');
