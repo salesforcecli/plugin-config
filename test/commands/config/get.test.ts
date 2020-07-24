@@ -8,16 +8,15 @@
 // Thirdparty
 
 import * as sinon from 'sinon';
+// import { join as pathJoin } from 'path';
 import { test, expect } from '@salesforce/command/lib/test';
+// import { command } from '@oclif/test';
+// import * as OclifConfig from '@oclif/config';
 import { ConfigAggregator } from '@salesforce/core';
-import Get from '../../../src/commands/config/get';
+// import { assert } from 'chai';
 
 describe('config:get', () => {
   const sandbox = sinon.createSandbox();
-
-  sinon.stub(Get.prototype, 'output').callsFake(() => {
-    return {};
-  });
 
   let getInfoSpy: sinon.SinonSpy;
 
@@ -30,14 +29,17 @@ describe('config:get', () => {
   });
 
   test
+    .stdout()
     .command(['config:get', 'defaultdevhubusername', 'defaultusername'])
     .it('Gets info with correct arguments', () => {
-      expect(getInfoSpy.callCount).to.equal(2);
-      expect(getInfoSpy.args[0][0]).to.equal('defaultdevhubusername');
-      expect(getInfoSpy.args[1][0]).to.equal('defaultusername');
+      expect(getInfoSpy.callCount).to.equal(3);
+      expect(getInfoSpy.args[0][0]).to.equal('apiVersion');
+      expect(getInfoSpy.args[1][0]).to.equal('defaultdevhubusername');
+      expect(getInfoSpy.args[2][0]).to.equal('defaultusername');
     });
 
   test
+    .stdout()
     .command([
       'config:get',
       'defaultdevhubusername',
@@ -46,19 +48,36 @@ describe('config:get', () => {
       '--loglevel=warn'
     ])
     .it('Does not get info for flag arguements', () => {
-      expect(getInfoSpy.callCount).to.equal(1);
-      expect(getInfoSpy.args[0][0]).to.equal('defaultdevhubusername');
+      expect(getInfoSpy.callCount).to.equal(2);
+      expect(getInfoSpy.args[0][0]).to.equal('apiVersion');
+      expect(getInfoSpy.args[1][0]).to.equal('defaultdevhubusername');
     });
 
   test
-    .command(['config:get', 'apiVersion=49', '-g'])
-    .it('fails to set Api Version', ctx => {
-      expect(getInfoSpy.threw()).to.be.true;
+    .stderr()
+    .command(['config:get'])
+    .it('Error is thrown when no arguments are passd in', ctx => {
+      expect(ctx.stderr).to.contain('Please provide config name(s) to get');
     });
 
-  it('setting api wrong', () => {
-    test.command(['config:set', 'apiV=49.0', '-g']).catch((err: Error) => {
-      console.log(err);
+  test
+    .stderr()
+    .stdout()
+    .command(['config:get', 'badArg'])
+    .it('Error is thrown when a bad argument is passed in', ctx => {
+      expect(ctx.stderr).to.contain('Unknown config key: badArg');
     });
-  });
+
+  test
+    .stdout()
+    .command(['config:get', 'defaultdevhubusername', 'defaultusername', '--json'])
+    .it('Json output is corrext for normal command', ctx => {
+      const jsonOutput = JSON.parse(ctx.stdout);
+      expect(jsonOutput).to.have.property('status')
+        .and.equal(0);
+      expect(jsonOutput).to.have.property('values');
+      expect(jsonOutput.values).to.have.property('')
+    });
+
+
 });

@@ -17,7 +17,7 @@ import { ConfigCommand } from '../../config';
 Messages.importMessagesDirectory(__dirname);
 // const messages = Messages.loadMessages('@salesforce/plugin-config', 'get');
 
-export default class Get extends ConfigCommand {
+export class Get extends ConfigCommand {
   protected static supportsPerfLogLevelFlag = false;
 
   // public static readonly theDescription = messages.getMessage('description', []);

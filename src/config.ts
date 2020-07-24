@@ -5,9 +5,9 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import chalk from 'chalk';
 import { SfdxCommand } from '@salesforce/command';
 import { SfdxError } from '@salesforce/core';
+import chalk from 'chalk';
 
 export interface Msg {
   name: string;
@@ -21,13 +21,13 @@ export abstract class ConfigCommand extends SfdxCommand {
   protected responses: Msg[] = [];
 
   output(header: string) {
-    if (this.responses.length == 0) {
+    if (this.responses.length === 0) {
       this.ux.log('noResultsFound');
       return;
     }
 
     this.ux.styledHeader(chalk.blue(header));
-    let values = {
+    const values = {
       columns: [
         { key: 'name', label: 'Name' },
         { key: 'value', label: 'Value' },
