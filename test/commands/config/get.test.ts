@@ -70,14 +70,18 @@ describe('config:get', () => {
 
   test
     .stdout()
-    .command(['config:get', 'defaultdevhubusername', 'defaultusername', '--json'])
+    .command([
+      'config:get',
+      'defaultdevhubusername',
+      'defaultusername',
+      '--json'
+    ])
     .it('Json output is corrext for normal command', ctx => {
       const jsonOutput = JSON.parse(ctx.stdout);
-      expect(jsonOutput).to.have.property('status')
+      expect(jsonOutput)
+        .to.have.property('status')
         .and.equal(0);
       expect(jsonOutput).to.have.property('values');
-      expect(jsonOutput.values).to.have.property('')
+      expect(jsonOutput.values).to.have.property('');
     });
-
-
 });
