@@ -16,11 +16,11 @@ export default class List extends ConfigCommand {
     const aggregator = await ConfigAggregator.create();
 
     const results = aggregator.getConfigInfo().map(c => {
-      delete c.path;
       this.responses.push({ name: c.key, value: <string | undefined>c.value, location: c.location, success: true });
+      delete c.path;
       return c;
     });
-    this.output('Config');
+    this.output('Config', true);
     return results;
   }
 }
