@@ -5,15 +5,15 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { flags, FlagsConfig, SfdxCommand } from '@salesforce/command';
+import { flags, FlagsConfig } from '@salesforce/command';
 import { Config, Messages, Org } from '@salesforce/core';
-// import { JsonMap } from '@salesforce/ts-types';
-// import { Helper, Msg } from '../../helper';
+import { ConfigCommand } from '../../config';
+import { JsonMap } from '@salesforce/ts-types';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'set');
 
-export class Set extends SfdxCommand {
+export class Set extends ConfigCommand {
   public static readonly theDescription = messages.getMessage('description');
   public static readonly longDescription = messages.getMessage(
     'descriptionLong'
@@ -30,13 +30,11 @@ export class Set extends SfdxCommand {
     })
   };
 
-  // private responses: Msg[] = [];
-
-  public async run(): Promise<void> {
+  public async run(): Promise<JsonMap> {
     const config: Config = await Config.create(
       Config.getDefaultOptions(this.flags.global)
     );
-    config.read();
+    await config.read();
     let value: string = '';
     for (const name of Object.keys(this.varargs!)) {
       try {
@@ -49,16 +47,16 @@ export class Set extends SfdxCommand {
           await Org.create({ aliasOrUsername: value });
         }
         config.set(name, value);
-        // this.responses.push({ name, value, success: true });
-      } catch (err) {
-        // this.responses.push({ name, value, success: false, error: err.name });
+        this.responses.push({ name, value, success: true });
+      } catch (error) {
+        this.responses.push({ name, value, success: false, error });
       }
     }
-    config.write();
-    // Helper.output('Set Config', this.ux, this.responses);
-    // return {
-    //   successes: this.responses.filter(response => response.success),
-    //   failures: this.responses.filter(response => !response.success)
-    // };
+    await config.write();
+    this.output('Set Config');
+    return {
+      // successes: this.responses.filter(response => response.success),
+      // failures: this.responses.filter(response => !response.success)
+    };
   }
 }
