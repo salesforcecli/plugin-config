@@ -66,7 +66,7 @@ export class Get extends ConfigCommand {
         }
       });
 
-      this.output('Get Config');
+      this.output('Get Config', this.flags.verbose);
       return results;
     }
   }
