@@ -1,4 +1,3 @@
-import { SfdxCommand } from '@salesforce/command';
 import { ConfigAggregator, ConfigInfo, Messages } from '@salesforce/core';
 import { ConfigCommand } from '../../config';
 
@@ -14,18 +13,14 @@ export default class List extends ConfigCommand {
   public static readonly requiresProject = false;
 
   async run(): Promise<ConfigInfo[]> {
-    const results = await this.execute();
-    this.output('Config');
-    return results;
-  }
-
-  protected async execute(): Promise<ConfigInfo[]> {
     const aggregator = await ConfigAggregator.create();
 
-    return aggregator.getConfigInfo().map(c => {
+    const results = aggregator.getConfigInfo().map(c => {
       delete c.path;
-      this.responses.push({ name: c.key, value: <string | undefined>c.value, location: c.location });
+      this.responses.push({ name: c.key, value: <string | undefined>c.value, location: c.location, success: true });
       return c;
     });
+    this.output('Config');
+    return results;
   }
 }
