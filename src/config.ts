@@ -20,7 +20,7 @@ export interface Msg {
 export abstract class ConfigCommand extends SfdxCommand {
   protected responses: Msg[] = [];
 
-  output(header: string) {
+  output(header: string, verbose: boolean) {
     if (this.responses.length === 0) {
       this.ux.log('noResultsFound');
       return;
@@ -35,7 +35,7 @@ export abstract class ConfigCommand extends SfdxCommand {
       ]
     };
 
-    if (this.flags.verbose) {
+    if (verbose) {
       values.columns.push({ key: 'location', label: 'Location' });
     }
 
