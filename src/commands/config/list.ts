@@ -1,28 +1,22 @@
 import { SfdxCommand } from '@salesforce/command';
 import { ConfigAggregator, ConfigInfo, Messages } from '@salesforce/core';
-import { output, SuccessMsg } from '../../helperFunctions';
+import { ConfigCommand } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 // const messages = Messages.loadMessages('@salesforce/plugin-config', 'list');
 
-export default class List extends SfdxCommand {
+export default class List extends ConfigCommand {
   protected static supportsPerfLogLevelFlag = false;
 
   // public static readonly theDescription = messages.getMessage('description', []);
   // public static readonly longDescription = messages.getMessage('descriptionLong', []);
   // public static readonly help = messages.getMessage('help', []);
   public static readonly requiresProject = false;
-  private successes: SuccessMsg[] = [];
 
   async run(): Promise<ConfigInfo[]> {
-    try {
-      const results = await this.execute();
-      output('Config', this.ux, this.successes, [], true);
-      return results;
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
+    const results = await this.execute();
+    this.output('Config');
+    return results;
   }
 
   protected async execute(): Promise<ConfigInfo[]> {
@@ -30,7 +24,7 @@ export default class List extends SfdxCommand {
 
     return aggregator.getConfigInfo().map(c => {
       delete c.path;
-      this.successes.push({ name: c.key, value: <string | undefined>c.value, location: c.location });
+      this.responses.push({ name: c.key, value: <string | undefined>c.value, location: c.location });
       return c;
     });
   }
