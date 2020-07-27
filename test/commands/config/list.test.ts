@@ -11,15 +11,15 @@ import * as sinon from 'sinon';
 import { test, expect } from '@salesforce/command/lib/test';
 import { ConfigAggregator } from '@salesforce/core';
 
-describe('config:get', () => {
+describe('config:list', () => {
 
-  describe('Testing calls made to core\'s ConfigAggregator.getInfo() method', () => {
+  describe('Testing calls to core\'s ConfigAggregator.getConfigInfo() method', () => {
     const sandbox = sinon.createSandbox();
 
-    let getInfoSpy: sinon.SinonSpy;
+    let getConfigInfoSpy: sinon.SinonSpy;
 
     beforeEach(() => {
-      getInfoSpy = sandbox.spy(ConfigAggregator.prototype, 'getInfo');
+      getConfigInfoSpy = sandbox.spy(ConfigAggregator.prototype, 'getConfigInfo');
     });
 
     afterEach(() => {
@@ -29,39 +29,100 @@ describe('config:get', () => {
     test
       .stdout()
       .command(['config:list'])
-      .it('Gets info for correct arguments', () => {
-        expect(getInfoSpy.callCount).to.equal(3);
-        expect(getInfoSpy.args[0][0]).to.equal('apiVersion');
-        expect(getInfoSpy.args[1][0]).to.equal('defaultdevhubusername');
-        expect(getInfoSpy.args[2][0]).to.equal('defaultusername');
-      });
-
-    test
-      .stdout()
-      .stderr()
-      .command([
-        'config:list',
-        '--json',
-        '--loglevel=warn'
-      ])
-      .it('Does not get info for flag arguements', () => {
-        expect(getInfoSpy.callCount).to.equal(3);
-        expect(getInfoSpy.args[0][0]).to.equal('apiVersion');
-        expect(getInfoSpy.args[1][0]).to.equal('defaultdevhubusername');
-        expect(getInfoSpy.args[2][0]).to.equal('badarg');
+      .it('Always makes exactly one call', () => {
+        expect(getConfigInfoSpy.callCount).to.equal(1);
       });
   });
 
   describe('Testing errors that can be thrown', () => {
-    //Unexpected argument test
+    test
+      .stdout()
+      .stderr()
+      .command(['config:list', 'badArg'])
+      .it('Any arguments will throw an error', ctx => {
+        expect(ctx.stderr).to.contain('Unexpected argument: badArg')
+      });
   });
 
   describe('Testing console output', () => {
+    test
+      .stdout()
+      .command(['config:list'])
+      .it('No results found when nothing is set', ctx => {
+        expect(ctx.stdout).to.contain('noResultsFound');
+      });
 
+    //Needs Set
+    test
+      .stdout()
+      .command(['config:list'])
+      .it('Table with only successes', ctx => {
+        let noWhitespaceOutput = ctx.stdout.replace(/\s+/g, '');
+        expect(noWhitespaceOutput).to.contain('defaultdevhubusernameDevHubtrueGlobal');
+        expect(noWhitespaceOutput).to.contain('defaultusernameTestUsertrueGlobal');
+      });
   });
 
   describe('Testing JSON output', () => {
+    test
+      .stdout()
+      .command(['config:list', '--json'])
+      .it('Empty JSON with nothing set', ctx => {
+        const jsonOutput = JSON.parse(ctx.stdout);
+        expect(jsonOutput)
+          .to.have.property('status')
+          .and.equal(0);
+        expect(jsonOutput).to.have.property('result');
+        expect(jsonOutput.result.length).to.equal(0);
+      });
 
+    //Needs Set
+    test
+      .stdout()
+      .command(['config:list', '--json'])
+      .it('Global keys', ctx => {
+        const jsonOutput = JSON.parse(ctx.stdout);
+        expect(jsonOutput)
+          .to.have.property('status')
+          .and.equal(0);
+        expect(jsonOutput).to.have.property('result');
+        expect(jsonOutput.result[0]).to.have.property('key')
+          .and.equal('defaultdevhubusername');
+        expect(jsonOutput.result[0]).to.have.property('value')
+          .and.equal('DevHub');
+        expect(jsonOutput.result[0]).to.have.property('location')
+          .and.equal('Global');
+        expect(jsonOutput.result[1]).to.have.property('key')
+          .and.equal('defaultusername');
+        expect(jsonOutput.result[1]).to.have.property('value')
+          .and.equal('TestUser');
+        expect(jsonOutput.result[1]).to.have.property('location')
+          .and.equal('Global');
+      });
+
+    //Needs Set
+    test
+      .stdout()
+      .command(['config:list', '--json'])
+      .it('Local keys', ctx => {
+        const jsonOutput = JSON.parse(ctx.stdout);
+        expect(jsonOutput)
+          .to.have.property('status')
+          .and.equal(0);
+        expect(jsonOutput).to.have.property('result');
+        expect(jsonOutput.result[0]).to.have.property('key')
+          .and.equal('defaultdevhubusername');
+        expect(jsonOutput.result[0]).to.have.property('value')
+          .and.equal('DevHub');
+        expect(jsonOutput.result[0]).to.have.property('location')
+          .and.equal('Local');
+        expect(jsonOutput.result[1]).to.have.property('key')
+          .and.equal('defaultusername');
+        expect(jsonOutput.result[1]).to.have.property('value')
+          .and.equal('TestUser');
+        expect(jsonOutput.result[1]).to.have.property('location')
+          .and.equal('Local');
+      });
   });
 
 });
