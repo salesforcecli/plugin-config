@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-config",
   "description": "sfdx config commands",
-  "version": "48.8.0",
+  "version": "1.0.0",
   "author": "Salesforce",
   "bugs": "https://github.com/salesforcecli/plugin-config/issues",
   "dependencies": {
