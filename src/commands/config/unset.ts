@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 import { flags, FlagsConfig } from '@salesforce/command';
 import { Config, Messages, SfdxError } from '@salesforce/core';
 import { ConfigCommand, Msg } from '../../config';
+import { Dictionary } from '@salesforce/ts-types'
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'unset');
@@ -34,7 +35,7 @@ export class UnSet extends ConfigCommand {
     })
   };
 
-  public async run(): Promise<Msg[]> {
+  public async run(): Promise<Dictionary<Msg[]>> {
     const { argv } = this.parse({
       flags: this.statics.flags,
       args: this.statics.args,
@@ -65,6 +66,9 @@ export class UnSet extends ConfigCommand {
       this.output('Unset Config', false);
     }
 
-    return this.responses;
+    return {
+      successes: this.responses.filter(response => response.success),
+      failures: this.responses.filter(response => !response.success)
+    };
   }
 }
