@@ -7,8 +7,7 @@
     "globalLong": "Sets the configuration variables globally, so they can be used from any directory.",
     "globalHelp": "Add the --global flag to set config outside of a project.",
     "InvalidOrgValue": "Unknown org value. Valid values are %s",
-    "NoConfigKeysFound": "Please provide config name(s) and value(s) to set.",
-    "InvalidConfigFormat": "Setting config vars must be in the format <key>=<value> but found %s",
-    "DuplicateConfigKey": "Trying to set config name \"%s\" twice in the same command"
+    "NoConfigKeysFound": "Please provide config name(s) and value(s) to unset.",
+    "DuplicateConfigKey": "Trying to unset config name \"%s\" twice in the same command"
   }
 }

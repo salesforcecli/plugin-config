@@ -53,9 +53,6 @@
       "@oclif/plugin-help"
     ],
     "topics": {
-      "hello": {
-        "description": "Commands to say hello."
-      },
       "config": {
         "description": "Commands for config"
       }
