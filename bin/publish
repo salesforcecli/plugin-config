@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+const {execSync} = require('child_process')
+
+const signResults = JSON.parse(execSync(`./bin/run plugins:trust:sign
+  --signatureurl https://developer.salesforce.com/media/salesforce-cli/signatures
+  --publickeyurl https://developer.salesforce.com/media/salesforce-cli/sfdx-cli-03032020.crt
+  --privatekeypath "~/salesforce-cli.key" --json
+`))
+
+execSync(`npx aws s3 cp ${signResults.filename} s3://dfc-data-production/media/salesforce-cli/signatures/`)
+
+execSync(`npm publish ${signResults.zipPath}`)
+
+execSync(`./bin/run plugins:trust:verify --npm ${signResults.name}@${signResults.version} --json`)
