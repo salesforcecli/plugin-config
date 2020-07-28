@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-config",
   "description": "sfdx config commands",
-  "version": "48.8.0",
+  "version": "1.0.0",
   "author": "Salesforce",
   "bugs": "https://github.com/salesforcecli/plugin-config/issues",
   "dependencies": {
@@ -9,8 +9,9 @@
     "@salesforce/command": "^2.2.0",
     "@salesforce/core": "^2.6.0",
     "husky": "^4.2.5",
-    "tslib": "^1",
-    "lint-staged": "^10.2.2"
+    "lint-staged": "^10.2.2",
+    "salesforce-alm": "^48.23.0",
+    "tslib": "^1"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1",
@@ -52,9 +53,6 @@
       "@oclif/plugin-help"
     ],
     "topics": {
-      "hello": {
-        "description": "Commands to say hello."
-      },
       "config": {
         "description": "Commands for config"
       }
