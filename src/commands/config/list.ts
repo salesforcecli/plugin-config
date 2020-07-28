@@ -2,14 +2,14 @@ import { ConfigAggregator, ConfigInfo, Messages } from '@salesforce/core';
 import { ConfigCommand } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
-// const messages = Messages.loadMessages('@salesforce/plugin-config', 'list');
+const messages = Messages.loadMessages('@salesforce/plugin-config', 'list');
 
 export default class List extends ConfigCommand {
   protected static supportsPerfLogLevelFlag = false;
+  public static readonly theDescription = messages.getMessage('description', []);
+  public static readonly longDescription = messages.getMessage('descriptionLong', []);
+  public static readonly help = messages.getMessage('help', []);
 
-  // public static readonly theDescription = messages.getMessage('description', []);
-  // public static readonly longDescription = messages.getMessage('descriptionLong', []);
-  // public static readonly help = messages.getMessage('help', []);
   public static readonly requiresProject = false;
 
   async run(): Promise<ConfigInfo[]> {
