@@ -15,14 +15,14 @@ import {
 import { ConfigCommand } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
-// const messages = Messages.loadMessages('@salesforce/plugin-config', 'get');
+const messages = Messages.loadMessages('@salesforce/plugin-config', 'get');
 
 export class Get extends ConfigCommand {
   protected static supportsPerfLogLevelFlag = false;
+  public static readonly theDescription = messages.getMessage('description', []);
+  public static readonly longDescription = messages.getMessage('descriptionLong', []);
+  public static readonly help = messages.getMessage('help', []);
 
-  // public static readonly theDescription = messages.getMessage('description', []);
-  // public static readonly longDescription = messages.getMessage('descriptionLong', []);
-  // public static readonly help = messages.getMessage('help', []);
   public static readonly requiresProject = false;
   public static readonly strict = false;
   public static readonly flagsConfig: FlagsConfig = {
