@@ -68,6 +68,15 @@ describe('config:set', async () => {
       });
 
     // test
+    //   .stderr()
+    //   .stdout()
+    //   .withProject({})
+    //   .command(['config:set', 'apiVersion=49.0'])
+    //   .it('not using global outside of a sfdx project', ctx => {
+    //     expect(ctx.stderr).to.contain('This directory does not contain a valid Salesforce DX project');
+    //   })
+
+    // test
     //   .withOrg({ alias: 'testOrg' }, true)
     //   .withProject()
     //   .stderr()
