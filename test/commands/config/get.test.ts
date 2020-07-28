@@ -108,10 +108,10 @@ describe('config:get', () => {
       });
 
     test
-      .stderr()
+      .stdout()
       .command(['config:get', 'badarg', 'defaultdevhubusername', '--json'])
       .it('Bad argument error JSON', ctx => {
-        const jsonOutput = JSON.parse(ctx.stderr);
+        const jsonOutput = JSON.parse(ctx.stdout);
         expect(jsonOutput)
           .to.have.property('status')
           .and.equal(1);

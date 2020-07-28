@@ -1,13 +1,13 @@
 {
   "name": "@salesforce/plugin-config",
-  "description": "sfdx config commands",
-  "version": "48.8.0",
+  "description": "configure the Salesforce CLI",
+  "version": "1.0.0",
   "author": "Salesforce",
-  "bugs": "https://github.com/salesforcecli/plugin-config/issues",
+  "bugs": "https://github.com/forcedotcom/cli",
   "dependencies": {
-    "@oclif/config": "^1",
+    "@oclif/config": "^1.14.0",
     "@salesforce/ts-sinon": "1.1.3",
-    "@salesforce/command": "^2.2.0",
+    "@salesforce/command": "3.0.0",
     "@salesforce/core": "^2.6.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.2",
@@ -25,6 +25,7 @@
     "nyc": "15.0.1",
     "prettier": "1.16.4",
     "shx": "0.2.2",
+    "sinon": "^9.0.2",
     "ts-node": "^8.6.2",
     "tslint": "^6.1.0",
     "typescript": "^3.8.3"
@@ -35,7 +36,6 @@
   "files": [
     "/lib",
     "/messages",
-    "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
   "homepage": "https://github.com/salesforcecli/plugin-config",
@@ -51,9 +51,7 @@
     "commands": "./lib/commands",
     "bin": "sfdx",
     "devPlugins": [
-      "@oclif/plugin-help",
-      "@oclif/plugin-command-snapshot",
-      "@salesforce/plugin-command-reference"
+      "@oclif/plugin-help"
     ],
     "topics": {
       "config": {
