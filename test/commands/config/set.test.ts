@@ -12,7 +12,6 @@ import { test, expect } from '@salesforce/command/lib/test';
 import { Config } from '@salesforce/core';
 
 describe('config:set', async () => {
-
   let configSpy: sinon.SinonSpy;
   beforeEach(() => {
     configSpy = sinon.spy(Config.prototype, 'set');
@@ -22,7 +21,7 @@ describe('config:set', async () => {
     configSpy.restore();
   });
 
-  describe('Testing calls made to core\'s Config.set() method', () => {
+  describe("Testing calls made to core's Config.set() method", () => {
     test
       .stdout()
       .command(['config:set', 'apiVersion=49.0', '-g'])
@@ -45,9 +44,10 @@ describe('config:set', async () => {
       .stderr()
       .command(['config:set', 'keyNoValue'])
       .it('provided key with no value', ctx => {
-        expect(ctx.stderr).to.contain('Setting variables must be in the format <key>=<value>');
+        expect(ctx.stderr).to.contain(
+          'Setting variables must be in the format <key>=<value>'
+        );
       });
-
 
     test
       .stderr()
@@ -82,10 +82,17 @@ describe('config:set', async () => {
     test
       .stdout()
       .stderr()
-      .command(['config:set', 'defaultdevhubusername=DevHub', 'instanceUrl=badValue', 'apiVersion=badValue'])
+      .command([
+        'config:set',
+        'defaultdevhubusername=DevHub',
+        'instanceUrl=badValue',
+        'apiVersion=badValue'
+      ])
       .it('Table with both successes and failures', ctx => {
         let noWhitespaceOutput = ctx.stdout.replace(/\s+/g, '');
-        expect(noWhitespaceOutput).to.contain('defaultdevhubusernameDevHubtrue');
+        expect(noWhitespaceOutput).to.contain(
+          'defaultdevhubusernameDevHubtrue'
+        );
         expect(noWhitespaceOutput).to.contain('instanceUrlbadValuefalse');
         expect(noWhitespaceOutput).to.contain('apiVersionbadValuefalse');
       });
@@ -94,7 +101,13 @@ describe('config:set', async () => {
   describe('Testing JSON output', () => {
     test
       .stdout()
-      .command(['config:set', 'apiVersion=49.0', 'defaultdevhubusername=DevHub', '-g', '--json'])
+      .command([
+        'config:set',
+        'apiVersion=49.0',
+        'defaultdevhubusername=DevHub',
+        '-g',
+        '--json'
+      ])
       .it('Two successesful sets', ctx => {
         const jsonOutput = JSON.parse(ctx.stdout);
         expect(jsonOutput)
@@ -120,7 +133,12 @@ describe('config:set', async () => {
 
     test
       .stdout()
-      .command(['config:set', 'apiVersion=badValue', 'instanceUrl=badValue', '--json'])
+      .command([
+        'config:set',
+        'apiVersion=badValue',
+        'instanceUrl=badValue',
+        '--json'
+      ])
       .it('Two failed sets', ctx => {
         const jsonOutput = JSON.parse(ctx.stdout);
         expect(jsonOutput)
@@ -148,5 +166,4 @@ describe('config:set', async () => {
   describe('Testing global flag', () => {
     // We really need a way to test if setting the config locally vs. globally is working as intended
   });
-
 });
