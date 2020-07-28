@@ -10,20 +10,20 @@ import * as _ from 'lodash';
 
 import { flags, FlagsConfig } from '@salesforce/command';
 import { Config, Messages, SfdxError } from '@salesforce/core';
+import { Dictionary } from '@salesforce/ts-types';
 import { ConfigCommand, Msg } from '../../config';
-import { Dictionary } from '@salesforce/ts-types'
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'unset');
 
 export class UnSet extends ConfigCommand {
-  // public static readonly theDescription = messages.getMessage(
-  //   'en_US.description'
-  // );
-  // public static readonly longDescription = messages.getMessage(
-  //   'en_US.descriptionLong'
-  // );
-  // public static readonly help = messages.getMessage('en_US.help');
+  public static readonly theDescription = messages.getMessage(
+    'en_US.description'
+  );
+  public static readonly longDescription = messages.getMessage(
+    'en_US.descriptionLong'
+  );
+  public static readonly help = messages.getMessage('en_US.help');
   public static readonly requiresProject = false;
   public static readonly strict = false;
   public static readonly flagsConfig: FlagsConfig = {
@@ -56,11 +56,12 @@ export class UnSet extends ConfigCommand {
 
       await config.read();
       argv.forEach(key => {
-        const success = config.unset(key);
-        this.responses.push({
-          name: key,
-          success: success
-        });
+        try {
+          config.unset(key);
+          this.responses.push({ name: key, success: true });
+        } catch (error) {
+          this.responses.push({ name: key, success: false, error });
+        }
       });
       await config.write();
       this.output('Unset Config', false);
