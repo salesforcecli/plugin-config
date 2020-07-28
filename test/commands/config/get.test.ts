@@ -12,8 +12,7 @@ import { test, expect } from '@salesforce/command/lib/test';
 import { ConfigAggregator } from '@salesforce/core';
 
 describe('config:get', () => {
-
-  describe('Testing calls made to core\'s ConfigAggregator.getInfo() method', () => {
+  describe("Testing calls made to core's ConfigAggregator.getInfo() method", () => {
     const sandbox = sinon.createSandbox();
 
     let getInfoSpy: sinon.SinonSpy;
@@ -77,11 +76,18 @@ describe('config:get', () => {
     test
       .stdout()
       .stderr()
-      .command(['config:get', 'badarg', 'defaultdevhubusername', 'defaultusername'])
+      .command([
+        'config:get',
+        'badarg',
+        'defaultdevhubusername',
+        'defaultusername'
+      ])
       .it('Table with both successes and failures', ctx => {
         let noWhitespaceOutput = ctx.stdout.replace(/\s+/g, '');
         expect(noWhitespaceOutput).to.contain('badargfalse');
-        expect(noWhitespaceOutput).to.contain('defaultdevhubusername  DevHub  true');
+        expect(noWhitespaceOutput).to.contain(
+          'defaultdevhubusername  DevHub  true'
+        );
         expect(noWhitespaceOutput).to.contain('defaultusername TestUser true');
       });
   });
@@ -101,9 +107,11 @@ describe('config:get', () => {
           .to.have.property('status')
           .and.equal(0);
         expect(jsonOutput).to.have.property('result');
-        expect(jsonOutput.result[0]).to.have.property('key')
+        expect(jsonOutput.result[0])
+          .to.have.property('key')
           .and.equal('defaultdevhubusername');
-        expect(jsonOutput.result[1]).to.have.property('key')
+        expect(jsonOutput.result[1])
+          .to.have.property('key')
           .and.equal('defaultusername');
       });
 
@@ -115,13 +123,17 @@ describe('config:get', () => {
         expect(jsonOutput)
           .to.have.property('status')
           .and.equal(1);
-        expect(jsonOutput).to.have.property('name')
+        expect(jsonOutput)
+          .to.have.property('name')
           .and.equal('UnknownConfigKey');
-        expect(jsonOutput).to.have.property('message')
+        expect(jsonOutput)
+          .to.have.property('message')
           .and.equal('Unknown config key: badarg');
-        expect(jsonOutput).to.have.property('exitCode')
+        expect(jsonOutput)
+          .to.have.property('exitCode')
           .and.equal(1);
-        expect(jsonOutput).to.have.property('commandName')
+        expect(jsonOutput)
+          .to.have.property('commandName')
           .and.equal('Get');
       });
 
@@ -140,21 +152,29 @@ describe('config:get', () => {
           .to.have.property('status')
           .and.equal(0);
         expect(jsonOutput).to.have.property('result');
-        expect(jsonOutput.result[0]).to.have.property('key')
+        expect(jsonOutput.result[0])
+          .to.have.property('key')
           .and.equal('defaultdevhubusername');
-        expect(jsonOutput.result[0]).to.have.property('value')
+        expect(jsonOutput.result[0])
+          .to.have.property('value')
           .and.equal('DevHub');
-        expect(jsonOutput.result[0]).to.have.property('location')
+        expect(jsonOutput.result[0])
+          .to.have.property('location')
           .and.equal('Global');
-        expect(jsonOutput.result[0]).to.have.property('path')
+        expect(jsonOutput.result[0])
+          .to.have.property('path')
           .and.contain('?');
-        expect(jsonOutput.result[1]).to.have.property('key')
+        expect(jsonOutput.result[1])
+          .to.have.property('key')
           .and.equal('defaultusername');
-        expect(jsonOutput.result[1]).to.have.property('value')
+        expect(jsonOutput.result[1])
+          .to.have.property('value')
           .and.equal('TestUser');
-        expect(jsonOutput.result[1]).to.have.property('location')
+        expect(jsonOutput.result[1])
+          .to.have.property('location')
           .and.equal('Global');
-        expect(jsonOutput.result[1]).to.have.property('path')
+        expect(jsonOutput.result[1])
+          .to.have.property('path')
           .and.contain('?');
       });
 
@@ -173,21 +193,29 @@ describe('config:get', () => {
           .to.have.property('status')
           .and.equal(0);
         expect(jsonOutput).to.have.property('result');
-        expect(jsonOutput.result[0]).to.have.property('key')
+        expect(jsonOutput.result[0])
+          .to.have.property('key')
           .and.equal('defaultdevhubusername');
-        expect(jsonOutput.result[0]).to.have.property('value')
+        expect(jsonOutput.result[0])
+          .to.have.property('value')
           .and.equal('DevHub');
-        expect(jsonOutput.result[0]).to.have.property('location')
+        expect(jsonOutput.result[0])
+          .to.have.property('location')
           .and.equal('Local');
-        expect(jsonOutput.result[0]).to.have.property('path')
+        expect(jsonOutput.result[0])
+          .to.have.property('path')
           .and.contain('?');
-        expect(jsonOutput.result[1]).to.have.property('key')
+        expect(jsonOutput.result[1])
+          .to.have.property('key')
           .and.equal('defaultusername');
-        expect(jsonOutput.result[1]).to.have.property('value')
+        expect(jsonOutput.result[1])
+          .to.have.property('value')
           .and.equal('TestUser');
-        expect(jsonOutput.result[1]).to.have.property('location')
+        expect(jsonOutput.result[1])
+          .to.have.property('location')
           .and.equal('Local');
-        expect(jsonOutput.result[1]).to.have.property('path')
+        expect(jsonOutput.result[1])
+          .to.have.property('path')
           .and.contain('?');
       });
   });
@@ -196,12 +224,20 @@ describe('config:get', () => {
     // Needs set
     test
       .stdout()
-      .command(['config:get', 'defaultdevhubusername', 'defaultusername', '--verbose'])
+      .command([
+        'config:get',
+        'defaultdevhubusername',
+        'defaultusername',
+        '--verbose'
+      ])
       .it('--verbose', ctx => {
         let noWhitespaceOutput = ctx.stdout.replace(/\s+/g, '');
-        expect(noWhitespaceOutput).to.contain('defaultdevhubusernameDevHubtrueLocal');
-        expect(noWhitespaceOutput).to.contain('defaultusernameTestUsertrueGlobal');
+        expect(noWhitespaceOutput).to.contain(
+          'defaultdevhubusernameDevHubtrueLocal'
+        );
+        expect(noWhitespaceOutput).to.contain(
+          'defaultusernameTestUsertrueGlobal'
+        );
       });
   });
-
 });
