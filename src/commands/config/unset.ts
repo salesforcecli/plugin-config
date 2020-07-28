@@ -14,24 +14,14 @@ import { Config, Messages } from '@salesforce/core';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'unset');
 
-// interface SuccessMsg {
-//   name: string;
-//   value: string;
-// }
-
-// interface FailureMsg {
-//   name: string;
-//   message: string;
-// }
-
-export class Set extends SfdxCommand {
-  public static readonly theDescription = messages.getMessage(
-    'en_US.description'
-  );
-  public static readonly longDescription = messages.getMessage(
-    'en_US.descriptionLong'
-  );
-  public static readonly help = messages.getMessage('en_US.help');
+export class UnSet extends SfdxCommand {
+  // public static readonly theDescription = messages.getMessage(
+  //   'en_US.description'
+  // );
+  // public static readonly longDescription = messages.getMessage(
+  //   'en_US.descriptionLong'
+  // );
+  // public static readonly help = messages.getMessage('en_US.help');
   public static readonly requiresProject = false;
   public static readonly strict = false;
   public static readonly flagsConfig: FlagsConfig = {
@@ -42,9 +32,6 @@ export class Set extends SfdxCommand {
       required: false
     })
   };
-
-  // private successes: SuccessMsg[] = [];
-  // private failures: FailureMsg[] = [];
 
   public async run(): Promise<void> {
     let config: Config;
