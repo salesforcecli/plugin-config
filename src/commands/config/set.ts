@@ -7,8 +7,8 @@
 
 import { flags, FlagsConfig } from '@salesforce/command';
 import { Config, Messages, Org } from '@salesforce/core';
-import { ConfigCommand } from '../../config';
-import { JsonMap } from '@salesforce/ts-types';
+import { ConfigCommand, Msg } from '../../config';
+import { Dictionary } from '@salesforce/ts-types';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'set');
@@ -30,7 +30,7 @@ export class Set extends ConfigCommand {
     })
   };
 
-  public async run(): Promise<JsonMap> {
+  public async run(): Promise<Dictionary<Msg[]>> {
     const config: Config = await Config.create(
       Config.getDefaultOptions(this.flags.global)
     );
@@ -55,8 +55,8 @@ export class Set extends ConfigCommand {
     await config.write();
     this.output('Set Config');
     return {
-      // successes: this.responses.filter(response => response.success),
-      // failures: this.responses.filter(response => !response.success)
+      successes: this.responses.filter(response => response.success),
+      failures: this.responses.filter(response => !response.success)
     };
   }
 }
