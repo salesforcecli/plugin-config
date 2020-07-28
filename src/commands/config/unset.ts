@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 
 import { flags, FlagsConfig } from '@salesforce/command';
 import { Config, Messages, SfdxError } from '@salesforce/core';
-import { ConfigCommand, Msg } from '../../config'
+import { ConfigCommand, Msg } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'unset');
