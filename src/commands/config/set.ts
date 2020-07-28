@@ -7,8 +7,8 @@
 
 import { flags, FlagsConfig } from '@salesforce/command';
 import { Config, Messages, Org } from '@salesforce/core';
-import { ConfigCommand, Msg } from '../../config';
-import { Dictionary } from '@salesforce/ts-types';
+import { ConfigCommand } from '../../config';
+import { JsonMap } from '@salesforce/ts-types';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'set');
@@ -30,7 +30,7 @@ export class Set extends ConfigCommand {
     })
   };
 
-  public async run(): Promise<Dictionary<Msg[]>> {
+  public async run(): Promise<JsonMap> {
     const config: Config = await Config.create(
       Config.getDefaultOptions(this.flags.global)
     );
@@ -49,14 +49,27 @@ export class Set extends ConfigCommand {
         config.set(name, value);
         this.responses.push({ name, value, success: true });
       } catch (error) {
+        process.exitCode = 1;
         this.responses.push({ name, value, success: false, error });
       }
     }
     await config.write();
-    this.output('Set Config');
+    if (!this.flags.json) {
+      this.output('Set Config', false);
+    }
     return {
-      successes: this.responses.filter(response => response.success),
-      failures: this.responses.filter(response => !response.success)
+      successes: this.responses
+        .filter(response => response.success)
+        .map(success => ({
+          name: success.name,
+          value: success.value
+        })),
+      failures: this.responses
+        .filter(response => !response.success)
+        .map(failure => ({
+          name: failure.name,
+          message: failure.error!.message
+        }))
     };
   }
 }
