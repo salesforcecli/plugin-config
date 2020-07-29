@@ -49,7 +49,7 @@ describe('config:list', () => {
       .stdout()
       .command(['config:list'])
       .it('No results found when nothing is set', ctx => {
-        expect(ctx.stdout).to.contain('noResultsFound');
+        expect(ctx.stdout).to.contain('No results found');
       });
 
     //Needs Set

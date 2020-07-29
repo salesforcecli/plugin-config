@@ -22,7 +22,7 @@ export abstract class ConfigCommand extends SfdxCommand {
 
   output(header: string, verbose: boolean) {
     if (this.responses.length === 0) {
-      this.ux.log('noResultsFound');
+      this.ux.log('No results found');
       return;
     }
 
