@@ -6,8 +6,14 @@ const messages = Messages.loadMessages('@salesforce/plugin-config', 'list');
 
 export default class List extends ConfigCommand {
   protected static supportsPerfLogLevelFlag = false;
-  public static readonly theDescription = messages.getMessage('description', []);
-  public static readonly longDescription = messages.getMessage('descriptionLong', []);
+  public static readonly theDescription = messages.getMessage(
+    'description',
+    []
+  );
+  public static readonly longDescription = messages.getMessage(
+    'descriptionLong',
+    []
+  );
   public static readonly help = messages.getMessage('help', []);
 
   public static readonly requiresProject = false;
@@ -16,7 +22,12 @@ export default class List extends ConfigCommand {
     const aggregator = await ConfigAggregator.create();
 
     const results = aggregator.getConfigInfo().map(c => {
-      this.responses.push({ name: c.key, value: <string | undefined>c.value, location: c.location, success: true });
+      this.responses.push({
+        name: c.key,
+        value: <string | undefined>c.value,
+        location: c.location,
+        success: true
+      });
       delete c.path;
       return c;
     });
