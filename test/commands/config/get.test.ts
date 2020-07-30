@@ -10,6 +10,7 @@
 import * as sinon from 'sinon';
 import { test, expect } from '@salesforce/command/lib/test';
 import { ConfigAggregator } from '@salesforce/core';
+import * as path from 'path';
 
 describe('config:get', () => {
   describe("Testing calls made to core's ConfigAggregator.getInfo() method", () => {
@@ -72,23 +73,25 @@ describe('config:get', () => {
   });
 
   describe('Testing console output', () => {
-    // Needs set
     test
       .stdout()
       .stderr()
+      .command(['config:set', 'defaultdevhubusername=DevHub', 'defaultusername=TestUser'])
       .command([
         'config:get',
         'badarg',
         'defaultdevhubusername',
         'defaultusername'
       ])
+      .command(['config:unset', 'defaultdevhubusername', 'defaultusername'])
       .it('Table with both successes and failures', ctx => {
-        let noWhitespaceOutput = ctx.stdout.replace(/\s+/g, '');
+        const getOutput = ctx.stdout.substring(ctx.stdout.indexOf('Get'));
+        let noWhitespaceOutput = getOutput.replace(/\s+/g, '');
         expect(noWhitespaceOutput).to.contain('badargfalse');
         expect(noWhitespaceOutput).to.contain(
-          'defaultdevhubusername  DevHub  true'
+          'defaultdevhubusernameDevHubtrue'
         );
-        expect(noWhitespaceOutput).to.contain('defaultusername TestUser true');
+        expect(noWhitespaceOutput).to.contain('defaultusernameTestUsertrue');
       });
   });
 
@@ -137,9 +140,9 @@ describe('config:get', () => {
           .and.equal('Get');
       });
 
-    // Needs set
     test
       .stdout()
+      .command(['config:set', 'defaultdevhubusername=DevHub', 'defaultusername=TestUser', '-g'])
       .command([
         'config:get',
         'defaultdevhubusername',
@@ -147,7 +150,9 @@ describe('config:get', () => {
         '--json'
       ])
       .it('Global keys', ctx => {
-        const jsonOutput = JSON.parse(ctx.stdout);
+        expect(ctx.stdout).to.equal('Should be Global not Local');
+        const getOutput = ctx.stdout.substring(ctx.stdout.indexOf('{'));
+        const jsonOutput = JSON.parse(getOutput);
         expect(jsonOutput)
           .to.have.property('status')
           .and.equal(0);
@@ -178,9 +183,9 @@ describe('config:get', () => {
           .and.contain('?');
       });
 
-    // Needs set
     test
       .stdout()
+      .command(['config:set', 'defaultdevhubusername=DevHub', 'defaultusername=TestUser'])
       .command([
         'config:get',
         'defaultdevhubusername',
@@ -188,7 +193,8 @@ describe('config:get', () => {
         '--json'
       ])
       .it('Local keys', ctx => {
-        const jsonOutput = JSON.parse(ctx.stdout);
+        const getOutput = ctx.stdout.substring(ctx.stdout.indexOf('{'));
+        const jsonOutput = JSON.parse(getOutput);
         expect(jsonOutput)
           .to.have.property('status')
           .and.equal(0);
@@ -204,7 +210,7 @@ describe('config:get', () => {
           .and.equal('Local');
         expect(jsonOutput.result[0])
           .to.have.property('path')
-          .and.contain('?');
+          .and.contain(`local${path.sep}.sfdx${path.sep}sfdx-config.json`);
         expect(jsonOutput.result[1])
           .to.have.property('key')
           .and.equal('defaultusername');
@@ -216,14 +222,15 @@ describe('config:get', () => {
           .and.equal('Local');
         expect(jsonOutput.result[1])
           .to.have.property('path')
-          .and.contain('?');
+          .and.contain(`local${path.sep}.sfdx${path.sep}sfdx-config.json`);
       });
   });
 
   describe('Testing other flags', () => {
-    // Needs set
     test
       .stdout()
+      .command(['config:set', 'defaultdevhubusername=DevHub'])
+      .command(['config:set', 'defaultusername=TestUser', '-g'])
       .command([
         'config:get',
         'defaultdevhubusername',
