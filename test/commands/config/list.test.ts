@@ -47,7 +47,12 @@ describe('config:list', () => {
 
     test
       .stdout()
-      .command(['config:set', 'defaultdevhubusername=DevHub', 'defaultusername=TestUser', '-g'])
+      .command([
+        'config:set',
+        'defaultdevhubusername=DevHub',
+        'defaultusername=TestUser',
+        '-g'
+      ])
       .command(['config:list'])
       .it('Table with only successes', ctx => {
         let noWhitespaceOutput = ctx.stdout.replace(/\s+/g, '');
@@ -75,7 +80,12 @@ describe('config:list', () => {
 
     test
       .stdout()
-      .command(['config:set', 'defaultdevhubusername=DevHub', 'defaultusername=TestUser', '-g'])
+      .command([
+        'config:set',
+        'defaultdevhubusername=DevHub',
+        'defaultusername=TestUser',
+        '-g'
+      ])
       .command(['config:list', '--json'])
       .it('Global keys', ctx => {
         const listOutput = ctx.stdout.substring(ctx.stdout.indexOf('{'));
@@ -106,7 +116,11 @@ describe('config:list', () => {
 
     test
       .stdout()
-      .command(['config:set', 'defaultdevhubusername=DevHub', 'defaultusername=TestUser'])
+      .command([
+        'config:set',
+        'defaultdevhubusername=DevHub',
+        'defaultusername=TestUser'
+      ])
       .command(['config:list', '--json'])
       .it('Local keys', ctx => {
         const listOutput = ctx.stdout.substring(ctx.stdout.indexOf('{'));

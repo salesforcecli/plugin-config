@@ -67,7 +67,11 @@ describe('config:get', () => {
     test
       .stdout()
       .stderr()
-      .command(['config:set', 'defaultdevhubusername=DevHub', 'defaultusername=TestUser'])
+      .command([
+        'config:set',
+        'defaultdevhubusername=DevHub',
+        'defaultusername=TestUser'
+      ])
       .command([
         'config:get',
         'badarg',
@@ -133,7 +137,12 @@ describe('config:get', () => {
 
     test
       .stdout()
-      .command(['config:set', 'defaultdevhubusername=DevHub', 'defaultusername=TestUser', '-g'])
+      .command([
+        'config:set',
+        'defaultdevhubusername=DevHub',
+        'defaultusername=TestUser',
+        '-g'
+      ])
       .command([
         'config:get',
         'defaultdevhubusername',
@@ -176,7 +185,11 @@ describe('config:get', () => {
 
     test
       .stdout()
-      .command(['config:set', 'defaultdevhubusername=DevHub', 'defaultusername=TestUser'])
+      .command([
+        'config:set',
+        'defaultdevhubusername=DevHub',
+        'defaultusername=TestUser'
+      ])
       .command([
         'config:get',
         'defaultdevhubusername',

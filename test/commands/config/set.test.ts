@@ -162,5 +162,4 @@ describe('config:set', async () => {
           .and.contain('Invalid config value');
       });
   });
-
 });
