@@ -7,8 +7,8 @@
 
 import { flags, FlagsConfig } from '@salesforce/command';
 import { Config, Messages, Org } from '@salesforce/core';
-import { JsonMap } from '@salesforce/ts-types';
-import { ConfigCommand } from '../../config';
+import { getString } from '@salesforce/ts-types';
+import { ConfigCommand, Msg } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'set');
@@ -18,8 +18,6 @@ export class Set extends ConfigCommand {
   public static readonly longDescription = messages.getMessage(
     'descriptionLong'
   );
-  public static readonly help = messages.getMessage('help');
-  public static readonly requiresProject = false;
   public static readonly varargs = { required: true };
   public static readonly flagsConfig: FlagsConfig = {
     global: flags.boolean({
@@ -29,8 +27,9 @@ export class Set extends ConfigCommand {
       required: false
     })
   };
+  public static aliases = ['force:config:set'];
 
-  public async run(): Promise<JsonMap> {
+  public async run(): Promise<{ successes: Msg[]; failures: Msg[] }> {
     const config: Config = await Config.create(
       Config.getDefaultOptions(this.flags.global)
     );
@@ -38,7 +37,7 @@ export class Set extends ConfigCommand {
     let value: string = '';
     for (const name of Object.keys(this.varargs!)) {
       try {
-        value = (this.varargs![name] as unknown) as string;
+        value = getString(this.varargs, name)!;
         if (
           (name === Config.DEFAULT_DEV_HUB_USERNAME ||
             name === Config.DEFAULT_USERNAME) &&
@@ -58,18 +57,8 @@ export class Set extends ConfigCommand {
       this.output('Set Config', false);
     }
     return {
-      successes: this.responses
-        .filter(response => response.success)
-        .map(success => ({
-          name: success.name,
-          value: success.value
-        })),
-      failures: this.responses
-        .filter(response => !response.success)
-        .map(failure => ({
-          name: failure.name,
-          message: failure.error!.message
-        }))
+      successes: this.responses.filter(response => response.success),
+      failures: this.responses.filter(response => !response.success)
     };
   }
 }

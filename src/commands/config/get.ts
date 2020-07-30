@@ -18,29 +18,18 @@ Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'get');
 
 export class Get extends ConfigCommand {
-  protected static supportsPerfLogLevelFlag = false;
-  public static readonly theDescription = messages.getMessage(
-    'description',
-    []
-  );
+  public static readonly theDescription = messages.getMessage('description');
   public static readonly longDescription = messages.getMessage(
-    'descriptionLong',
-    []
+    'descriptionLong'
   );
-  public static readonly help = messages.getMessage('help', []);
-
-  public static readonly requiresProject = false;
   public static readonly strict = false;
   public static readonly flagsConfig: FlagsConfig = {
     verbose: flags.builtin()
   };
+  public static aliases = ['force:config:get'];
 
   async run(): Promise<ConfigInfo[]> {
-    const { argv } = this.parse({
-      flags: this.statics.flags,
-      args: this.statics.args,
-      strict: this.statics.strict
-    });
+    const argv = this.parseArgs();
 
     if (!argv || argv.length === 0) {
       throw SfdxError.create(

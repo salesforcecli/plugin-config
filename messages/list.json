@@ -1,8 +1,4 @@
 {
-  "help": "Lists the config variables that the Salesforce CLI uses for various commands and tasks.",
   "description": "list config vars for the Salesforce CLI",
-  "descriptionLong": "Lists the configuration variables for the Salesforce CLI.",
-  "key": "Name",
-  "value": "Value",
-  "location": "Location"
+  "descriptionLong": "Lists the configuration variables for the Salesforce CLI."
 }
