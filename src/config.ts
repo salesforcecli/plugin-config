@@ -7,6 +7,7 @@
 
 import { SfdxCommand } from '@salesforce/command';
 import { SfdxError } from '@salesforce/core';
+import { Optional } from '@salesforce/ts-types';
 import chalk from 'chalk';
 
 export interface Msg {
@@ -16,6 +17,11 @@ export interface Msg {
   location?: string;
   error?: SfdxError;
 }
+
+export type ConfigSetReturn = {
+  successes: { name: string; value: Optional<string> }[];
+  failures: { name: string; message: string }[];
+};
 
 export abstract class ConfigCommand extends SfdxCommand {
   protected responses: Msg[] = [];
@@ -55,5 +61,22 @@ export abstract class ConfigCommand extends SfdxCommand {
       strict: this.statics.strict
     });
     return argv;
+  }
+
+  formatResults() {
+    return {
+      successes: this.responses
+        .filter(response => response.success)
+        .map(success => ({
+          name: success.name,
+          value: success.value
+        })),
+      failures: this.responses
+        .filter(response => !response.success)
+        .map(failure => ({
+          name: failure.name,
+          message: failure.error!.message
+        }))
+    };
   }
 }
