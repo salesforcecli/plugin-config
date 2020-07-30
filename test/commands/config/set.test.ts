@@ -63,7 +63,7 @@ describe('config:set', async () => {
     //   .stdout()
     //   .withProject({})
     //   .command(['config:set', 'apiVersion=49.0'])
-    //   .it('not using global outside of a sfdx project', ctx => {
+    //   .it('not using global flag when outside of a sfdx project', ctx => {
     //     expect(ctx.stderr).to.contain('This directory does not contain a valid Salesforce DX project');
     //   })
 
@@ -163,7 +163,4 @@ describe('config:set', async () => {
       });
   });
 
-  describe('Testing global flag', () => {
-    // We really need a way to test if setting the config locally vs. globally is working as intended
-  });
 });

@@ -42,12 +42,12 @@ describe('config:list', () => {
       .stdout()
       .command(['config:list'])
       .it('No results found when nothing is set', ctx => {
-        expect(ctx.stdout).to.contain('noResultsFound');
+        expect(ctx.stdout).to.contain('No results found');
       });
 
-    //Needs Set
     test
       .stdout()
+      .command(['config:set', 'defaultdevhubusername=DevHub', 'defaultusername=TestUser', '-g'])
       .command(['config:list'])
       .it('Table with only successes', ctx => {
         let noWhitespaceOutput = ctx.stdout.replace(/\s+/g, '');
@@ -73,12 +73,13 @@ describe('config:list', () => {
         expect(jsonOutput.result.length).to.equal(0);
       });
 
-    //Needs Set
     test
       .stdout()
+      .command(['config:set', 'defaultdevhubusername=DevHub', 'defaultusername=TestUser', '-g'])
       .command(['config:list', '--json'])
       .it('Global keys', ctx => {
-        const jsonOutput = JSON.parse(ctx.stdout);
+        const listOutput = ctx.stdout.substring(ctx.stdout.indexOf('{'));
+        const jsonOutput = JSON.parse(listOutput);
         expect(jsonOutput)
           .to.have.property('status')
           .and.equal(0);
@@ -106,9 +107,11 @@ describe('config:list', () => {
     //Needs Set
     test
       .stdout()
+      .command(['config:set', 'defaultdevhubusername=DevHub', 'defaultusername=TestUser'])
       .command(['config:list', '--json'])
       .it('Local keys', ctx => {
-        const jsonOutput = JSON.parse(ctx.stdout);
+        const listOutput = ctx.stdout.substring(ctx.stdout.indexOf('{'));
+        const jsonOutput = JSON.parse(listOutput);
         expect(jsonOutput)
           .to.have.property('status')
           .and.equal(0);
