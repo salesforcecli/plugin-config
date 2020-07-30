@@ -47,4 +47,13 @@ export abstract class ConfigCommand extends SfdxCommand {
       }
     });
   }
+
+  parseArgs() {
+    const { argv } = this.parse({
+      flags: this.statics.flags,
+      args: this.statics.args,
+      strict: this.statics.strict
+    });
+    return argv;
+  }
 }
