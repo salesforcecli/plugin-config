@@ -13,7 +13,10 @@ import { ConfigCommand } from '../../config';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'set');
 
-type ConfigSetReturn = { successes: { name: string, value: Optional<string> }[], failures: { name: string, message: string }[] };
+type ConfigSetReturn = {
+  successes: { name: string; value: Optional<string> }[];
+  failures: { name: string; message: string }[];
+};
 
 export class Set extends ConfigCommand {
   public static readonly theDescription = messages.getMessage('description');
