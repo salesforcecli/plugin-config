@@ -116,6 +116,7 @@ describe('config:list', () => {
 
     test
       .stdout()
+      .withProject()
       .command([
         'config:set',
         'defaultdevhubusername=DevHub',

@@ -133,6 +133,7 @@ describe('config:set', async () => {
 
     test
       .stdout()
+      .withProject()
       .command([
         'config:set',
         'apiVersion=badValue',

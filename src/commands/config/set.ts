@@ -7,11 +7,13 @@
 
 import { flags, FlagsConfig } from '@salesforce/command';
 import { Config, Messages, Org } from '@salesforce/core';
-import { getString } from '@salesforce/ts-types';
-import { ConfigCommand, Msg } from '../../config';
+import { getString, Optional } from '@salesforce/ts-types';
+import { ConfigCommand } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'set');
+
+type ConfigSetReturn = { successes: { name: string, value: Optional<string> }[], failures: { name: string, message: string }[] };
 
 export class Set extends ConfigCommand {
   public static readonly theDescription = messages.getMessage('description');
@@ -29,7 +31,7 @@ export class Set extends ConfigCommand {
   };
   public static aliases = ['force:config:set'];
 
-  public async run(): Promise<{ successes: Msg[]; failures: Msg[] }> {
+  public async run(): Promise<ConfigSetReturn> {
     const config: Config = await Config.create(
       Config.getDefaultOptions(this.flags.global)
     );
@@ -57,8 +59,18 @@ export class Set extends ConfigCommand {
       this.output('Set Config', false);
     }
     return {
-      successes: this.responses.filter(response => response.success),
-      failures: this.responses.filter(response => !response.success)
+      successes: this.responses
+        .filter(response => response.success)
+        .map(success => ({
+          name: success.name,
+          value: success.value
+        })),
+      failures: this.responses
+        .filter(response => !response.success)
+        .map(failure => ({
+          name: failure.name,
+          message: failure.error!.message
+        }))
     };
   }
 }

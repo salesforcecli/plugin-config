@@ -78,7 +78,6 @@ describe('config:get', () => {
         'defaultdevhubusername',
         'defaultusername'
       ])
-      .command(['config:unset', 'defaultdevhubusername', 'defaultusername'])
       .it('Table with both successes and failures', ctx => {
         const getOutput = ctx.stdout.substring(ctx.stdout.indexOf('Get'));
         let noWhitespaceOutput = getOutput.replace(/\s+/g, '');
@@ -185,6 +184,7 @@ describe('config:get', () => {
 
     test
       .stdout()
+      .withProject()
       .command([
         'config:set',
         'defaultdevhubusername=DevHub',
@@ -233,6 +233,7 @@ describe('config:get', () => {
   describe('Testing other flags', () => {
     test
       .stdout()
+      .withProject()
       .command(['config:set', 'defaultdevhubusername=DevHub'])
       .command(['config:set', 'defaultusername=TestUser', '-g'])
       .command([

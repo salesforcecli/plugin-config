@@ -27,7 +27,7 @@ describe('config:unset', async () => {
       .stderr()
       .command(['config:unset'])
       .it('no config keys provided', ctx => {
-        expect(ctx.stderr).to.contain('NoConfigKeysFound');
+        expect(ctx.stderr).to.contain('Please provide config name(s) to unset');
       });
 
     // test
