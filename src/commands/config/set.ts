@@ -7,8 +7,8 @@
 
 import { flags, FlagsConfig } from '@salesforce/command';
 import { Config, Messages, Org } from '@salesforce/core';
-import { ConfigCommand } from '../../config';
 import { JsonMap } from '@salesforce/ts-types';
+import { ConfigCommand } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'set');

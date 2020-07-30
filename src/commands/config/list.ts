@@ -24,7 +24,7 @@ export default class List extends ConfigCommand {
     const results = aggregator.getConfigInfo().map(c => {
       this.responses.push({
         name: c.key,
-        value: <string | undefined>c.value,
+        value: c.value as string | undefined,
         location: c.location,
         success: true
       });

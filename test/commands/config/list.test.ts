@@ -113,7 +113,6 @@ describe('config:list', () => {
           .and.equal('Global');
       });
 
-    //Needs Set
     test
       .stdout()
       .command(['config:set', 'defaultdevhubusername=DevHub', 'defaultusername=TestUser'])
