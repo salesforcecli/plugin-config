@@ -37,11 +37,13 @@ export abstract class ConfigCommand extends SfdxCommand {
       columns: [{ key: 'name', label: 'Name' }]
     };
 
-    if (header.includes('Get') || header.includes('Set')) {
+    if (!header.includes('Unset')) {
       values.columns.push({ key: 'value', label: 'Value' });
     }
 
-    values.columns.push({ key: 'success', label: 'Success' });
+    if (!header.includes('List')) {
+      values.columns.push({ key: 'success', label: 'Success' });
+    }
 
     if (verbose) {
       values.columns.push({ key: 'location', label: 'Location' });
