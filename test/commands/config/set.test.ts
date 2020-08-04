@@ -1,5 +1,5 @@
 import * as sinon from 'sinon';
-import { test, expect } from '@salesforce/command/lib/test';
+import { $$, test, expect } from '@salesforce/command/lib/test';
 import { Config } from '@salesforce/core';
 
 describe('config:set', async () => {
@@ -58,24 +58,20 @@ describe('config:set', async () => {
         expect(ctx.stderr).to.contain('Invalid config value');
       });
 
-    // test
-    //   .stderr()
-    //   .stdout()
-    //   .withProject({})
-    //   .command(['config:set', 'apiVersion=49.0'])
-    //   .it('not using global flag when outside of a sfdx project', ctx => {
-    //     expect(ctx.stderr).to.contain('This directory does not contain a valid Salesforce DX project');
-    //   })
-
-    // test
-    //   .withOrg({ alias: 'testOrg' }, true)
-    //   .withProject()
-    //   .stderr()
-    //   .stdout()
-    //   .command(['config:set', 'defaultusername=wrong', '-g'])
-    //   .it('set passes on org key', ctx => {
-    //     expect(ctx.stderr).to.contain('No AuthInfo found');
-    //   });
+    test
+      .do(() => {
+        $$.configStubs.AuthInfoConfig = {
+          retrieveContents: () => {
+            throw new Error('No AuthInfo found');
+          }
+        };
+      })
+      .stderr()
+      .stdout()
+      .command(['config:set', 'defaultusername=wrong', '-g'])
+      .it('set fails on invalid org key', ctx => {
+        expect(ctx.stderr).to.contain('No AuthInfo found');
+      });
   });
 
   describe('Testing console output', () => {
