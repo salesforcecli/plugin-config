@@ -54,3 +54,7 @@ GitIgnoreTest2/
 
 # ignore oclif manifest file
 oclif.manifest.json
+
+*.tgz
+*.sig
+package.json.bak.
