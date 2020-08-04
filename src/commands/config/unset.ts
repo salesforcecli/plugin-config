@@ -57,7 +57,7 @@ export class UnSet extends ConfigCommand {
       });
       await config.write();
       if (!this.flags.json) {
-        this.output('Set Config', false);
+        this.output('Unset Config', false);
       }
     }
     return this.formatResults();

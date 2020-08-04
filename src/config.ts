@@ -34,12 +34,14 @@ export abstract class ConfigCommand extends SfdxCommand {
 
     this.ux.styledHeader(chalk.blue(header));
     const values = {
-      columns: [
-        { key: 'name', label: 'Name' },
-        { key: 'value', label: 'Value' },
-        { key: 'success', label: 'Success' }
-      ]
+      columns: [{ key: 'name', label: 'Name' }]
     };
+
+    if (header.includes('Get') || header.includes('Set')) {
+      values.columns.push({ key: 'value', label: 'Value' });
+    }
+
+    values.columns.push({ key: 'success', label: 'Success' });
 
     if (verbose) {
       values.columns.push({ key: 'location', label: 'Location' });
