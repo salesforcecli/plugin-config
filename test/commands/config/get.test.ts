@@ -134,7 +134,8 @@ describe('config:get', () => {
           .and.equal('Get');
       });
 
-    test
+    // Need to change method of setting globally. The mock returned by .command() sets both 'local' and 'global'.
+    test.skip()
       .stdout()
       .command([
         'config:set',
@@ -231,7 +232,8 @@ describe('config:get', () => {
   });
 
   describe('Testing other flags', () => {
-    test
+    // Need to change method of setting globally. The mock returned by .command() sets both 'local' and 'global'.
+    test.skip()
       .stdout()
       .withProject()
       .command(['config:set', 'defaultdevhubusername=DevHub'])
