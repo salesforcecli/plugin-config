@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-config",
   "description": "configure the Salesforce CLI",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli",
   "dependencies": {
@@ -76,5 +76,8 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
