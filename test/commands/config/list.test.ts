@@ -46,7 +46,8 @@ describe('config:list', () => {
       });
 
     // Need to change method of setting globally. The mock returned by .command() sets both 'local' and 'global'.
-    test.skip()
+    test
+      .skip()
       .stdout()
       .command([
         'config:set',
@@ -80,7 +81,8 @@ describe('config:list', () => {
       });
 
     // Need to change method of setting globally. The mock returned by .command() sets both 'local' and 'global'.
-    test.skip()
+    test
+      .skip()
       .stdout()
       .command([
         'config:set',
