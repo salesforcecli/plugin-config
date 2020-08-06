@@ -10,12 +10,12 @@ workflows:
       - release-management/test-package:
           name: node-latest
           node_version: latest
-      # - release-management/test-package:
-      #     name: node-12
+      - release-management/test-package:
+          name: node-12
       - release-management/release-signed-package:
           salesforce_key: $SALESFORCE_KEY
           npm_token: $NPM_TOKEN
-          fingerprint: "foo:bar:1234"
+          fingerprint: $SFDX_DEVELOPER_TRUSTED_FINGERPRINT
           requires:
             - node-latest
           filters:
