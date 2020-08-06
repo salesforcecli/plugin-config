@@ -16,6 +16,7 @@ workflows:
           salesforce_key: $SALESFORCE_KEY
           npm_token: $NPM_TOKEN
           fingerprint: $SFDX_DEVELOPER_TRUSTED_FINGERPRINT
+          skip_git_tag: true
           # requires:
           #   - node-latest
           filters:
