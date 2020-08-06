@@ -1,7 +1,7 @@
 ---
 version: 2.1
 orbs:
-  release-management: salesforce/npm-release-management@1
+  release-management: salesforce/npm-release-management@2
 
 workflows:
   version: 2
@@ -12,12 +12,10 @@ workflows:
           node_version: latest
       - release-management/test-package:
           name: node-12
-      - release-management/release-signed-package:
-          salesforce_key: $SALESFORCE_KEY
-          npm_token: $NPM_TOKEN
-          fingerprint: $SFDX_DEVELOPER_TRUSTED_FINGERPRINT
+      - release-management/release-package:
+          sign: true
           requires:
             - node-latest
           filters:
-            tags:
-              only: /^v.*/
+            branches:
+              only: master
