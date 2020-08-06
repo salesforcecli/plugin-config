@@ -13,8 +13,6 @@ workflows:
       # - release-management/test-package:
       #     name: node-12
       - release-management/release-signed-package:
-          salesforce_key: $SALESFORCE_KEY
-          npm_token: $NPM_TOKEN
           fingerprint: $SFDX_DEVELOPER_TRUSTED_FINGERPRINT
           # requires:
           #   - node-latest
