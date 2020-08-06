@@ -15,7 +15,7 @@ workflows:
       - release-management/release-signed-package:
           salesforce_key: $SALESFORCE_KEY
           npm_token: $NPM_TOKEN
-          fingerprint: "12345678901"
+          fingerprint: $SFDX_DEVELOPER_TRUSTED_FINGERPRINT
           # requires:
           #   - node-latest
           filters:
