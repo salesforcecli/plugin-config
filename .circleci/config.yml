@@ -1,25 +1,25 @@
 ---
 version: 2.1
 orbs:
-  release-management: salesforce/npm-release-management@1
+  release-management: salesforce/npm-release-management@dev:alpha
 
 workflows:
   version: 2
   test-and-release:
     jobs:
-      - release-management/test-package:
-          name: node-latest
-          node_version: latest
-      - release-management/test-package:
-          name: node-12
+      # - release-management/test-package:
+      #     name: node-latest
+      #     node_version: latest
+      # - release-management/test-package:
+      #     name: node-12
       - release-management/release-signed-package:
           salesforce_key: $SALESFORCE_KEY
           npm_token: $NPM_TOKEN
-          fingerprint: $SFDX_DEVELOPER_TRUSTED_FINGERPRINT
+          fingerprint: "foo:bar:1234"
           requires:
             - node-latest
           filters:
             tags:
               only: /^v.*/
             branches:
-              only: master
+              only: mdonnalley/update-orb
