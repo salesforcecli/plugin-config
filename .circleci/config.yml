@@ -1,20 +1,21 @@
 ---
 version: 2.1
 orbs:
-  release-management: salesforce/npm-release-management@1
+  release-management: salesforce/npm-release-management@dev:alpha
 
 workflows:
   version: 2
   test-and-release:
     jobs:
-      - release-management/test-package:
-          name: node-latest
-          node_version: latest
-      - release-management/test-package:
-          name: node-12
-      - release-management/release-signed-package:
-          requires:
-            - node-latest
+      # - release-management/test-package:
+      #     name: node-latest
+      #     node_version: latest
+      # - release-management/test-package:
+      #     name: node-12
+      - release-management/release-package:
+          sign: true
+          # requires:
+          #   - node-latest
           filters:
-            tags:
-              only: /^v.*/
+            branches:
+              only: mdonnalley/update-orb
