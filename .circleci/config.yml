@@ -7,15 +7,15 @@ workflows:
   version: 2
   test-and-release:
     jobs:
-      - release-management/test-package:
-          name: node-latest
-          node_version: latest
-      - release-management/test-package:
-          name: node-12
+      # - release-management/test-package:
+      #     name: node-latest
+      #     node_version: latest
+      # - release-management/test-package:
+      #     name: node-12
       - release-management/release-package:
           sign: true
-          requires:
-            - node-latest
+          # requires:
+          #   - node-latest
           filters:
             branches:
               only: mdonnalley/standard-version
