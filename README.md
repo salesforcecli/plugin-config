@@ -1,5 +1,7 @@
 # plugin-config
 
+Plugin for sfdx config commands
+
 ## Getting Started
 
 To use, install the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli) and run the following commands.
