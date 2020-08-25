@@ -1,4 +1,3 @@
 {
-  "description": "list config vars for the Salesforce CLI",
-  "descriptionLong": "Lists the configuration variables for the Salesforce CLI."
+  "description": "list config vars for the Salesforce CLI"
 }

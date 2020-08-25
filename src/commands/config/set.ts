@@ -8,16 +8,15 @@
 import { flags, FlagsConfig } from '@salesforce/command';
 import { Config, Messages, Org } from '@salesforce/core';
 import { getString } from '@salesforce/ts-types';
+import * as os from 'os';
 import { ConfigCommand, ConfigSetReturn } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'set');
 
 export class Set extends ConfigCommand {
-  public static readonly theDescription = messages.getMessage('description');
-  public static readonly longDescription = messages.getMessage(
-    'descriptionLong'
-  );
+  public static readonly description = messages.getMessage('description');
+  public static readonly examples = messages.getMessage('examples').split(os.EOL);
   public static readonly varargs = { required: true };
   public static readonly flagsConfig: FlagsConfig = {
     global: flags.boolean({
