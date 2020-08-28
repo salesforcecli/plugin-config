@@ -10,16 +10,15 @@ import * as _ from 'lodash';
 
 import { flags, FlagsConfig } from '@salesforce/command';
 import { Config, Messages, SfdxError } from '@salesforce/core';
+import * as os from 'os';
 import { ConfigCommand, ConfigSetReturn } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'unset');
 
 export class UnSet extends ConfigCommand {
-  public static readonly theDescription = messages.getMessage('description');
-  public static readonly longDescription = messages.getMessage(
-    'descriptionLong'
-  );
+  public static readonly description = messages.getMessage('description');
+  public static readonly examples = messages.getMessage('examples').split(os.EOL);
   public static readonly strict = false;
   public static readonly flagsConfig: FlagsConfig = {
     global: flags.boolean({

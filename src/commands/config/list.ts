@@ -5,10 +5,7 @@ Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'list');
 
 export default class List extends ConfigCommand {
-  public static readonly theDescription = messages.getMessage('description');
-  public static readonly longDescription = messages.getMessage(
-    'descriptionLong'
-  );
+  public static readonly description = messages.getMessage('description');
   public static aliases = ['force:config:list'];
 
   async run(): Promise<ConfigInfo[]> {

@@ -1,7 +1,10 @@
 {
-  "description": "set config vars for the Salesforce CLI",
-  "descriptionLong": "Sets the local and global configuration variables for the Salesforce CLI.\n Local variables apply only to your current project. Global variables apply in any directory. \n\nExamples: \n   $ sfdx config:set defaultusername=me@my.org defaultdevhubusername=me@myhub.org \n  $ sfdx config:set defaultdevhubusername=me@myhub.org -g",
+  "description": "sets the local and global configuration variables for the Salesforce CLI\n Local variables apply only to your current project. Global variables apply in any directory.",
   "global": "set config var globally (to be used from any directory)",
   "globalLong": "Sets the configuration variables globally, so they can be used from any directory.",
-  "globalHelp": "Add the --global flag to set config outside of a project."
+  "globalHelp": "Add the --global flag to set config outside of a project.",
+  "examples": [
+    "sfdx force:config:set defaultusername=me@my.org defaultdevhubusername=me@myhub.org",
+    "sfdx force:config:set defaultdevhubusername=me@myhub.org -g"
+  ]
 }

@@ -58,7 +58,7 @@ export abstract class ConfigCommand extends SfdxCommand {
     });
   }
 
-  parseArgs() {
+  parseArgs(): string[] {
     const { argv } = this.parse({
       flags: this.statics.flags,
       args: this.statics.args,
@@ -67,7 +67,7 @@ export abstract class ConfigCommand extends SfdxCommand {
     return argv;
   }
 
-  formatResults() {
+  formatResults(): ConfigSetReturn {
     return {
       successes: this.responses
         .filter(response => response.success)
