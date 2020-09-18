@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2018, salesforce.com, inc.
+ * Copyright (c) 2020, salesforce.com, inc.
  * All rights reserved.
- * SPDX-License-Identifier: BSD-3-Clause
- * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ * Licensed under the BSD 3-Clause license.
+ * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
 import { SfdxCommand } from '@salesforce/command';
@@ -19,14 +19,14 @@ export interface Msg {
 }
 
 export type ConfigSetReturn = {
-  successes: { name: string; value: Optional<string> }[];
-  failures: { name: string; message: string }[];
+  successes: Array<{ name: string; value: Optional<string> }>;
+  failures: Array<{ name: string; message: string }>;
 };
 
 export abstract class ConfigCommand extends SfdxCommand {
   protected responses: Msg[] = [];
 
-  output(header: string, verbose: boolean) {
+  public output(header: string, verbose: boolean): void {
     if (this.responses.length === 0) {
       this.ux.log('No results found');
       return;
@@ -34,7 +34,7 @@ export abstract class ConfigCommand extends SfdxCommand {
 
     this.ux.styledHeader(chalk.blue(header));
     const values = {
-      columns: [{ key: 'name', label: 'Name' }]
+      columns: [{ key: 'name', label: 'Name' }],
     };
 
     if (!header.includes('Unset')) {
@@ -51,36 +51,36 @@ export abstract class ConfigCommand extends SfdxCommand {
 
     this.ux.table(this.responses, values);
 
-    this.responses.forEach(response => {
+    this.responses.forEach((response) => {
       if (response.error) {
         throw response.error;
       }
     });
   }
 
-  parseArgs(): string[] {
+  public parseArgs(): string[] {
     const { argv } = this.parse({
       flags: this.statics.flags,
       args: this.statics.args,
-      strict: this.statics.strict
+      strict: this.statics.strict,
     });
     return argv;
   }
 
-  formatResults(): ConfigSetReturn {
+  public formatResults(): ConfigSetReturn {
     return {
       successes: this.responses
-        .filter(response => response.success)
-        .map(success => ({
+        .filter((response) => response.success)
+        .map((success) => ({
           name: success.name,
-          value: success.value
+          value: success.value,
         })),
       failures: this.responses
-        .filter(response => !response.success)
-        .map(failure => ({
+        .filter((response) => !response.success)
+        .map((failure) => ({
           name: failure.name,
-          message: failure.error!.message
-        }))
+          message: failure.error.message,
+        })),
     };
   }
 }

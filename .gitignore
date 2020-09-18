@@ -1,3 +1,42 @@
+# -- CLEAN
+
+# use yarn by default, so ignore npm
+package-lock.json
+
+# never checkin npm config
+.npmrc
+
+# debug logs
+npm-error.log
+yarn-error.log
+lerna-debug.log
+
+# compile source
+lib
+
+# test artifacts
+*xunit.xml
+*checkstyle.xml
+*unitcoverage
+.nyc_output
+coverage
+
+# generated docs
+docs
+
+# -- CLEAN ALL
+node_modules
+
+# --
+# put files here you don't want cleaned with sf-clean
+
+# os specific files
+.DS_Store
+.idea
+
+# ignore oclif manifest file
+oclif.manifest.json
+
 # TypeScript generated files
 dist/
 out/
@@ -12,8 +51,6 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# Coverage directory used by tools like istanbul
-coverage
 coverage.lcov
 
 # Dependency directories
@@ -37,9 +74,6 @@ analytics1/
 GitIgnoreTest/
 GitIgnoreTest2/
 
-# nyc test coverage
-.nyc_output
-
 # Eclipse
 .project
 
@@ -51,9 +85,6 @@ GitIgnoreTest2/
 
 # MacOS folder atttribute tracking
 **/.DS_Store
-
-# ignore oclif manifest file
-oclif.manifest.json
 
 *.tgz
 *.sig

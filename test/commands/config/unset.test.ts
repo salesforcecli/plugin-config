@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2020, salesforce.com, inc.
+ * All rights reserved.
+ * Licensed under the BSD 3-Clause license.
+ * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
 import * as sinon from 'sinon';
 import { test, expect } from '@salesforce/command/lib/test';
 import { Config } from '@salesforce/core';
@@ -26,7 +32,7 @@ describe('config:unset', async () => {
     test
       .stderr()
       .command(['config:unset'])
-      .it('no config keys provided', ctx => {
+      .it('no config keys provided', (ctx) => {
         expect(ctx.stderr).to.contain('Please provide config name(s) to unset');
       });
 
@@ -34,7 +40,7 @@ describe('config:unset', async () => {
       .stderr()
       .stdout()
       .command(['config:unset', 'badKey', '-g'])
-      .it('unset fails on invalid config key', ctx => {
+      .it('unset fails on invalid config key', (ctx) => {
         expect(configSpy.threw()).to.be.true;
         expect(ctx.stderr).to.contain('Unknown config name');
       });
@@ -45,8 +51,8 @@ describe('config:unset', async () => {
       .stdout()
       .stderr()
       .command(['config:unset', 'defaultdevhubusername', 'badKey', '-g'])
-      .it('Table with both successes and failures', ctx => {
-        let noWhitespaceOutput = ctx.stdout.replace(/\s+/g, '');
+      .it('Table with both successes and failures', (ctx) => {
+        const noWhitespaceOutput = ctx.stdout.replace(/\s+/g, '');
         expect(noWhitespaceOutput).to.contain('defaultdevhubusernametrue');
         expect(noWhitespaceOutput).to.contain('badKeyfalse');
       });
@@ -55,26 +61,14 @@ describe('config:unset', async () => {
   describe('Testing JSON output', () => {
     test
       .stdout()
-      .command([
-        'config:unset',
-        'apiVersion',
-        'defaultdevhubusername',
-        '-g',
-        '--json'
-      ])
-      .it('Two successesful sets', ctx => {
+      .command(['config:unset', 'apiVersion', 'defaultdevhubusername', '-g', '--json'])
+      .it('Two successesful sets', (ctx) => {
         const jsonOutput = JSON.parse(ctx.stdout);
-        expect(jsonOutput)
-          .to.have.property('status')
-          .and.equal(0);
+        expect(jsonOutput).to.have.property('status').and.equal(0);
         expect(jsonOutput).to.have.property('result');
         expect(jsonOutput.result).to.have.property('successes');
-        expect(jsonOutput.result.successes[0])
-          .to.have.property('name')
-          .and.equal('apiVersion');
-        expect(jsonOutput.result.successes[1])
-          .to.have.property('name')
-          .and.equal('defaultdevhubusername');
+        expect(jsonOutput.result.successes[0]).to.have.property('name').and.equal('apiVersion');
+        expect(jsonOutput.result.successes[1]).to.have.property('name').and.equal('defaultdevhubusername');
         expect(jsonOutput.result).to.have.property('failures');
         expect(jsonOutput.result.failures.length).to.equal(0);
       });
@@ -82,21 +76,15 @@ describe('config:unset', async () => {
     test
       .stdout()
       .command(['config:unset', 'badKey', '--json'])
-      .it('Two failed sets', ctx => {
+      .it('Two failed sets', (ctx) => {
         const jsonOutput = JSON.parse(ctx.stdout);
-        expect(jsonOutput)
-          .to.have.property('status')
-          .and.equal(1);
+        expect(jsonOutput).to.have.property('status').and.equal(1);
         expect(jsonOutput).to.have.property('result');
         expect(jsonOutput.result).to.have.property('successes');
         expect(jsonOutput.result.successes.length).to.equal(0);
         expect(jsonOutput.result).to.have.property('failures');
-        expect(jsonOutput.result.failures[0])
-          .to.have.property('name')
-          .and.equal('badKey');
-        expect(jsonOutput.result.failures[0])
-          .to.have.property('message')
-          .and.contain('Unknown config name');
+        expect(jsonOutput.result.failures[0]).to.have.property('name').and.equal('badKey');
+        expect(jsonOutput.result.failures[0]).to.have.property('message').and.contain('Unknown config name');
       });
   });
 });
