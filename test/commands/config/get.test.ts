@@ -1,259 +1,78 @@
-import * as sinon from 'sinon';
-import { test, expect } from '@salesforce/command/lib/test';
-import { ConfigAggregator } from '@salesforce/core';
-import * as path from 'path';
+/*
+ * Copyright (c) 2020, salesforce.com, inc.
+ * All rights reserved.
+ * Licensed under the BSD 3-Clause license.
+ * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+
+import { $$, expect, test } from '@salesforce/command/lib/test';
+import { ConfigAggregator, Config } from '@salesforce/core';
+import { stubMethod } from '@salesforce/ts-sinon';
 
 describe('config:get', () => {
-  describe("Testing calls made to core's ConfigAggregator.getInfo() method", () => {
-    const sandbox = sinon.createSandbox();
+  async function prepareStubs(global = true) {
+    const location = global ? 'Global' : 'Local';
+    stubMethod($$.SANDBOX, ConfigAggregator.prototype, 'getInfo')
+      .withArgs(Config.DEFAULT_DEV_HUB_USERNAME)
+      .returns({ key: Config.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location })
+      .withArgs(Config.DEFAULT_USERNAME)
+      .returns({ key: Config.DEFAULT_USERNAME, value: 'MyUser', location })
+      .withArgs(Config.API_VERSION)
+      .returns({ key: Config.API_VERSION })
+      .withArgs(Config.DISABLE_TELEMETRY)
+      .throws('FAILED');
+  }
 
-    let getInfoSpy: sinon.SinonSpy;
-
-    beforeEach(() => {
-      getInfoSpy = sandbox.spy(ConfigAggregator.prototype, 'getInfo');
+  test
+    .do(async () => await prepareStubs(true))
+    .stdout()
+    .command(['config:get', Config.DEFAULT_DEV_HUB_USERNAME, Config.DEFAULT_USERNAME, '--json'])
+    .it('should return values for globally configured properties', (ctx) => {
+      const result = JSON.parse(ctx.stdout).result;
+      expect(result).to.deep.equal([
+        { key: Config.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location: 'Global' },
+        { key: Config.DEFAULT_USERNAME, value: 'MyUser', location: 'Global' },
+      ]);
     });
 
-    afterEach(() => {
-      sandbox.restore();
+  test
+    .do(async () => await prepareStubs(false))
+    .stdout()
+    .command(['config:get', Config.DEFAULT_DEV_HUB_USERNAME, Config.DEFAULT_USERNAME, '--json'])
+    .it('should return values for locally configured properties', (ctx) => {
+      const result = JSON.parse(ctx.stdout).result;
+      expect(result).to.deep.equal([
+        { key: Config.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location: 'Local' },
+        { key: Config.DEFAULT_USERNAME, value: 'MyUser', location: 'Local' },
+      ]);
     });
 
-    test
-      .stdout()
-      .command(['config:get', 'defaultdevhubusername', 'defaultusername'])
-      .it('Gets info for correct arguments', () => {
-        expect(getInfoSpy.callCount).to.equal(3);
-        expect(getInfoSpy.args[0][0]).to.equal('apiVersion');
-        expect(getInfoSpy.args[1][0]).to.equal('defaultdevhubusername');
-        expect(getInfoSpy.args[2][0]).to.equal('defaultusername');
-      });
+  test
+    .do(async () => await prepareStubs())
+    .stdout()
+    .command(['config:get', Config.API_VERSION, '--json'])
+    .it('should gracefully handle unconfigured properties', (ctx) => {
+      const result = JSON.parse(ctx.stdout).result;
+      expect(result).to.deep.equal([{ key: Config.API_VERSION }]);
+    });
 
-    test
-      .stdout()
-      .stderr()
-      .command([
-        'config:get',
-        'defaultdevhubusername',
-        'badarg',
-        '--json',
-        '--verbose',
-        '--loglevel=warn'
-      ])
-      .it('Does not get info for flag arguements', () => {
-        expect(getInfoSpy.callCount).to.equal(3);
-        expect(getInfoSpy.args[0][0]).to.equal('apiVersion');
-        expect(getInfoSpy.args[1][0]).to.equal('defaultdevhubusername');
-        expect(getInfoSpy.args[2][0]).to.equal('badarg');
-      });
-  });
+  test
+    .do(async () => await prepareStubs())
+    .stdout()
+    .command(['config:get', '--json'])
+    .it('should throw an error when no keys are provided', (ctx) => {
+      const response = JSON.parse(ctx.stdout);
+      expect(response.status).to.equal(1);
+      expect(response.name).to.equal('NoConfigKeysFound');
+    });
 
-  describe('Testing errors that can be thrown', () => {
-    test
-      .stderr()
-      .command(['config:get'])
-      .it('Error is thrown when no arguments are passd in', ctx => {
-        expect(ctx.stderr).to.contain('Please provide config name(s) to get');
-      });
-
-    test
-      .stderr()
-      .stdout()
-      .command(['config:get', 'badarg', 'defaultusername'])
-      .it('Error is thrown when a bad argument is passed in', ctx => {
-        expect(ctx.stderr).to.contain('Unknown config key: badarg');
-      });
-  });
-
-  describe('Testing console output', () => {
-    test
-      .stdout()
-      .stderr()
-      .command([
-        'config:set',
-        'defaultdevhubusername=DevHub',
-        'defaultusername=TestUser'
-      ])
-      .command([
-        'config:get',
-        'badarg',
-        'defaultdevhubusername',
-        'defaultusername'
-      ])
-      .it('Table with both successes and failures', ctx => {
-        const getOutput = ctx.stdout.substring(ctx.stdout.indexOf('Get'));
-        let noWhitespaceOutput = getOutput.replace(/\s+/g, '');
-        expect(noWhitespaceOutput).to.contain('badargfalse');
-        expect(noWhitespaceOutput).to.contain(
-          'defaultdevhubusernameDevHubtrue'
-        );
-        expect(noWhitespaceOutput).to.contain('defaultusernameTestUsertrue');
-      });
-  });
-
-  describe('Testing JSON output', () => {
-    test
-      .stdout()
-      .command([
-        'config:get',
-        'defaultdevhubusername',
-        'defaultusername',
-        '--json'
-      ])
-      .it('Unset keys', ctx => {
-        const jsonOutput = JSON.parse(ctx.stdout);
-        expect(jsonOutput)
-          .to.have.property('status')
-          .and.equal(0);
-        expect(jsonOutput).to.have.property('result');
-        expect(jsonOutput.result[0])
-          .to.have.property('key')
-          .and.equal('defaultdevhubusername');
-        expect(jsonOutput.result[1])
-          .to.have.property('key')
-          .and.equal('defaultusername');
-      });
-
-    test
-      .stdout()
-      .command(['config:get', 'badarg', 'defaultdevhubusername', '--json'])
-      .it('Bad argument error JSON', ctx => {
-        const jsonOutput = JSON.parse(ctx.stdout);
-        expect(jsonOutput)
-          .to.have.property('status')
-          .and.equal(1);
-        expect(jsonOutput)
-          .to.have.property('name')
-          .and.equal('UnknownConfigKey');
-        expect(jsonOutput)
-          .to.have.property('message')
-          .and.equal('Unknown config key: badarg');
-        expect(jsonOutput)
-          .to.have.property('exitCode')
-          .and.equal(1);
-        expect(jsonOutput)
-          .to.have.property('commandName')
-          .and.equal('Get');
-      });
-
-    // Need to change method of setting globally. The mock returned by .command() sets both 'local' and 'global'.
-    test
-      .skip()
-      .stdout()
-      .command([
-        'config:set',
-        'defaultdevhubusername=DevHub',
-        'defaultusername=TestUser',
-        '-g'
-      ])
-      .command([
-        'config:get',
-        'defaultdevhubusername',
-        'defaultusername',
-        '--json'
-      ])
-      .it('Global keys', ctx => {
-        expect(ctx.stdout).to.equal('Should be Global not Local');
-        const getOutput = ctx.stdout.substring(ctx.stdout.indexOf('{'));
-        const jsonOutput = JSON.parse(getOutput);
-        expect(jsonOutput)
-          .to.have.property('status')
-          .and.equal(0);
-        expect(jsonOutput).to.have.property('result');
-        expect(jsonOutput.result[0])
-          .to.have.property('key')
-          .and.equal('defaultdevhubusername');
-        expect(jsonOutput.result[0])
-          .to.have.property('value')
-          .and.equal('DevHub');
-        expect(jsonOutput.result[0])
-          .to.have.property('location')
-          .and.equal('Global');
-        expect(jsonOutput.result[0])
-          .to.have.property('path')
-          .and.contain('?');
-        expect(jsonOutput.result[1])
-          .to.have.property('key')
-          .and.equal('defaultusername');
-        expect(jsonOutput.result[1])
-          .to.have.property('value')
-          .and.equal('TestUser');
-        expect(jsonOutput.result[1])
-          .to.have.property('location')
-          .and.equal('Global');
-        expect(jsonOutput.result[1])
-          .to.have.property('path')
-          .and.contain('?');
-      });
-
-    test
-      .stdout()
-      .withProject()
-      .command([
-        'config:set',
-        'defaultdevhubusername=DevHub',
-        'defaultusername=TestUser'
-      ])
-      .command([
-        'config:get',
-        'defaultdevhubusername',
-        'defaultusername',
-        '--json'
-      ])
-      .it('Local keys', ctx => {
-        const getOutput = ctx.stdout.substring(ctx.stdout.indexOf('{'));
-        const jsonOutput = JSON.parse(getOutput);
-        expect(jsonOutput)
-          .to.have.property('status')
-          .and.equal(0);
-        expect(jsonOutput).to.have.property('result');
-        expect(jsonOutput.result[0])
-          .to.have.property('key')
-          .and.equal('defaultdevhubusername');
-        expect(jsonOutput.result[0])
-          .to.have.property('value')
-          .and.equal('DevHub');
-        expect(jsonOutput.result[0])
-          .to.have.property('location')
-          .and.equal('Local');
-        expect(jsonOutput.result[0])
-          .to.have.property('path')
-          .and.contain(`local${path.sep}.sfdx${path.sep}sfdx-config.json`);
-        expect(jsonOutput.result[1])
-          .to.have.property('key')
-          .and.equal('defaultusername');
-        expect(jsonOutput.result[1])
-          .to.have.property('value')
-          .and.equal('TestUser');
-        expect(jsonOutput.result[1])
-          .to.have.property('location')
-          .and.equal('Local');
-        expect(jsonOutput.result[1])
-          .to.have.property('path')
-          .and.contain(`local${path.sep}.sfdx${path.sep}sfdx-config.json`);
-      });
-  });
-
-  describe('Testing other flags', () => {
-    // Need to change method of setting globally. The mock returned by .command() sets both 'local' and 'global'.
-    test
-      .skip()
-      .stdout()
-      .withProject()
-      .command(['config:set', 'defaultdevhubusername=DevHub'])
-      .command(['config:set', 'defaultusername=TestUser', '-g'])
-      .command([
-        'config:get',
-        'defaultdevhubusername',
-        'defaultusername',
-        '--verbose'
-      ])
-      .it('--verbose', ctx => {
-        let noWhitespaceOutput = ctx.stdout.replace(/\s+/g, '');
-        expect(noWhitespaceOutput).to.contain(
-          'defaultdevhubusernameDevHubtrueLocal'
-        );
-        expect(noWhitespaceOutput).to.contain(
-          'defaultusernameTestUsertrueGlobal'
-        );
-      });
-  });
+  test
+    .do(async () => await prepareStubs())
+    .stdout()
+    .command(['config:get', Config.DISABLE_TELEMETRY, '--json'])
+    .it('should gracefully handle failed attempts to ConfigAggregator.getInfo', (ctx) => {
+      const response = JSON.parse(ctx.stdout);
+      expect(response.status).to.equal(1);
+      expect(response.name).to.equal('FAILED');
+    });
 });
