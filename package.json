@@ -81,7 +81,7 @@
     "compile": "sf-compile",
     "docs": "sf-docs",
     "format": "sf-format",
-    "install": "sf-install",
+    "prepare": "sf-install",
     "lint": "sf-lint",
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "yarn lint",
