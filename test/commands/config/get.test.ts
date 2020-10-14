@@ -5,9 +5,11 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
+import * as path from 'path';
 import { $$, expect, test } from '@salesforce/command/lib/test';
 import { ConfigAggregator, Config } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
+import { IPlugin } from '@oclif/config';
 
 describe('config:get', () => {
   async function prepareStubs(global = true) {
@@ -75,4 +77,39 @@ describe('config:get', () => {
       expect(response.status).to.equal(1);
       expect(response.name).to.equal('FAILED');
     });
+
+  describe('load custom config meta', () => {
+    test
+      .stdout()
+      .command(['config:get', 'customKey', '--json'])
+      .it('fails when there is no matching loaded custom key', (ctx) => {
+        const response = JSON.parse(ctx.stdout);
+        expect(response.exitCode).to.equal(1);
+        expect(response.status).to.equal(1);
+        expect(response.message).to.equal('Unknown config key: customKey');
+      });
+
+    test
+      .loadConfig()
+      .do((ctx) => {
+        const mockPluginRoot = path.resolve(__dirname, '../../config-meta-mocks/typescript-src');
+        ctx.config.plugins.push(({
+          root: mockPluginRoot,
+          hooks: {},
+          pjson: require(path.resolve(mockPluginRoot, 'package.json')),
+        } as unknown) as IPlugin);
+      })
+      .stdout()
+      .stderr()
+      .command(['config:get', 'customKey', '--json'])
+      .it('should allow custom config meta for allowedProperties', (ctx) => {
+        const response = JSON.parse(ctx.stdout);
+        expect(response.status).to.equal(0);
+        expect(response.result).to.deep.equal([
+          {
+            key: 'customKey',
+          },
+        ]);
+      });
+  });
 });

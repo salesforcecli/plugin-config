@@ -1,0 +1,6 @@
+{
+  "name": "sfdx-cli-ts-plugin",
+  "oclif": {
+    "configMeta": "./lib/config-meta"
+  }
+}
