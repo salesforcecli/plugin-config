@@ -1,162 +1,84 @@
-import * as sinon from 'sinon';
-import { $$, test, expect } from '@salesforce/command/lib/test';
-import { Config } from '@salesforce/core';
+/*
+ * Copyright (c) 2020, salesforce.com, inc.
+ * All rights reserved.
+ * Licensed under the BSD 3-Clause license.
+ * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
 
-describe('config:set', async () => {
-  let configSpy: sinon.SinonSpy;
-  beforeEach(() => {
-    configSpy = sinon.spy(Config.prototype, 'set');
-  });
+import { $$, expect, test } from '@salesforce/command/lib/test';
+import { Config, Org } from '@salesforce/core';
+import { StubbedType, stubInterface, stubMethod } from '@salesforce/ts-sinon';
+import { SinonStub } from 'sinon';
 
-  afterEach(() => {
-    configSpy.restore();
-  });
+describe('config:set', () => {
+  let configStub: StubbedType<Config>;
+  let orgStub: StubbedType<Org>;
+  let orgCreateSpy: SinonStub;
 
-  describe("Testing calls made to core's Config.set() method", () => {
-    test
-      .stdout()
-      .command(['config:set', 'apiVersion=49.0', '-g'])
-      .it('set passes', () => {
-        expect(configSpy.callCount).to.equal(1);
-        expect(configSpy.args[0][0]).to.equal('apiVersion');
-        expect(configSpy.args[0][1]).to.equal('49.0');
-      });
-  });
+  async function prepareStubs() {
+    configStub = stubInterface<Config>($$.SANDBOX, {});
+    stubMethod($$.SANDBOX, Config, 'create').callsFake(async () => configStub);
+  }
 
-  describe('Testing errors that can be thrown', () => {
-    test
-      .stderr()
-      .command(['config:set'])
-      .it('no config keys provided', ctx => {
-        expect(ctx.stderr).to.contain('Provide required name=value pairs');
-      });
+  test
+    .do(async () => await prepareStubs())
+    .stdout()
+    .command(['config:set', `${Config.API_VERSION}=49.0`, '--global', '--json'])
+    .it('should return values for all configured properties', (ctx) => {
+      const result = JSON.parse(ctx.stdout).result;
+      expect(result.successes).to.deep.equal([{ name: Config.API_VERSION, value: '49.0' }]);
+      expect(configStub.set.callCount).to.equal(1);
+    });
 
-    test
-      .stderr()
-      .command(['config:set', 'keyNoValue'])
-      .it('provided key with no value', ctx => {
-        expect(ctx.stderr).to.contain(
-          'Setting variables must be in the format <key>=<value>'
-        );
-      });
+  test
+    .do(async () => {
+      await prepareStubs();
+      orgStub = stubInterface<Org>($$.SANDBOX, {});
+      orgCreateSpy = stubMethod($$.SANDBOX, Org, 'create').callsFake(async () => orgStub);
+    })
+    .stdout()
+    .command(['config:set', `${Config.DEFAULT_USERNAME}=MyUser`, '--global', '--json'])
+    .it('should instantiate an Org when defaultusername is set', (ctx) => {
+      const result = JSON.parse(ctx.stdout).result;
+      expect(result.successes).to.deep.equal([{ name: Config.DEFAULT_USERNAME, value: 'MyUser' }]);
+      expect(configStub.set.callCount).to.equal(1);
+      expect(orgCreateSpy.callCount).to.equal(1);
+    });
 
-    test
-      .stderr()
-      .stdout()
-      .command(['config:set', 'badName=49.0', '-g'])
-      .it('set fails on invalid config key', ctx => {
-        expect(configSpy.threw()).to.be.true;
-        expect(ctx.stderr).to.contain('Unknown config name');
-      });
+  test
+    .do(async () => {
+      await prepareStubs();
+      orgStub = stubInterface<Org>($$.SANDBOX, {});
+      orgCreateSpy = stubMethod($$.SANDBOX, Org, 'create').callsFake(async () => orgStub);
+    })
+    .stdout()
+    .command(['config:set', `${Config.DEFAULT_DEV_HUB_USERNAME}=MyDevhub`, '--global', '--json'])
+    .it('should instantiate an Org when defaultusername is set', (ctx) => {
+      const result = JSON.parse(ctx.stdout).result;
+      expect(result.successes).to.deep.equal([{ name: Config.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub' }]);
+      expect(configStub.set.callCount).to.equal(1);
+      expect(orgCreateSpy.callCount).to.equal(1);
+    });
 
-    test
-      .stderr()
-      .stdout()
-      .command(['config:set', 'apiVersion=badValue', '-g'])
-      .it('set fails on invalid config value', ctx => {
-        expect(configSpy.threw()).to.be.true;
-        expect(ctx.stderr).to.contain('Invalid config value');
-      });
+  test
+    .do(async () => await prepareStubs())
+    .stdout()
+    .command(['config:set', `${Config.DEFAULT_USERNAME}=NonExistentOrg`, '--global', '--json'])
+    .it('should handle failed org create with --json flag', (ctx) => {
+      const response = JSON.parse(ctx.stdout);
+      expect(response.status).to.equal(1);
+      expect(response.result.failures).to.deep.equal([
+        { name: Config.DEFAULT_USERNAME, message: 'No AuthInfo found for name NonExistentOrg' },
+      ]);
+    });
 
-    test
-      .do(() => {
-        $$.configStubs.AuthInfoConfig = {
-          retrieveContents: () => {
-            throw new Error('No AuthInfo found');
-          }
-        };
-      })
-      .stderr()
-      .stdout()
-      .command(['config:set', 'defaultusername=wrong', '-g'])
-      .it('set fails on invalid org key', ctx => {
-        expect(ctx.stderr).to.contain('No AuthInfo found');
-      });
-  });
-
-  describe('Testing console output', () => {
-    test
-      .stdout()
-      .stderr()
-      .command([
-        'config:set',
-        'defaultdevhubusername=DevHub',
-        'instanceUrl=badValue',
-        'apiVersion=badValue'
-      ])
-      .it('Table with both successes and failures', ctx => {
-        let noWhitespaceOutput = ctx.stdout.replace(/\s+/g, '');
-        expect(noWhitespaceOutput).to.contain(
-          'defaultdevhubusernameDevHubtrue'
-        );
-        expect(noWhitespaceOutput).to.contain('instanceUrlbadValuefalse');
-        expect(noWhitespaceOutput).to.contain('apiVersionbadValuefalse');
-      });
-  });
-
-  describe('Testing JSON output', () => {
-    test
-      .stdout()
-      .command([
-        'config:set',
-        'apiVersion=49.0',
-        'defaultdevhubusername=DevHub',
-        '-g',
-        '--json'
-      ])
-      .it('Two successesful sets', ctx => {
-        const jsonOutput = JSON.parse(ctx.stdout);
-        expect(jsonOutput)
-          .to.have.property('status')
-          .and.equal(0);
-        expect(jsonOutput).to.have.property('result');
-        expect(jsonOutput.result).to.have.property('successes');
-        expect(jsonOutput.result.successes[0])
-          .to.have.property('name')
-          .and.equal('apiVersion');
-        expect(jsonOutput.result.successes[0])
-          .to.have.property('value')
-          .and.equal('49.0');
-        expect(jsonOutput.result.successes[1])
-          .to.have.property('name')
-          .and.equal('defaultdevhubusername');
-        expect(jsonOutput.result.successes[1])
-          .to.have.property('value')
-          .and.equal('DevHub');
-        expect(jsonOutput.result).to.have.property('failures');
-        expect(jsonOutput.result.failures.length).to.equal(0);
-      });
-
-    test
-      .stdout()
-      .withProject()
-      .command([
-        'config:set',
-        'apiVersion=badValue',
-        'instanceUrl=badValue',
-        '--json'
-      ])
-      .it('Two failed sets', ctx => {
-        const jsonOutput = JSON.parse(ctx.stdout);
-        expect(jsonOutput)
-          .to.have.property('status')
-          .and.equal(1);
-        expect(jsonOutput).to.have.property('result');
-        expect(jsonOutput.result).to.have.property('successes');
-        expect(jsonOutput.result.successes.length).to.equal(0);
-        expect(jsonOutput.result).to.have.property('failures');
-        expect(jsonOutput.result.failures[0])
-          .to.have.property('name')
-          .and.equal('apiVersion');
-        expect(jsonOutput.result.failures[0])
-          .to.have.property('message')
-          .and.contain('Invalid config value');
-        expect(jsonOutput.result.failures[1])
-          .to.have.property('name')
-          .and.equal('instanceUrl');
-        expect(jsonOutput.result.failures[1])
-          .to.have.property('message')
-          .and.contain('Invalid config value');
-      });
-  });
+  test
+    .do(async () => await prepareStubs())
+    .stdout()
+    .command(['config:set', `${Config.DEFAULT_USERNAME}=NonExistentOrg`, '--global'])
+    .it('should handle failed org create with no --json flag', (ctx) => {
+      expect(ctx.stdout).to.include(Config.DEFAULT_USERNAME);
+      expect(ctx.stdout).to.include('NonExistentOrg');
+      expect(ctx.stdout).to.include('false');
+    });
 });

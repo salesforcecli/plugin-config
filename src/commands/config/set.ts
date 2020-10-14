@@ -1,14 +1,14 @@
 /*
- * Copyright (c) 2018, salesforce.com, inc.
+ * Copyright (c) 2020, salesforce.com, inc.
  * All rights reserved.
- * SPDX-License-Identifier: BSD-3-Clause
- * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ * Licensed under the BSD 3-Clause license.
+ * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
+import * as os from 'os';
 import { flags, FlagsConfig } from '@salesforce/command';
 import { Config, Messages, Org } from '@salesforce/core';
 import { getString } from '@salesforce/ts-types';
-import * as os from 'os';
 import { ConfigCommand, ConfigSetReturn } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -23,25 +23,19 @@ export class Set extends ConfigCommand {
       char: 'g',
       description: messages.getMessage('global'),
       longDescription: messages.getMessage('globalLong'),
-      required: false
-    })
+      required: false,
+    }),
   };
   public static aliases = ['force:config:set'];
 
   public async run(): Promise<ConfigSetReturn> {
-    const config: Config = await Config.create(
-      Config.getDefaultOptions(this.flags.global)
-    );
+    const config: Config = await Config.create(Config.getDefaultOptions(this.flags.global));
     await config.read();
-    let value: string = '';
-    for (const name of Object.keys(this.varargs!)) {
+    let value = '';
+    for (const name of Object.keys(this.varargs)) {
       try {
-        value = getString(this.varargs, name)!;
-        if (
-          (name === Config.DEFAULT_DEV_HUB_USERNAME ||
-            name === Config.DEFAULT_USERNAME) &&
-          value
-        ) {
+        value = getString(this.varargs, name);
+        if ((name === Config.DEFAULT_DEV_HUB_USERNAME || name === Config.DEFAULT_USERNAME) && value) {
           await Org.create({ aliasOrUsername: value });
         }
         config.set(name, value);
