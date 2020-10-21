@@ -1,5 +1,5 @@
 {
-  "description": "sets the local and global configuration variables for the Salesforce CLI\n Local variables apply only to your current project. Global variables apply in any directory.",
+  "description": "sets the configuration variables that the Salesforce CLI uses for various commands and tasks.\n Local variables apply only to your current project. Global variables apply in any directory.",
   "global": "set config var globally (to be used from any directory)",
   "globalLong": "Sets the configuration variables globally, so they can be used from any directory.",
   "globalHelp": "Add the --global flag to set config outside of a project.",
