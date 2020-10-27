@@ -100,5 +100,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "resolutions": {
+    "@salesforce/core": "2.14.0"
   }
 }
