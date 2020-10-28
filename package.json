@@ -102,6 +102,6 @@
     "access": "public"
   },
   "resolutions": {
-    "@salesforce/core": "2.14.0"
+    "@salesforce/core": "2.13.0"
   }
 }
