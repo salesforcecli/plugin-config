@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { expect, test } from '@oclif/test';
+import { expect, test } from '@salesforce/command/lib/test';
 import { Config } from '@salesforce/core';
 
 describe('config:set', () => {
