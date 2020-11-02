@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.11](https://github.com/salesforcecli/plugin-config/compare/v1.1.10...v1.1.11) (2020-11-02)
+
+
+### Bug Fixes
+
+* remove force: namespace from examples ([4d1b39d](https://github.com/salesforcecli/plugin-config/commit/4d1b39d9378dd762d58a3122b035bfced65a6bce))
+
 ### [1.1.10](https://github.com/salesforcecli/plugin-config/compare/v1.1.9...v1.1.10) (2020-10-21)
 
 ### [1.1.9](https://github.com/salesforcecli/plugin-config/compare/v1.2.0...v1.1.9) (2020-10-14)
