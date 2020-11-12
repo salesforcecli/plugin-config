@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/salesforcecli/plugin-config/compare/v1.1.11...v1.2.0) (2020-11-12)
+
+
+### Features
+
+* wip load config metas hook ([9a5b4c6](https://github.com/salesforcecli/plugin-config/commit/9a5b4c617d2bf07f70edafa0fe1882583bdd7e7d))
+
+
+### Bug Fixes
+
+* add compilerOptions.rootDir to tsconfig.json ([5e4fe27](https://github.com/salesforcecli/plugin-config/commit/5e4fe27a2199a055f922939e7d7317b21d19b864))
+
 ### [1.1.11](https://github.com/salesforcecli/plugin-config/compare/v1.1.10...v1.1.11) (2020-11-02)
 
 
