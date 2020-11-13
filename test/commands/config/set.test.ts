@@ -6,7 +6,7 @@
  */
 
 import { $$, expect, test } from '@salesforce/command/lib/test';
-import { Config, Org } from '@salesforce/core';
+import { Config, Org, AuthInfo } from '@salesforce/core';
 import { StubbedType, stubInterface, stubMethod } from '@salesforce/ts-sinon';
 import { SinonStub } from 'sinon';
 
@@ -60,25 +60,31 @@ describe('config:set', () => {
       expect(orgCreateSpy.callCount).to.equal(1);
     });
 
-  test
-    .do(async () => await prepareStubs())
-    .stdout()
-    .command(['config:set', `${Config.DEFAULT_USERNAME}=NonExistentOrg`, '--global', '--json'])
-    .it('should handle failed org create with --json flag', (ctx) => {
-      const response = JSON.parse(ctx.stdout);
-      expect(response.status).to.equal(1);
-      expect(response.result.failures).to.deep.equal([
-        { name: Config.DEFAULT_USERNAME, message: 'No AuthInfo found for name NonExistentOrg' },
-      ]);
+  describe('error cases', () => {
+    beforeEach(() => {
+      stubMethod($$.SANDBOX, AuthInfo.prototype, 'loadAuthFromConfig').callsFake(async () => {
+        throw new Error('Error thrown from AuthInfo#loadAuthFromConfig');
+      });
     });
 
-  test
-    .do(async () => await prepareStubs())
-    .stdout()
-    .command(['config:set', `${Config.DEFAULT_USERNAME}=NonExistentOrg`, '--global'])
-    .it('should handle failed org create with no --json flag', (ctx) => {
-      expect(ctx.stdout).to.include(Config.DEFAULT_USERNAME);
-      expect(ctx.stdout).to.include('NonExistentOrg');
-      expect(ctx.stdout).to.include('false');
-    });
+    test
+      .stdout()
+      .command(['config:set', `${Config.DEFAULT_USERNAME}=NonExistentOrg`, '--global', '--json'])
+      .it('should handle failed org create with --json flag', (ctx) => {
+        const response = JSON.parse(ctx.stdout);
+        expect(response.status).to.equal(1);
+        expect(response.result.failures).to.deep.equal([
+          { name: Config.DEFAULT_USERNAME, message: 'Error thrown from AuthInfo#loadAuthFromConfig' },
+        ]);
+      });
+
+    test
+      .stdout()
+      .command(['config:set', `${Config.DEFAULT_USERNAME}=NonExistentOrg`, '--global'])
+      .it('should handle failed org create with no --json flag', (ctx) => {
+        expect(ctx.stdout).to.include(Config.DEFAULT_USERNAME);
+        expect(ctx.stdout).to.include('NonExistentOrg');
+        expect(ctx.stdout).to.include('false');
+      });
+  });
 });
