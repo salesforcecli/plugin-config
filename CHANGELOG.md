@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/salesforcecli/plugin-config/compare/v1.2.0...v1.2.1) (2020-11-13)
+
+
+### Bug Fixes
+
+* bump @salesforce/command ([555a1ce](https://github.com/salesforcecli/plugin-config/commit/555a1cee2e554270f4a5282ef84776ec3ebc89d5))
+* fix failure tests to use mocked methods ([5002442](https://github.com/salesforcecli/plugin-config/commit/5002442b8472174f2831ecaa320a852d26104260))
+
 ## [1.2.0](https://github.com/salesforcecli/plugin-config/compare/v1.1.11...v1.2.0) (2020-11-12)
 
 
