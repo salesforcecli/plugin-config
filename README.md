@@ -1,120 +1,190 @@
 # plugin-config
 
-Plugin for sfdx config commands
+Config commands for Salesforce CLI
 
-## Getting Started
+This plugin is bundled with the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli). For more information on the CLI, read the [getting started guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm).
 
-To use, install the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli) and run the following commands.
+We always recommend using the latest version of these commands bundled with the CLI, however, you can install a specific version or tag if needed.
 
+## Install
+
+```bash
+sfdx plugins:install config@x.y.z
 ```
-Verify the CLI is installed
-  $ sfdx (-v | --version)
-Install the config plugin
-  $ sfdx plugins:install config
-To run a command
-  $ sfdx [command]
-```
+
+## Issues
+
+Please report any issues at https://github.com/forcedotcom/cli/issues
+
+## Contributing
+
+1. Please read our [Code of Conduct](CODE_OF_CONDUCT.md)
+2. Create a new issue before starting your project so that we can keep track of
+   what you are trying to add/fix. That way, we can also offer suggestions or
+   let you know if there is already an effort in progress.
+3. Fork this repository.
+4. [Build the plugin locally](#build)
+5. Create a _topic_ branch in your fork. Note, this step is recommended but technically not required if contributing using a fork.
+6. Edit the code in your fork.
+7. Write appropriate tests for your changes. Try to achieve at least 95% code coverage on any new code. No pull request will be accepted without unit tests.
+8. Sign CLA (see [CLA](#cla) below).
+9. Send us a pull request when you are done. We'll review your code, suggest any needed changes, and merge it in.
+
+### CLA
+
+External contributors will be required to sign a Contributor's License
+Agreement. You can do so by going to https://cla.salesforce.com/sign-cla.
+
+### Build
 
 To build the plugin locally, make sure to have yarn installed and run the following commands:
 
-```
-Clone the repository
-  $ git clone git@github.com:salesforcecli/plugin-config
-Install the dependencies and compile
-  $ yarn install
-  $ yarn prepack
-Link your plugin to the sfdx cli
-  $ sfdx plugins:link .
-To verify
-  $ sfdx plugins
+```bash
+# Clone the repository
+git clone git@github.com:salesforcecli/plugin-config
+
+# Install the dependencies and compile
+yarn install
+yarn build
 ```
 
-## Commands
+To use your plugin, run using the local `./bin/run` or `./bin/run.cmd` file.
 
-A list of the available commands
-
-- [`sfdx config:list [--json] [--loglevel]`](#sfdx-configlist)
-- [`sfdx config:get [<string> ...] [--json] [--verbose] [--loglevel]`](#sfdx-configget)
-- [`sfdx config:set [<string>=<string> ...] [--json] [-g] [--loglevel]`](#sfdx-configset)
-- [`sfdx config:unset [<string> ...] [--json] [-g] [--loglevel]`](#sfdx-configunset)
-
-## `sfdx config:list`
-
-Lists the configuration variables for the Salesforce CLI
-
-```
-USAGE
-$ sfdx config:list [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
-
-OPTIONS
-  --json                                                                            format output as json
-  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
-                                                                                    this command invocation
-
-EXAMPLES
-  $ sfdx config:list
-
-  $ sfdx config:list --json
+```bash
+# Run using local run file.
+./bin/run config
 ```
 
-## `sfdx config:get`
+There should be no differences when running via the Salesforce CLI or using the local run file. However, it can be useful to link the plugin to do some additional testing or run your commands from anywhere on your machine.
 
-Gets the Salesforce CLI configuration values for your default scratch org, your default Dev Hub org, and more.
+```bash
+# Link your plugin to the sfdx cli
+sfdx plugins:link .
+# To verify
+sfdx plugins
+```
+
+# Commands
+
+<!-- commands -->
+
+- [`sfdx config:get [--verbose] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configget---verbose---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+- [`sfdx config:list [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configlist---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+- [`sfdx config:set name=value... [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configset-namevalue--g---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+- [`sfdx config:unset [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configunset--g---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+
+## `sfdx config:get [--verbose] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+
+get config var values for given names
 
 ```
 USAGE
-$ sfdx config:get [<string> ...] [--json] [--verbose] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+  $ sfdx config:get [--verbose] [--json] [--loglevel
+  trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
-  --verbose                                                                         also output locations to stdout
   --json                                                                            format output as json
+
   --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
                                                                                     this command invocation
 
+  --verbose                                                                         emit additional command output to
+                                                                                    stdout
+
+DESCRIPTION
+  Gets the Salesforce CLI configuration values for your default scratch org, your default Dev Hub org, your default
+  instance URL, or any combination of the three. To see your default scratch org username, include 'defaultusername'.
+  To see your default Dev Hub, include 'defaultdevhubusername'.
+  To see your default instance URL, include 'instanceUrl'.
+  To see the locations where your values are set, include the --verbose flag.
+
+ALIASES
+  $ sfdx force:config:get
+
 EXAMPLES
-  $ sfdx force:config:get defaultusername
-
-  $ sfdx force:config:get defaultdevhubusername instanceUrl --json
-
-  $ sfdx force:config:get apiVersion defaultdevhubusername --verbose
+  sfdx config:get defaultusername
+  sfdx config:get defaultusername defaultdevhubusername instanceUrl
+  sfdx config:get defaultusername defaultdevhubusername --verbose
 ```
 
-## `sfdx config:set`
+_See code: [src/commands/config/get.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.1/src/commands/config/get.ts)_
 
-Sets the local and global configuration variables for the Salesforce CLI.
+## `sfdx config:list [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+
+lists the config variables that the Salesforce CLI uses for various commands and tasks.
 
 ```
 USAGE
-$ sfdx config:set [<string>=<string> ...] [--json] [-g] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+  $ sfdx config:list [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
-  -g                                                                                sets the variables globally
   --json                                                                            format output as json
+
   --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
                                                                                     this command invocation
 
-EXAMPLES
-  $ sfdx force:config:set defaultusername=me@my.org defaultdevhubusername=me@myhub.org
-
-  $ sfdx force:config:set defaultdevhubusername=me@myhub.org -g
+ALIASES
+  $ sfdx force:config:list
 ```
 
-## `sfdx config:unset`
+_See code: [src/commands/config/list.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.1/src/commands/config/list.ts)_
 
-Unsets the configuration variables for the Salesforce CLI.
+## `sfdx config:set name=value... [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+
+sets the configuration variables that the Salesforce CLI uses for various commands and tasks.
 
 ```
 USAGE
-$ sfdx config:unset [<string> ...] [--json] [-g] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+  $ sfdx config:set name=value... [-g] [--json] [--loglevel
+  trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
-  -g                                                                                unsets the variables globally
+  -g, --global                                                                      set config var globally (to be used
+                                                                                    from any directory)
+
   --json                                                                            format output as json
+
   --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
                                                                                     this command invocation
 
-EXAMPLES
-  $ sfdx force:config:unset defaultusername defaultdevhubusername
+DESCRIPTION
+  Local variables apply only to your current project. Global variables apply in any directory.
 
-  $ sfdx force:config:set apiVersion -g
+ALIASES
+  $ sfdx force:config:set
+
+EXAMPLES
+  sfdx config:set defaultusername=me@my.org defaultdevhubusername=me@myhub.org
+  sfdx config:set defaultdevhubusername=me@myhub.org -g
 ```
+
+_See code: [src/commands/config/set.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.1/src/commands/config/set.ts)_
+
+## `sfdx config:unset [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+
+unsets the local and global configuration variables for the Salesforce CLI.
+
+```
+USAGE
+  $ sfdx config:unset [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+
+OPTIONS
+  -g, --global                                                                      unset config var globally (to be
+                                                                                    used from any directory)
+
+  --json                                                                            format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
+                                                                                    this command invocation
+
+DESCRIPTION
+  Local variables apply only to your current project. Global variables apply in any directory.
+
+EXAMPLES
+  sfdx config:unset defaultusername defaultdevhubusername
+  sfdx config:unset defaultdevhubusername -g
+```
+
+_See code: [src/commands/config/unset.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.1/src/commands/config/unset.ts)_
+
+<!-- commandsstop -->
