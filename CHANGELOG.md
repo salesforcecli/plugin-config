@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.3](https://github.com/salesforcecli/plugin-config/compare/v1.2.2...v1.2.3) (2020-12-17)
+
+
+### Bug Fixes
+
+* bumped npm release to v4 ([9e1dfe3](https://github.com/salesforcecli/plugin-config/commit/9e1dfe343eaa0fd4fdb3024c8fe16a5876e85ca2))
+
 ### [1.2.2](https://github.com/salesforcecli/plugin-config/compare/v1.2.1...v1.2.2) (2020-12-10)
 
 ### [1.2.1](https://github.com/salesforcecli/plugin-config/compare/v1.2.0...v1.2.1) (2020-11-13)
