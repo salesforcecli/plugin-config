@@ -39,9 +39,13 @@ export class UnSet extends ConfigCommand {
         try {
           config.unset(key);
           this.responses.push({ name: key, success: true });
-        } catch (error) {
+        } catch (err) {
           process.exitCode = 1;
-          this.responses.push({ name: key, success: false, error });
+          this.responses.push({
+            name: key,
+            success: false,
+            error: err as SfdxError,
+          });
         }
       });
       await config.write();

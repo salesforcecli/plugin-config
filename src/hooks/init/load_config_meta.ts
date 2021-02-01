@@ -9,7 +9,7 @@ import { Hook, IPlugin } from '@oclif/config';
 import { tsPath } from '@oclif/config/lib/ts-node';
 import { ConfigPropertyMeta, Logger } from '@salesforce/core';
 import { Config } from '@salesforce/core';
-import { isObject } from '@salesforce/ts-types';
+import { isObject, get } from '@salesforce/ts-types';
 
 const log = Logger.childFromRoot('plugin-config:load_config_meta');
 const OCLIF_META_PJSON_KEY = 'configMeta';
@@ -18,7 +18,7 @@ function loadConfigMeta(plugin: IPlugin): ConfigPropertyMeta | undefined {
   let configMetaRequireLocation: string | undefined;
 
   try {
-    const configMetaPath = plugin.pjson?.oclif?.[OCLIF_META_PJSON_KEY];
+    const configMetaPath = get(plugin, `pjson.oclif.${OCLIF_META_PJSON_KEY}`, null);
 
     if (typeof configMetaPath !== 'string') {
       return;
@@ -37,8 +37,9 @@ function loadConfigMeta(plugin: IPlugin): ConfigPropertyMeta | undefined {
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
     const configMetaPathModule = require(configMetaRequireLocation);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
     return configMetaPathModule?.default ?? configMetaPathModule;
   } catch {
     log.error(`Error trying to load config meta from ${configMetaRequireLocation}`);
