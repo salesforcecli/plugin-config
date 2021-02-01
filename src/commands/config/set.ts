@@ -7,7 +7,7 @@
 
 import * as os from 'os';
 import { flags, FlagsConfig } from '@salesforce/command';
-import { Config, Messages, Org } from '@salesforce/core';
+import { Config, Messages, Org, SfdxError } from '@salesforce/core';
 import { getString } from '@salesforce/ts-types';
 import { ConfigCommand, ConfigSetReturn } from '../../config';
 
@@ -40,9 +40,14 @@ export class Set extends ConfigCommand {
         }
         config.set(name, value);
         this.responses.push({ name, value, success: true });
-      } catch (error) {
+      } catch (err) {
         process.exitCode = 1;
-        this.responses.push({ name, value, success: false, error });
+        this.responses.push({
+          name,
+          value,
+          success: false,
+          error: err as SfdxError,
+        });
       }
     }
     await config.write();

@@ -45,7 +45,7 @@ export class Get extends ConfigCommand {
           this.responses.push({
             name: configName,
             success: false,
-            error: err,
+            error: err as SfdxError,
           });
         }
       });
