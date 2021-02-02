@@ -14,6 +14,7 @@
     "@oclif/command": "^1.6.1",
     "@oclif/dev-cli": "^1",
     "@oclif/errors": "^1.2.2",
+    "@oclif/plugin-command-snapshot": "^2.0.0",
     "@oclif/plugin-help": "^3.0.1",
     "@salesforce/dev-config": "^2.1.0",
     "@salesforce/dev-scripts": "^0.7.0",
@@ -68,7 +69,8 @@
     },
     "bin": "sfdx",
     "devPlugins": [
-      "@oclif/plugin-help"
+      "@oclif/plugin-help",
+      "@oclif/plugin-command-snapshot"
     ],
     "topics": {
       "config": {
@@ -88,7 +90,7 @@
     "format": "sf-format",
     "lint": "sf-lint",
     "postpack": "shx rm -f oclif.manifest.json",
-    "posttest": "yarn lint",
+    "posttest": "yarn lint && yarn test:deprecation-policy && yarn test:command-reference",
     "prepack": "sf-build",
     "prepare": "sf-install",
     "pretest": "sf-compile-test",
