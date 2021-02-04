@@ -8,7 +8,7 @@
 import { SfdxCommand } from '@salesforce/command';
 import { SfdxError } from '@salesforce/core';
 import { Optional } from '@salesforce/ts-types';
-import chalk from 'chalk';
+import * as chalk from 'chalk';
 
 export interface Msg {
   name: string;
