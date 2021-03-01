@@ -69,11 +69,10 @@ sfdx plugins
 # Commands
 
 <!-- commands -->
-
-- [`sfdx config:get [--verbose] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configget---verbose---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
-- [`sfdx config:list [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configlist---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
-- [`sfdx config:set name=value... [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configset-namevalue--g---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
-- [`sfdx config:unset [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configunset--g---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx config:get [--verbose] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configget---verbose---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx config:list [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configlist---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx config:set name=value... [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configset-namevalue--g---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+* [`sfdx config:unset [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configunset--g---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 
 ## `sfdx config:get [--verbose] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -81,7 +80,7 @@ get config var values for given names
 
 ```
 USAGE
-  $ sfdx config:get [--verbose] [--json] [--loglevel
+  $ sfdx config:get [--verbose] [--json] [--loglevel 
   trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
@@ -94,7 +93,7 @@ OPTIONS
                                                                                     stdout
 
 DESCRIPTION
-  Gets the Salesforce CLI configuration values for your default scratch org, your default Dev Hub org, your default
+  Gets the Salesforce CLI configuration values for your default scratch org, your default Dev Hub org, your default 
   instance URL, or any combination of the three. To see your default scratch org username, include 'defaultusername'.
   To see your default Dev Hub, include 'defaultdevhubusername'.
   To see your default instance URL, include 'instanceUrl'.
@@ -109,7 +108,7 @@ EXAMPLES
   sfdx config:get defaultusername defaultdevhubusername --verbose
 ```
 
-_See code: [src/commands/config/get.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.1/src/commands/config/get.ts)_
+_See code: [src/commands/config/get.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.5/src/commands/config/get.ts)_
 
 ## `sfdx config:list [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -129,7 +128,7 @@ ALIASES
   $ sfdx force:config:list
 ```
 
-_See code: [src/commands/config/list.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.1/src/commands/config/list.ts)_
+_See code: [src/commands/config/list.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.5/src/commands/config/list.ts)_
 
 ## `sfdx config:set name=value... [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -137,7 +136,7 @@ sets the configuration variables that the Salesforce CLI uses for various comman
 
 ```
 USAGE
-  $ sfdx config:set name=value... [-g] [--json] [--loglevel
+  $ sfdx config:set name=value... [-g] [--json] [--loglevel 
   trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
@@ -160,7 +159,7 @@ EXAMPLES
   sfdx config:set defaultdevhubusername=me@myhub.org -g
 ```
 
-_See code: [src/commands/config/set.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.1/src/commands/config/set.ts)_
+_See code: [src/commands/config/set.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.5/src/commands/config/set.ts)_
 
 ## `sfdx config:unset [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -187,6 +186,5 @@ EXAMPLES
   sfdx config:unset defaultdevhubusername -g
 ```
 
-_See code: [src/commands/config/unset.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.1/src/commands/config/unset.ts)_
-
+_See code: [src/commands/config/unset.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.5/src/commands/config/unset.ts)_
 <!-- commandsstop -->
