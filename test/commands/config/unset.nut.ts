@@ -15,7 +15,7 @@ describe('config:unset NUTs', () => {
   });
 
   describe('config:unset without keys', () => {
-    it('errors when attempting to unset null', () => {
+    it('errors when attempting to unset nothing', () => {
       const res = execCmd('config:unset --json', { ensureExitCode: 1 }).jsonOutput;
       expect(res.stack).to.include('NoConfigKeysFound');
       delete res.stack;
@@ -37,10 +37,6 @@ describe('config:unset NUTs', () => {
 
   describe('config:unset with singular result', () => {
     beforeEach(() => {
-      execCmd('config:set apiVersion=51.0 --global');
-    });
-
-    afterEach(() => {
       execCmd('config:set apiVersion=51.0 --global');
     });
 

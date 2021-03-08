@@ -6,17 +6,28 @@
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from '@salesforce/command/lib/test';
-import { Config } from '../../../../sfdx-core';
 
 let testSession: TestSession;
 
-function verifyKeysAndValues(key: string, value: string | number, result) {
+function verifyValidationError(key: string, value: string | number, message) {
+  const expected = {
+    status: 1,
+    result: {
+      successes: [],
+      failures: [
+        {
+          name: key,
+          message,
+        },
+      ],
+    },
+  };
   const res = execCmd(`config:set ${key}=${value} --json`).jsonOutput;
-  expect(res).to.deep.equal(result);
+  expect(res).to.deep.equal(expected);
   execCmd(`config:unset ${key}`);
 }
 
-function verifyKeysAndValuesSuccess(key: string, value: string | boolean) {
+function verifyKeysAndValuesJson(key: string, value: string | boolean) {
   const res = execCmd(`config:set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
   expect(res).to.deep.equal({
     status: 0,
@@ -84,51 +95,37 @@ describe('config:set NUTs', () => {
   describe('setting valid configs and values', () => {
     describe('apiVersion', () => {
       it('will set apiVersion correctly', () => {
-        verifyKeysAndValuesSuccess('apiVersion', '50.0');
+        verifyKeysAndValuesJson('apiVersion', '50.0');
         verifyKeysAndValuesStdout('apiVersion', '50.0', ['apiVersion', '50.0']);
       });
 
       it('will fail to validate apiVersion', () => {
-        verifyKeysAndValues('apiVersion', '50', {
-          status: 1,
-          result: {
-            successes: [],
-            failures: [
-              {
-                name: 'apiVersion',
-                message: 'Invalid config value. Specify a valid Salesforce API version, for example, 42.0',
-              },
-            ],
-          },
-        });
+        verifyValidationError(
+          'apiVersion',
+          '50',
+          'Invalid config value. Specify a valid Salesforce API version, for example, 42.0'
+        );
       });
     });
 
     describe('maxQueryLimit', () => {
       it('will set maxQueryLimit correctly', () => {
-        verifyKeysAndValuesSuccess('maxQueryLimit', '50');
+        verifyKeysAndValuesJson('maxQueryLimit', '50');
         verifyKeysAndValuesStdout('maxQueryLimit', '50', ['maxQueryLimit', '50']);
       });
 
       it('will fail to validate maxQueryLimit', () => {
-        verifyKeysAndValues('maxQueryLimit', '-2', {
-          status: 1,
-          result: {
-            successes: [],
-            failures: [
-              {
-                name: 'maxQueryLimit',
-                message: 'Invalid config value. Specify a valid positive integer, for example, 150000',
-              },
-            ],
-          },
-        });
+        verifyValidationError(
+          'maxQueryLimit',
+          '-2',
+          'Invalid config value. Specify a valid positive integer, for example, 150000'
+        );
       });
     });
 
     describe('instanceUrl', () => {
       it('will set instanceUrl correctly', () => {
-        verifyKeysAndValuesSuccess('instanceUrl', 'https://test.my.salesforce.com');
+        verifyKeysAndValuesJson('instanceUrl', 'https://test.my.salesforce.com');
         verifyKeysAndValuesStdout('instanceUrl', 'https://test.my.salesforce.com', [
           'instanceUrl',
           'https://test.my.salesforce.com',
@@ -136,113 +133,69 @@ describe('config:set NUTs', () => {
       });
 
       it('will fail to validate instanceUrl', () => {
-        verifyKeysAndValues('instanceUrl', 'abc.com', {
-          status: 1,
-          result: {
-            successes: [],
-            failures: [
-              {
-                name: 'instanceUrl',
-                message: 'Invalid config value. Specify a valid Salesforce instance URL',
-              },
-            ],
-          },
-        });
+        verifyValidationError(
+          'instanceUrl',
+          'abc.com',
+          'Invalid config value. Specify a valid Salesforce instance URL'
+        );
       });
     });
 
     describe('defaultdevhubusername', () => {
       it('will fail to validate defaultdevhubusername', () => {
-        verifyKeysAndValues('defaultdevhubusername', 'ab', {
-          status: 1,
-          result: {
-            successes: [],
-            failures: [
-              {
-                name: 'defaultdevhubusername',
-                message: 'No AuthInfo found for name ab',
-              },
-            ],
-          },
-        });
+        verifyValidationError('defaultdevhubusername', 'ab', 'No AuthInfo found for name ab');
       });
     });
 
     describe('defaultusername', () => {
       it('will fail to validate defaultusername', () => {
-        verifyKeysAndValues('defaultusername', 'ab', {
-          status: 1,
-          result: {
-            successes: [],
-            failures: [
-              {
-                name: 'defaultusername',
-                message: 'No AuthInfo found for name ab',
-              },
-            ],
-          },
-        });
+        verifyValidationError('defaultusername', 'ab', 'No AuthInfo found for name ab');
       });
     });
 
     describe('isvDebuggerSid', () => {
       it('will set isvDebuggerSid correctly', () => {
-        verifyKeysAndValuesSuccess('isvDebuggerSid', '12');
+        verifyKeysAndValuesJson('isvDebuggerSid', '12');
       });
     });
 
     describe('isvDebuggerUrl', () => {
       it('will set isvDebuggerUrl correctly', () => {
-        verifyKeysAndValuesSuccess('isvDebuggerUrl', '12');
+        verifyKeysAndValuesJson('isvDebuggerUrl', '12');
       });
     });
 
     describe('disableTelemetry', () => {
       it('will set disableTelemetry correctly', () => {
-        verifyKeysAndValuesSuccess('disableTelemetry', 'true');
-        verifyKeysAndValuesSuccess('disableTelemetry', false);
+        verifyKeysAndValuesJson('disableTelemetry', 'true');
+        verifyKeysAndValuesJson('disableTelemetry', false);
         verifyKeysAndValuesStdout('disableTelemetry', 'true', ['disableTelemetry', 'true']);
         verifyKeysAndValuesStdout('disableTelemetry', false, ['disableTelemetry', 'false']);
       });
 
       it('will fail to validate disableTelemetry', () => {
-        verifyKeysAndValues('disableTelemetry', 'ab', {
-          status: 1,
-          result: {
-            successes: [],
-            failures: [
-              {
-                name: 'disableTelemetry',
-                message: 'Invalid config value. The config value can only be set to true or false.',
-              },
-            ],
-          },
-        });
+        verifyValidationError(
+          'disableTelemetry',
+          'ab',
+          'Invalid config value. The config value can only be set to true or false.'
+        );
       });
     });
 
     describe('restDeploy', () => {
       it('will set restDeploy correctly', () => {
-        verifyKeysAndValuesSuccess('restDeploy', 'true');
-        verifyKeysAndValuesSuccess('restDeploy', false);
+        verifyKeysAndValuesJson('restDeploy', 'true');
+        verifyKeysAndValuesJson('restDeploy', false);
         verifyKeysAndValuesStdout('restDeploy', 'true', ['restDeploy', 'true']);
         verifyKeysAndValuesStdout('restDeploy', false, ['restDeploy', 'false']);
       });
 
       it('will fail to validate restDeploy', () => {
-        Config.getAllowedProperties()[0].input.failedMessage;
-        verifyKeysAndValues('restDeploy', 'ab', {
-          status: 1,
-          result: {
-            successes: [],
-            failures: [
-              {
-                name: 'restDeploy',
-                message: 'Invalid config value. The config value can only be set to true or false.',
-              },
-            ],
-          },
-        });
+        verifyValidationError(
+          'restDeploy',
+          'ab',
+          'Invalid config value. The config value can only be set to true or false.'
+        );
       });
     });
   });

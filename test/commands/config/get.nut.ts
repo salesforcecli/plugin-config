@@ -14,8 +14,8 @@ describe('config:get NUTs', () => {
     project: { name: 'configGetNUTs' },
   });
 
-  describe('config:get without results', () => {
-    it('attempt to config:get, will error', () => {
+  describe('config:get errors', () => {
+    it('attempt to config get without keys', () => {
       const res = execCmd('config:get --json', { ensureExitCode: 1 }).jsonOutput;
       // expect the stack entry to be there and be a valid string
       expect(typeof res?.stack).to.equal('string');
@@ -31,7 +31,7 @@ describe('config:get NUTs', () => {
       });
     });
 
-    it('attempt to config:get, will error stdout', () => {
+    it('attempt to config get without keys stdout', () => {
       const res: string = execCmd('config:get').shellOutput.stderr;
       expect(res).to.include('Please provide config name(s) to get.');
     });
@@ -61,8 +61,8 @@ describe('config:get NUTs', () => {
     });
 
     it('properly overwrites config values, with local > global', () => {
-      execCmd('config:set apiVersion=52.0 --json').jsonOutput;
-      const res = execCmd('config:get  apiVersion --json', { ensureExitCode: 0 });
+      execCmd('config:set apiVersion=52.0');
+      const res = execCmd('config:get apiVersion --json', { ensureExitCode: 0 });
       // the path variable will change machine to machine, ensure it has the config file and then delete it
       expect(res.jsonOutput.result[0].path).to.include('sfdx-config.json');
       delete res.jsonOutput.result[0].path;
@@ -93,7 +93,7 @@ describe('config:get NUTs', () => {
       execCmd('config:set maxQueryLimit=100 --global');
     });
 
-    it('gets multiple results correctly JSON', () => {
+    it('gets multiple results correctly', () => {
       execCmd('config:set restDeploy=false');
       execCmd('config:set apiVersion=51.0');
       const res = execCmd('config:get apiVersion maxQueryLimit restDeploy --json', { ensureExitCode: 0 });

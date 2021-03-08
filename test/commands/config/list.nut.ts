@@ -14,7 +14,7 @@ describe('config:list NUTs', () => {
     project: { name: 'configListNUTs' },
   });
 
-  describe('config:list without results', () => {
+  describe('config:list with no configs set', () => {
     it('lists no config entries correctly', () => {
       const res = execCmd('config:list --json', { ensureExitCode: 0 });
       expect(res.jsonOutput).to.deep.equal({
