@@ -17,18 +17,10 @@ describe('config:get NUTs', () => {
   describe('config:get errors', () => {
     it('attempt to config get without keys', () => {
       const res = execCmd('config:get --json', { ensureExitCode: 1 }).jsonOutput;
-      // expect the stack entry to be there and be a valid string
-      expect(typeof res?.stack).to.equal('string');
-      // delete the stack because it contains machine specific info
-      delete res?.stack;
-      expect(res).to.deep.equal({
-        status: 1,
-        name: 'NoConfigKeysFound',
-        message: 'Please provide config name(s) to get.',
-        exitCode: 1,
-        commandName: 'Get',
-        warnings: [],
-      });
+      expect(res.stack).to.include('NoConfigKeysFound');
+      expect(res.name).to.include('NoConfigKeysFound');
+      expect(res.exitCode).to.equal(1);
+      expect(res.commandName).to.include('Get');
     });
 
     it('attempt to config get without keys stdout', () => {
@@ -46,18 +38,11 @@ describe('config:get NUTs', () => {
       const res = execCmd('config:get apiVersion --json', { ensureExitCode: 0 });
       // the path variable will change machine to machine, ensure it has the config file and then delete it
       expect(res.jsonOutput.result[0].path).to.include('sfdx-config.json');
-      delete res.jsonOutput.result[0].path;
-      expect(res.jsonOutput).to.deep.equal({
-        result: [
-          {
-            key: 'apiVersion',
-            location: 'Global',
-            value: '51.0',
-          },
-        ],
-        status: 0,
-        warnings: ['apiVersion configuration overridden at "51.0"'],
-      });
+      expect(res.jsonOutput.result[0].key).to.include('apiVersion');
+      expect(res.jsonOutput.result[0].location).to.include('Global');
+      expect(res.jsonOutput.result[0].value).to.include('51.0');
+      expect(res.jsonOutput.status).to.equal(0);
+      expect(res.jsonOutput.warnings).to.include('apiVersion configuration overridden at "51.0"');
     });
 
     it('properly overwrites config values, with local > global', () => {
@@ -102,27 +87,23 @@ describe('config:get NUTs', () => {
         delete result.path;
       });
 
-      expect(res.jsonOutput).to.deep.equal({
-        result: [
-          {
-            key: 'apiVersion',
-            location: 'Local',
-            value: '51.0',
-          },
-          {
-            key: 'maxQueryLimit',
-            location: 'Global',
-            value: '100',
-          },
-          {
-            key: 'restDeploy',
-            location: 'Local',
-            value: 'false',
-          },
-        ],
-        status: 0,
-        warnings: ['apiVersion configuration overridden at "51.0"'],
-      });
+      expect(res.jsonOutput.result).to.deep.equal([
+        {
+          key: 'apiVersion',
+          location: 'Local',
+          value: '51.0',
+        },
+        {
+          key: 'maxQueryLimit',
+          location: 'Global',
+          value: '100',
+        },
+        {
+          key: 'restDeploy',
+          location: 'Local',
+          value: 'false',
+        },
+      ]);
     });
 
     it('gets multiple results correctly stdout', () => {

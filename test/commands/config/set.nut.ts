@@ -61,33 +61,23 @@ describe('config:set NUTs', () => {
 
   describe('config:set errors', () => {
     it('fails to set a randomKey with InvalidVarargsFormat error', () => {
-      const res = execCmd('config:set randomKey --json');
-      expect(res.jsonOutput.stack).to.include('InvalidVarargsFormat');
-      delete res.jsonOutput.stack;
-      expect(res.jsonOutput).to.deep.equal({
-        status: 1,
-        name: 'InvalidVarargsFormat',
-        message:
-          'Setting variables must be in the format <key>=<value> or <key>="<value with spaces>" but found randomKey.',
-        exitCode: 1,
-        commandName: 'Set',
-        warnings: [],
-      });
+      const res = execCmd('config:set randomKey --json').jsonOutput;
+      expect(res.stack).to.include('InvalidVarargsFormat');
+      expect(res.status).to.equal(1);
+      expect(res.exitCode).to.equal(1);
+      expect(res.name).to.include('InvalidVarargsFormat');
     });
 
     it('fails to set randomKey=randomValue', () => {
-      const res = execCmd('config:set randomKey=randomValue --json').jsonOutput;
+      const res = execCmd('config:set randomKey=randomValue --json').jsonOutput.result;
       expect(res).to.deep.equal({
-        status: 1,
-        result: {
-          successes: [],
-          failures: [
-            {
-              name: 'randomKey',
-              message: 'Unknown config name "randomKey"',
-            },
-          ],
-        },
+        successes: [],
+        failures: [
+          {
+            name: 'randomKey',
+            message: 'Unknown config name "randomKey"',
+          },
+        ],
       });
     });
   });
