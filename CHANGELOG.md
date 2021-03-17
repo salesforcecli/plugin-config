@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.7](https://github.com/salesforcecli/plugin-config/compare/v1.2.6...v1.2.7) (2021-03-17)
+
+
+### Bug Fixes
+
+* review round 1 ([46194ab](https://github.com/salesforcecli/plugin-config/commit/46194ab63f77e6bdcac16573014a70547423203f))
+
 ### [1.2.6](https://github.com/salesforcecli/plugin-config/compare/v1.2.5...v1.2.6) (2021-03-01)
 
 ### [1.2.5](https://github.com/salesforcecli/plugin-config/compare/v1.2.3...v1.2.5) (2021-02-19)
