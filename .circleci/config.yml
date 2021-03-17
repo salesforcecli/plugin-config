@@ -14,12 +14,22 @@ workflows:
           node_version: latest
       - release-management/test-package:
           name: node-12
+      - release-management/test-nut:
+          name: nuts-on-linux
+          sfdx_version: latest
+          requires:
+            - node-latest
+      - release-management/test-nut:
+          name: nuts-on-windows
+          sfdx_version: latest
+          os: windows
+          requires:
+            - node-latest
       - release-management/release-package:
           sign: true
           github-release: true
           requires:
             - node-latest
-            - node-12
           filters:
             branches:
               only: main
