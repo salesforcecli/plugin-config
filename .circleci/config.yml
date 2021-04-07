@@ -31,6 +31,7 @@ parameters:
   repo_tag:
     description: 'The tag of the module repo to checkout, '''' defaults to branch/PR'
     default: ''
+    type: string    
 workflows:
   version: 2
   test-and-release:
@@ -97,4 +98,3 @@ workflows:
               os:
                 - linux
                 - windows
-    type: string
