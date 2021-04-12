@@ -31,7 +31,7 @@ parameters:
   repo_tag:
     description: 'The tag of the module repo to checkout, '''' defaults to branch/PR'
     default: ''
-    type: string    
+    type: string
 workflows:
   version: 2
   test-and-release:
@@ -61,6 +61,14 @@ workflows:
           sfdx_version: latest
           requires:
             - release-management/test-package
+        release-management/release-package:
+          sign: true
+          github-release: true
+          requires:
+            - release-management/test-package
+          filters:
+            branches:
+              only: main
       - release-management/test-nut:
           name: nuts-on-windows
           sfdx_version: latest
