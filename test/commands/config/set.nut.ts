@@ -54,8 +54,8 @@ function verifyKeysAndValuesStdout(key: string, value: string | boolean, asserti
   execCmd(`config:unset ${key}`);
 }
 
-describe('config:set NUTs', () => {
-  testSession = TestSession.create({
+describe('config:set NUTs', async () => {
+  testSession = await TestSession.create({
     project: { name: 'configSetNUTs' },
   });
 

@@ -9,8 +9,8 @@ import { expect } from '@salesforce/command/lib/test';
 
 let testSession: TestSession;
 
-describe('config:list NUTs', () => {
-  testSession = TestSession.create({
+describe('config:list NUTs', async () => {
+  testSession = await TestSession.create({
     project: { name: 'configListNUTs' },
   });
 
