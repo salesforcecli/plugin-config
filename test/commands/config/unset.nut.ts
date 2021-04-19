@@ -9,8 +9,8 @@ import { expect } from '@salesforce/command/lib/test';
 
 let testSession: TestSession;
 
-describe('config:unset NUTs', () => {
-  testSession = TestSession.create({
+describe('config:unset NUTs', async () => {
+  testSession = await TestSession.create({
     project: { name: 'configUnsetNUTs' },
   });
 
