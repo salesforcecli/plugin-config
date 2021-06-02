@@ -93,11 +93,11 @@ describe('config:get', () => {
       .loadConfig()
       .do((ctx) => {
         const mockPluginRoot = path.resolve(__dirname, '../../config-meta-mocks/typescript-src');
-        ctx.config.plugins.push(({
+        ctx.config.plugins.push({
           root: mockPluginRoot,
           hooks: {},
           pjson: require(path.resolve(mockPluginRoot, 'package.json')),
-        } as unknown) as IPlugin);
+        } as IPlugin);
       })
       .stdout()
       .stderr()
