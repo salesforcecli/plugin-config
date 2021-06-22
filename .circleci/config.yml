@@ -93,7 +93,7 @@ workflows:
   dependabot-automerge:
     triggers:
       - schedule:
-          cron: 0 9 * * *
+          cron: 10 9,19,0 * * *
           filters:
             branches:
               only:
