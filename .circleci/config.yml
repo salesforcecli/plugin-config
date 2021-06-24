@@ -60,7 +60,7 @@ workflows:
                 node_version: lts
               - os: windows
                 node_version: maintenance
-      - release-management/test-nut:
+     - release-management/test-nut:
           name: nuts-on-linux
           sfdx_version: latest
           requires:
