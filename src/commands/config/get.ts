@@ -26,7 +26,8 @@ export class Get extends ConfigCommand {
     const argv = this.parseArgs();
 
     if (!argv || argv.length === 0) {
-      throw SfdxError.create('@salesforce/plugin-config', 'get', 'NoConfigKeysFound', []);
+      const errorMessage = messages.getMessage('NoConfigKeysFound');
+      throw new SfdxError(errorMessage, 'NoConfigKeysFound');
     } else {
       const results: ConfigInfo[] = [];
       const aggregator = await ConfigAggregator.create();
