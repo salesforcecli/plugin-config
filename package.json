@@ -61,6 +61,7 @@
   "license": "BSD-3-Clause",
   "oclif": {
     "commands": "./lib/commands",
+    "topicSeparator": " ",
     "hooks": {
       "init": [
         "./lib/hooks/init/load_config_meta"

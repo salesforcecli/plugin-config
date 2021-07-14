@@ -16,6 +16,8 @@ export class Set extends ConfigCommand {
   public static readonly description = messages.getMessage('description');
   public static readonly examples = messages.getMessages('examples');
 
+  public static readonly strict = false;
+
   public static readonly flags = {
     global: Flags.boolean({
       char: 'g',
