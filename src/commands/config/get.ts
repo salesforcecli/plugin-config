@@ -5,8 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import * as os from 'os';
-import { flags, FlagsConfig } from '@salesforce/command';
+import { Flags } from '@oclif/core';
 import { ConfigAggregator, ConfigInfo, Messages, SfdxError } from '@salesforce/core';
 import { ConfigCommand } from '../../config';
 
@@ -15,15 +14,14 @@ const messages = Messages.loadMessages('@salesforce/plugin-config', 'get');
 
 export class Get extends ConfigCommand {
   public static readonly description = messages.getMessage('description');
-  public static readonly examples = messages.getMessage('examples').split(os.EOL);
+  public static readonly examples = messages.getMessages('examples');
   public static readonly strict = false;
-  public static readonly flagsConfig: FlagsConfig = {
-    verbose: flags.builtin(),
+  public static readonly flags = {
+    verbose: Flags.boolean(),
   };
-  public static aliases = ['force:config:get'];
 
   public async run(): Promise<ConfigInfo[]> {
-    const argv = this.parseArgs();
+    const { argv, flags } = await this.parse(Get);
 
     if (!argv || argv.length === 0) {
       const errorMessage = messages.getMessage('NoConfigKeysFound');
@@ -51,7 +49,7 @@ export class Get extends ConfigCommand {
         }
       });
 
-      this.output('Get Config', this.flags.verbose);
+      this.output('Get Config', flags.verbose);
       return results;
     }
   }

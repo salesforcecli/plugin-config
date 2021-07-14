@@ -5,16 +5,15 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { Hook, IPlugin } from '@oclif/config';
-import { tsPath } from '@oclif/config/lib/ts-node';
-import { ConfigPropertyMeta, Logger } from '@salesforce/core';
-import { Config } from '@salesforce/core';
+import type { Hook, Interfaces } from '@oclif/core';
+import { tsPath } from '@oclif/core';
+import { Config, ConfigPropertyMeta, Logger } from '@salesforce/core';
 import { isObject, get } from '@salesforce/ts-types';
 
 const log = Logger.childFromRoot('plugin-config:load_config_meta');
 const OCLIF_META_PJSON_KEY = 'configMeta';
 
-function loadConfigMeta(plugin: IPlugin): ConfigPropertyMeta | undefined {
+function loadConfigMeta(plugin: Interfaces.Plugin): ConfigPropertyMeta | undefined {
   let configMetaRequireLocation: string | undefined;
 
   try {

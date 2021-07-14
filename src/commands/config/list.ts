@@ -12,7 +12,6 @@ const messages = Messages.loadMessages('@salesforce/plugin-config', 'list');
 
 export default class List extends ConfigCommand {
   public static readonly description = messages.getMessage('description');
-  public static aliases = ['force:config:list'];
 
   public async run(): Promise<ConfigInfo[]> {
     const aggregator = await ConfigAggregator.create();
