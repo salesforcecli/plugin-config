@@ -5,7 +5,9 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { SfdxCommand } from '@salesforce/command';
+import { Command } from '@oclif/core';
+import { cli } from 'cli-ux';
+import type { table } from 'cli-ux/lib/styled/table';
 import { SfdxError } from '@salesforce/core';
 import { Optional } from '@salesforce/ts-types';
 import * as chalk from 'chalk';
@@ -23,48 +25,39 @@ export type ConfigSetReturn = {
   failures: Array<{ name: string; message: string }>;
 };
 
-export abstract class ConfigCommand extends SfdxCommand {
+export abstract class ConfigCommand extends Command {
   protected responses: Msg[] = [];
 
   public output(header: string, verbose: boolean): void {
     if (this.responses.length === 0) {
-      this.ux.log('No results found');
+      this.log('No results found');
       return;
     }
 
-    this.ux.styledHeader(chalk.blue(header));
-    const values = {
-      columns: [{ key: 'name', label: 'Name' }],
+    cli.styledHeader(chalk.blue(header));
+    const columns: table.Columns<Msg> = {
+      name: { header: 'Name' },
     };
 
     if (!header.includes('Unset')) {
-      values.columns.push({ key: 'value', label: 'Value' });
+      columns.value = { header: 'Value' };
     }
 
     if (!header.includes('List')) {
-      values.columns.push({ key: 'success', label: 'Success' });
+      columns.success = { header: 'Success' };
     }
 
     if (verbose) {
-      values.columns.push({ key: 'location', label: 'Location' });
+      columns.location = { header: 'Location' };
     }
 
-    this.ux.table(this.responses, values);
+    cli.table(this.responses, columns);
 
     this.responses.forEach((response) => {
       if (response.error) {
         throw response.error;
       }
     });
-  }
-
-  public parseArgs(): string[] {
-    const { argv } = this.parse({
-      flags: this.statics.flags,
-      args: this.statics.args,
-      strict: this.statics.strict,
-    });
-    return argv;
   }
 
   public formatResults(): ConfigSetReturn {
