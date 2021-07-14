@@ -4,30 +4,25 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { ConfigAggregator, ConfigInfo, Messages } from '@salesforce/core';
-import { ConfigCommand } from '../../config';
+import { ConfigAggregator, Messages } from '@salesforce/core';
+import { ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'list');
 
 export default class List extends ConfigCommand {
   public static readonly description = messages.getMessage('description');
-  public static aliases = ['force:config:list'];
-
-  public async run(): Promise<ConfigInfo[]> {
+  public static flags = {};
+  public async run(): Promise<ConfigResponses> {
     const aggregator = await ConfigAggregator.create();
 
-    const results = aggregator.getConfigInfo().map((c) => {
-      this.responses.push({
-        name: c.key,
-        value: c.value as string | undefined,
-        location: c.location,
-        success: true,
-      });
-      delete c.path;
-      return c;
+    aggregator.getConfigInfo().forEach((c) => {
+      this.pushSuccess(c);
     });
-    this.output('List Config', true);
-    return results;
+
+    if (!this.jsonEnabled()) {
+      this.output('List Config', true);
+    }
+    return this.responses;
   }
 }

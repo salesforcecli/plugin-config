@@ -9,107 +9,98 @@ import { expect } from '@salesforce/command/lib/test';
 
 let testSession: TestSession;
 
-describe('config:list NUTs', async () => {
+describe('config list NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configListNUTs' },
+    authStrategy: 'NONE',
   });
 
-  describe('config:list with no configs set', () => {
+  describe('config list with no configs set', () => {
     it('lists no config entries correctly', () => {
-      const res = execCmd('config:list --json', { ensureExitCode: 0 });
-      expect(res.jsonOutput).to.deep.equal({
-        result: [],
-        status: 0,
-      });
+      const res = execCmd('config list --json', { ensureExitCode: 0 });
+      expect(res.jsonOutput).to.deep.equal([]);
     });
 
     it('lists no configs stdout', () => {
-      const res: string = execCmd('config:list').shellOutput;
+      const res = execCmd('config list').shellOutput;
       expect(res).to.include('No results found');
     });
   });
 
-  describe('config:list with singular result', () => {
+  describe('config list with singular result', () => {
     before(() => {
-      execCmd('config:set apiVersion=51.0 --global');
+      execCmd('config set apiVersion=51.0 --global');
     });
 
     it('lists singular config correctly', () => {
-      const res = execCmd('config:list --json', { ensureExitCode: 0 });
-      expect(res.jsonOutput).to.deep.equal({
-        result: [
-          {
-            key: 'apiVersion',
-            location: 'Global',
-            value: '51.0',
-          },
-        ],
-        status: 0,
-        warnings: ['apiVersion configuration overridden at "51.0"'],
-      });
+      const res = execCmd('config list --json', { ensureExitCode: 0 });
+      expect(res.jsonOutput).to.deep.equal([
+        {
+          name: 'apiVersion',
+          location: 'Global',
+          value: '51.0',
+          success: true,
+        },
+      ]);
     });
 
     it('properly overwrites config values, with local > global', () => {
-      execCmd('config:set apiVersion=52.0 --json');
-      const res = execCmd('config:list --json', { ensureExitCode: 0 });
-      expect(res.jsonOutput).to.deep.equal({
-        result: [
-          {
-            key: 'apiVersion',
-            location: 'Local',
-            value: '52.0',
-          },
-        ],
-        status: 0,
-        warnings: ['apiVersion configuration overridden at "52.0"'],
-      });
+      execCmd('config set apiVersion=52.0 --json');
+      const res = execCmd('config list --json', { ensureExitCode: 0 });
+      expect(res.jsonOutput).to.deep.equal([
+        {
+          name: 'apiVersion',
+          location: 'Local',
+          value: '52.0',
+          success: true,
+        },
+      ]);
     });
 
     it('lists singular result correctly stdout', () => {
-      const res: string = execCmd('config:list').shellOutput.stdout;
+      const res: string = execCmd('config list').shellOutput.stdout;
       expect(res).to.include('List Config');
       expect(res).to.include('apiVersion');
       expect(res).to.include('Local');
       expect(res).to.include('52.0');
-      execCmd('config:unset apiVersion');
+      execCmd('config unset apiVersion');
     });
   });
 
-  describe('config:list with multiple results', () => {
+  describe('config list with multiple results', () => {
     beforeEach(() => {
-      execCmd('config:set apiVersion=51.0 --global');
-      execCmd('config:set maxQueryLimit=100 --global');
+      execCmd('config set apiVersion=51.0 --global');
+      execCmd('config set maxQueryLimit=100 --global');
     });
 
     it('lists multiple results correctly JSON', () => {
-      execCmd('config:set restDeploy=false');
-      const res = execCmd('config:list --json', { ensureExitCode: 0 });
-      expect(res.jsonOutput).to.deep.equal({
-        result: [
-          {
-            key: 'apiVersion',
-            location: 'Global',
-            value: '51.0',
-          },
-          {
-            key: 'maxQueryLimit',
-            location: 'Global',
-            value: '100',
-          },
-          {
-            key: 'restDeploy',
-            location: 'Local',
-            value: 'false',
-          },
-        ],
-        status: 0,
-        warnings: ['apiVersion configuration overridden at "51.0"'],
-      });
+      execCmd('config set restDeploy=false');
+      const res = execCmd('config list --json', { ensureExitCode: 0 });
+      expect(res.jsonOutput).to.deep.equal([
+        {
+          name: 'apiVersion',
+          location: 'Global',
+          value: '51.0',
+          success: true,
+        },
+        {
+          name: 'maxQueryLimit',
+          location: 'Global',
+          value: '100',
+          success: true,
+        },
+        {
+          name: 'restDeploy',
+          location: 'Local',
+          value: 'false',
+          success: true,
+        },
+      ]);
     });
 
     it('lists multiple results correctly stdout', () => {
-      execCmd('config:set restDeploy=false');
-      const res: string = execCmd('config:list', { ensureExitCode: 0 }).shellOutput.stdout;
+      execCmd('config set restDeploy=false');
+      const res: string = execCmd('config list', { ensureExitCode: 0 }).shellOutput.stdout;
       expect(res).to.include('List Config');
       expect(res).to.include('apiVersion');
       expect(res).to.include('51.0');

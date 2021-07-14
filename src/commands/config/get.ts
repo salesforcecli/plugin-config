@@ -4,55 +4,42 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-
-import * as os from 'os';
-import { flags, FlagsConfig } from '@salesforce/command';
-import { ConfigAggregator, ConfigInfo, Messages, SfdxError } from '@salesforce/core';
-import { ConfigCommand } from '../../config';
+import { Flags } from '@oclif/core';
+import { ConfigAggregator, Messages, SfdxError } from '@salesforce/core';
+import { ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'get');
 
 export class Get extends ConfigCommand {
   public static readonly description = messages.getMessage('description');
-  public static readonly examples = messages.getMessage('examples').split(os.EOL);
+  public static readonly examples = messages.getMessages('examples');
   public static readonly strict = false;
-  public static readonly flagsConfig: FlagsConfig = {
-    verbose: flags.builtin(),
+  public static readonly flags = {
+    verbose: Flags.boolean(),
   };
-  public static aliases = ['force:config:get'];
 
-  public async run(): Promise<ConfigInfo[]> {
-    const argv = this.parseArgs();
+  public async run(): Promise<ConfigResponses> {
+    const { argv, flags } = await this.parse(Get);
 
     if (!argv || argv.length === 0) {
       const errorMessage = messages.getMessage('NoConfigKeysFound');
       throw new SfdxError(errorMessage, 'NoConfigKeysFound');
     } else {
-      const results: ConfigInfo[] = [];
       const aggregator = await ConfigAggregator.create();
 
       argv.forEach((configName) => {
         try {
-          const configInfo = aggregator.getInfo(configName);
-          results.push(configInfo);
-          this.responses.push({
-            name: configInfo.key,
-            value: configInfo.value as string | undefined,
-            success: true,
-            location: configInfo.location,
-          });
+          this.pushSuccess(aggregator.getInfo(configName));
         } catch (err) {
-          this.responses.push({
-            name: configName,
-            success: false,
-            error: err as SfdxError,
-          });
+          this.pushFailure(configName, err);
         }
       });
 
-      this.output('Get Config', this.flags.verbose);
-      return results;
+      if (!this.jsonEnabled()) {
+        this.output('Get Config', flags.verbose);
+      }
+      return this.responses;
     }
   }
 }

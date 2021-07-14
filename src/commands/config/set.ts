@@ -5,35 +5,35 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import * as os from 'os';
-import { flags, FlagsConfig } from '@salesforce/command';
+import { Flags } from '@oclif/core';
 import { Config, Messages, Org, SfdxPropertyKeys, SfdxError } from '@salesforce/core';
-import { getString } from '@salesforce/ts-types';
-import { ConfigCommand, ConfigSetReturn } from '../../config';
+import { ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'set');
 
 export class Set extends ConfigCommand {
   public static readonly description = messages.getMessage('description');
-  public static readonly examples = messages.getMessage('examples').split(os.EOL);
-  public static readonly varargs = { required: true };
-  public static readonly flagsConfig: FlagsConfig = {
-    global: flags.boolean({
+  public static readonly examples = messages.getMessages('examples');
+
+  public static readonly strict = false;
+
+  public static readonly flags = {
+    global: Flags.boolean({
       char: 'g',
-      description: messages.getMessage('global'),
-      longDescription: messages.getMessage('globalLong'),
-      required: false,
+      summary: messages.getMessage('global'),
+      description: messages.getMessage('globalLong'),
     }),
   };
-  public static aliases = ['force:config:set'];
 
-  public async run(): Promise<ConfigSetReturn> {
-    const config: Config = await this.loadConfig();
+  public async run(): Promise<ConfigResponses> {
+    const { flags } = await this.parse(Set);
+    const config: Config = await this.loadConfig(flags.global);
     let value = '';
-    for (const name of Object.keys(this.varargs)) {
+    const configs = await this.parseConfigKeysAndValues();
+    for (const name of Object.keys(configs)) {
       try {
-        value = getString(this.varargs, name);
+        value = configs[name];
         const isOrgKey =
           name === SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME || name === SfdxPropertyKeys.DEFAULT_USERNAME;
         if (isOrgKey && value) {
@@ -42,25 +42,59 @@ export class Set extends ConfigCommand {
         config.set(name, value);
         this.responses.push({ name, value, success: true });
       } catch (err) {
-        process.exitCode = 1;
-        this.responses.push({
-          name,
-          value,
-          success: false,
-          error: err as SfdxError,
-        });
+        this.pushFailure(name, err, value);
       }
     }
     await config.write();
-    if (!this.flags.json) {
+    if (!this.jsonEnabled()) {
       this.output('Set Config', false);
     }
-    return this.formatResults();
+    return this.responses;
   }
 
-  protected async loadConfig(): Promise<Config> {
+  protected async resolveArguments(): Promise<string[]> {
+    const { args, argv } = await this.parse(Set);
+
+    const argVals = Object.values(args);
+    return argv.filter((val) => !argVals.includes(val));
+  }
+
+  protected async parseConfigKeysAndValues(): Promise<{ [index: string]: string }> {
+    const configs: { [index: string]: string } = {};
+    const args = await this.resolveArguments();
+
+    if (!args.length) {
+      throw messages.createError('ArgumentsRequired');
+    }
+
+    // Support `config set key value`
+    if (args.length === 2 && !args[0].includes('=')) {
+      return { [args[0]]: args[1] };
+    }
+
+    // Validate the format
+    args.forEach((arg) => {
+      const split = arg.split('=');
+
+      if (split.length !== 2) {
+        throw messages.createError('InvalidArgumentFormat', [arg]);
+      }
+
+      const [name, value] = split;
+
+      if (configs[name]) {
+        throw messages.createError('DuplicateArgument', [name]);
+      }
+
+      configs[name] = value || undefined;
+    });
+
+    return configs;
+  }
+
+  protected async loadConfig(global: boolean): Promise<Config> {
     try {
-      const config = await Config.create(Config.getDefaultOptions(this.flags.global));
+      const config = await Config.create(Config.getDefaultOptions(global));
       await config.read();
       return config;
     } catch (error) {
