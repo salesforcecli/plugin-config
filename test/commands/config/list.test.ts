@@ -6,17 +6,17 @@
  */
 
 import { $$, expect, test } from '@salesforce/command/lib/test';
-import { ConfigAggregator, Config } from '@salesforce/core';
+import { ConfigAggregator, SfdxPropertyKeys } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
 
 describe('config:list', () => {
   test
     .do(() => {
       stubMethod($$.SANDBOX, ConfigAggregator.prototype, 'getConfigInfo').returns([
-        { key: Config.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location: 'Global' },
-        { key: Config.DISABLE_TELEMETRY, value: true, location: 'Global' },
-        { key: Config.DEFAULT_USERNAME, value: 'MyUser', location: 'Local' },
-        { key: Config.API_VERSION, value: '49.0', location: 'Local' },
+        { key: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location: 'Global' },
+        { key: SfdxPropertyKeys.DISABLE_TELEMETRY, value: true, location: 'Global' },
+        { key: SfdxPropertyKeys.DEFAULT_USERNAME, value: 'MyUser', location: 'Local' },
+        { key: SfdxPropertyKeys.API_VERSION, value: '49.0', location: 'Local' },
       ]);
     })
     .stdout()
@@ -24,10 +24,10 @@ describe('config:list', () => {
     .it('should return values for all configured properties', (ctx) => {
       const result = JSON.parse(ctx.stdout).result;
       expect(result).to.deep.equal([
-        { key: Config.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location: 'Global' },
-        { key: Config.DISABLE_TELEMETRY, value: true, location: 'Global' },
-        { key: Config.DEFAULT_USERNAME, value: 'MyUser', location: 'Local' },
-        { key: Config.API_VERSION, value: '49.0', location: 'Local' },
+        { key: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location: 'Global' },
+        { key: SfdxPropertyKeys.DISABLE_TELEMETRY, value: true, location: 'Global' },
+        { key: SfdxPropertyKeys.DEFAULT_USERNAME, value: 'MyUser', location: 'Local' },
+        { key: SfdxPropertyKeys.API_VERSION, value: '49.0', location: 'Local' },
       ]);
     });
 

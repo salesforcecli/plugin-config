@@ -8,8 +8,7 @@
 import { Command } from '@oclif/core';
 import { cli } from 'cli-ux';
 import type { table } from 'cli-ux/lib/styled/table';
-import { SfdxError } from '@salesforce/core';
-import { Optional } from '@salesforce/ts-types';
+import { ConfigInfo, SfdxError } from '@salesforce/core';
 import * as chalk from 'chalk';
 
 export interface Msg {
@@ -17,18 +16,36 @@ export interface Msg {
   value?: string;
   success: boolean;
   location?: string;
+  message?: string;
   error?: SfdxError;
 }
-
-export type ConfigSetReturn = {
-  successes: Array<{ name: string; value: Optional<string> }>;
-  failures: Array<{ name: string; message: string }>;
-};
 
 export abstract class ConfigCommand extends Command {
   protected responses: Msg[] = [];
 
-  public output(header: string, verbose: boolean): void {
+  protected pushSuccess(configInfo: ConfigInfo): void {
+    this.responses.push({
+      name: configInfo.key,
+      value: configInfo.value as string | undefined,
+      success: true,
+      location: configInfo.location,
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+  protected pushFailure(name: string, err: any, value?: string): void {
+    const error = SfdxError.wrap(err);
+    this.responses.push({
+      name,
+      success: false,
+      value,
+      error,
+      message: error.message,
+    });
+    process.exitCode = 1;
+  }
+
+  protected output(header: string, verbose: boolean): void {
     if (this.responses.length === 0) {
       this.log('No results found');
       return;
@@ -51,6 +68,11 @@ export abstract class ConfigCommand extends Command {
       columns.location = { header: 'Location' };
     }
 
+    if (this.responses.find((msg) => msg.error)) {
+      columns.message = { header: 'Message' };
+      this.responses.map((msg) => (msg.message = msg.error?.message));
+    }
+
     cli.table(this.responses, columns);
 
     this.responses.forEach((response) => {
@@ -58,22 +80,5 @@ export abstract class ConfigCommand extends Command {
         throw response.error;
       }
     });
-  }
-
-  public formatResults(): ConfigSetReturn {
-    return {
-      successes: this.responses
-        .filter((response) => response.success)
-        .map((success) => ({
-          name: success.name,
-          value: success.value,
-        })),
-      failures: this.responses
-        .filter((response) => !response.success)
-        .map((failure) => ({
-          name: failure.name,
-          message: failure.error.message,
-        })),
-    };
   }
 }

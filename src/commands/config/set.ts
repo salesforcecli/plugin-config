@@ -7,7 +7,7 @@
 
 import { Flags } from '@oclif/core';
 import { Config, Messages, Org, SfdxPropertyKeys, SfdxError } from '@salesforce/core';
-import { ConfigCommand, ConfigSetReturn } from '../../config';
+import { ConfigCommand, Msg } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'set');
@@ -26,7 +26,7 @@ export class Set extends ConfigCommand {
     }),
   };
 
-  public async run(): Promise<ConfigSetReturn> {
+  public async run(): Promise<Msg[]> {
     const { flags } = await this.parse(Set);
     const config: Config = await this.loadConfig(flags.global);
     let value = '';
@@ -55,7 +55,7 @@ export class Set extends ConfigCommand {
     if (!flags.json) {
       this.output('Set Config', false);
     }
-    return this.formatResults();
+    return this.responses;
   }
 
   protected async resolveArguments(): Promise<string[]> {

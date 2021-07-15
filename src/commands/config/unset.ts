@@ -7,7 +7,7 @@
 
 import { Flags } from '@oclif/core';
 import { Config, Messages, SfdxError } from '@salesforce/core';
-import { ConfigCommand, ConfigSetReturn } from '../../config';
+import { ConfigCommand, Msg } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'unset');
@@ -25,7 +25,7 @@ export class UnSet extends ConfigCommand {
     }),
   };
 
-  public async run(): Promise<ConfigSetReturn> {
+  public async run(): Promise<Msg[]> {
     const { argv, flags } = await this.parse(UnSet);
 
     if (!argv || argv.length === 0) {
@@ -40,12 +40,7 @@ export class UnSet extends ConfigCommand {
           config.unset(key);
           this.responses.push({ name: key, success: true });
         } catch (err) {
-          process.exitCode = 1;
-          this.responses.push({
-            name: key,
-            success: false,
-            error: err as SfdxError,
-          });
+          this.pushFailure(key, err);
         }
       });
       await config.write();
@@ -53,6 +48,6 @@ export class UnSet extends ConfigCommand {
         this.output('Unset Config', false);
       }
     }
-    return this.formatResults();
+    return this.responses;
   }
 }

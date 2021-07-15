@@ -6,8 +6,8 @@
  */
 
 import { Flags } from '@oclif/core';
-import { ConfigAggregator, ConfigInfo, Messages, SfdxError } from '@salesforce/core';
-import { ConfigCommand } from '../../config';
+import { ConfigAggregator, Messages, SfdxError } from '@salesforce/core';
+import { ConfigCommand, Msg } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'get');
@@ -20,37 +20,27 @@ export class Get extends ConfigCommand {
     verbose: Flags.boolean(),
   };
 
-  public async run(): Promise<ConfigInfo[]> {
+  public async run(): Promise<Msg[]> {
     const { argv, flags } = await this.parse(Get);
 
     if (!argv || argv.length === 0) {
       const errorMessage = messages.getMessage('NoConfigKeysFound');
       throw new SfdxError(errorMessage, 'NoConfigKeysFound');
     } else {
-      const results: ConfigInfo[] = [];
       const aggregator = await ConfigAggregator.create();
 
       argv.forEach((configName) => {
         try {
-          const configInfo = aggregator.getInfo(configName);
-          results.push(configInfo);
-          this.responses.push({
-            name: configInfo.key,
-            value: configInfo.value as string | undefined,
-            success: true,
-            location: configInfo.location,
-          });
+          this.pushSuccess(aggregator.getInfo(configName));
         } catch (err) {
-          this.responses.push({
-            name: configName,
-            success: false,
-            error: err as SfdxError,
-          });
+          this.pushFailure(configName, err);
         }
       });
 
-      this.output('Get Config', flags.verbose);
-      return results;
+      if (!flags.json) {
+        this.output('Get Config', flags.verbose);
+      }
+      return this.responses;
     }
   }
 }
