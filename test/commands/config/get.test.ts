@@ -87,7 +87,7 @@ describe('config:get', () => {
       .command(['config:get', 'customKey', '--json'])
       .it('fails when there is no matching loaded custom key', (ctx) => {
         const response = JSON.parse(ctx.stdout);
-        expect(response.error.message).to.equal('Unknown config key: customKey');
+        expect(response[0].message).to.equal('Unknown config name: customKey.');
       });
 
     test
@@ -107,7 +107,8 @@ describe('config:get', () => {
         const response = JSON.parse(ctx.stdout);
         expect(response).to.deep.equal([
           {
-            key: 'customKey',
+            name: 'customKey',
+            success: true,
           },
         ]);
       });

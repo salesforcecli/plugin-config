@@ -13,6 +13,8 @@ import { isObject, get } from '@salesforce/ts-types';
 const log = Logger.childFromRoot('plugin-config:load_config_meta');
 const OCLIF_META_PJSON_KEY = 'configMeta';
 
+process.env.NODE_ENV = 'development';
+
 function loadConfigMeta(plugin: Interfaces.Plugin): ConfigPropertyMeta | undefined {
   let configMetaRequireLocation: string | undefined;
 
@@ -38,6 +40,7 @@ function loadConfigMeta(plugin: Interfaces.Plugin): ConfigPropertyMeta | undefin
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
     const configMetaPathModule = require(configMetaRequireLocation);
+
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
     return configMetaPathModule?.default ?? configMetaPathModule;
   } catch {
@@ -46,8 +49,8 @@ function loadConfigMeta(plugin: Interfaces.Plugin): ConfigPropertyMeta | undefin
   }
 }
 
-const hook: Hook<'init'> = ({ config: oclifConfig }) => {
-  const loadedConfigMetas = (oclifConfig.plugins || [])
+const hook: Hook<'init'> = ({ config }) => {
+  const loadedConfigMetas = (config.plugins || [])
     .map((plugin) => {
       const configMeta = loadConfigMeta(plugin);
       if (!configMeta) {

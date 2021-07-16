@@ -6,7 +6,7 @@
  */
 
 import { $$, expect, test } from '@salesforce/command/lib/test';
-import { Config, Org, AuthInfo, SfdxPropertyKeys } from '@salesforce/core';
+import { Config, Org, SfdxPropertyKeys } from '@salesforce/core';
 import { StubbedType, stubInterface, stubMethod } from '@salesforce/ts-sinon';
 import { SinonStub } from 'sinon';
 
@@ -25,8 +25,8 @@ describe('config:set', () => {
     .stdout()
     .command(['config:set', `${SfdxPropertyKeys.API_VERSION}=49.0`, '--global', '--json'])
     .it('should return values for all configured properties', (ctx) => {
-      const result = JSON.parse(ctx.stdout).result;
-      expect(result.successes).to.deep.equal([{ name: SfdxPropertyKeys.API_VERSION, value: '49.0' }]);
+      const result = JSON.parse(ctx.stdout);
+      expect(result).to.deep.equal([{ name: SfdxPropertyKeys.API_VERSION, value: '49.0', success: true }]);
       expect(configStub.set.callCount).to.equal(1);
     });
 
@@ -39,8 +39,8 @@ describe('config:set', () => {
     .stdout()
     .command(['config:set', `${SfdxPropertyKeys.DEFAULT_USERNAME}=MyUser`, '--global', '--json'])
     .it('should instantiate an Org when defaultusername is set', (ctx) => {
-      const result = JSON.parse(ctx.stdout).result;
-      expect(result.successes).to.deep.equal([{ name: SfdxPropertyKeys.DEFAULT_USERNAME, value: 'MyUser' }]);
+      const result = JSON.parse(ctx.stdout);
+      expect(result).to.deep.equal([{ name: SfdxPropertyKeys.DEFAULT_USERNAME, value: 'MyUser', success: true }]);
       expect(configStub.set.callCount).to.equal(1);
       expect(orgCreateSpy.callCount).to.equal(1);
     });
@@ -53,17 +53,19 @@ describe('config:set', () => {
     })
     .stdout()
     .command(['config:set', `${SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME}=MyDevhub`, '--global', '--json'])
-    .it('should instantiate an Org when defaultusername is set', (ctx) => {
-      const result = JSON.parse(ctx.stdout).result;
-      expect(result.successes).to.deep.equal([{ name: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub' }]);
+    .it('should instantiate an Org when defaultdevhubusername is set', (ctx) => {
+      const result = JSON.parse(ctx.stdout);
+      expect(result).to.deep.equal([
+        { name: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', success: true },
+      ]);
       expect(configStub.set.callCount).to.equal(1);
       expect(orgCreateSpy.callCount).to.equal(1);
     });
 
   describe('error cases', () => {
     beforeEach(() => {
-      stubMethod($$.SANDBOX, AuthInfo.prototype, 'loadAuthFromConfig').callsFake(async () => {
-        throw new Error('Error thrown from AuthInfo#loadAuthFromConfig');
+      stubMethod($$.SANDBOX, Org, 'create').callsFake(async () => {
+        throw new Error('Error thrown from Org.create');
       });
     });
 
@@ -72,9 +74,18 @@ describe('config:set', () => {
       .command(['config:set', `${SfdxPropertyKeys.DEFAULT_USERNAME}=NonExistentOrg`, '--global', '--json'])
       .it('should handle failed org create with --json flag', (ctx) => {
         const response = JSON.parse(ctx.stdout);
-        expect(response.status).to.equal(1);
-        expect(response.result.failures).to.deep.equal([
-          { name: SfdxPropertyKeys.DEFAULT_USERNAME, message: 'Error thrown from AuthInfo#loadAuthFromConfig' },
+        expect(response).to.deep.equal([
+          {
+            error: {
+              cause: {},
+              exitCode: 1,
+              name: 'Error',
+            },
+            name: SfdxPropertyKeys.DEFAULT_USERNAME,
+            message: 'Error thrown from Org.create',
+            success: false,
+            value: 'NonExistentOrg',
+          },
         ]);
       });
 

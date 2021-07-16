@@ -42,13 +42,7 @@ export class Set extends ConfigCommand {
         config.set(name, value);
         this.responses.push({ name, value, success: true });
       } catch (err) {
-        process.exitCode = 1;
-        this.responses.push({
-          name,
-          value,
-          success: false,
-          error: err as SfdxError,
-        });
+        this.pushFailure(name, err, value);
       }
     }
     await config.write();
