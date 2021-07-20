@@ -6,8 +6,10 @@
  */
 
 import { $$, expect, test } from '@salesforce/command/lib/test';
-import { ConfigAggregator, Config } from '@salesforce/core';
+import { ConfigAggregator, SfdxPropertyKeys } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
+
+const Config = SfdxPropertyKeys;
 
 describe('config:list', () => {
   test
