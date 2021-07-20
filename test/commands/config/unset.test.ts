@@ -30,8 +30,8 @@ describe('config:unset', () => {
     .stdout()
     .command(['config:unset', `${SfdxPropertyKeys.API_VERSION}`, '--global', '--json'])
     .it('should unset values for a single property', (ctx) => {
-      const result = JSON.parse(ctx.stdout).result;
-      expect(result.successes).to.deep.equal([{ name: SfdxPropertyKeys.API_VERSION }]);
+      const result = JSON.parse(ctx.stdout);
+      expect(result).to.deep.equal([{ name: SfdxPropertyKeys.API_VERSION, success: true }]);
       expect(configStub.unset.callCount).to.equal(1);
     });
 
@@ -46,10 +46,10 @@ describe('config:unset', () => {
       '--json',
     ])
     .it('should unset values for multiple properties', (ctx) => {
-      const result = JSON.parse(ctx.stdout).result;
-      expect(result.successes).to.deep.equal([
-        { name: SfdxPropertyKeys.API_VERSION },
-        { name: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME },
+      const result = JSON.parse(ctx.stdout);
+      expect(result).to.deep.equal([
+        { name: SfdxPropertyKeys.API_VERSION, success: true },
+        { name: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, success: true },
       ]);
       expect(configStub.unset.callCount).to.equal(2);
     });
@@ -60,8 +60,7 @@ describe('config:unset', () => {
     .command(['config:unset', '--json'])
     .it('should throw an error if no properties are provided', (ctx) => {
       const response = JSON.parse(ctx.stdout);
-      expect(response.status).to.equal(1);
-      expect(response.name).to.equal('NoConfigKeysFound');
+      expect(response.error.name).to.equal('NoConfigKeysFound');
     });
 
   test
@@ -70,8 +69,18 @@ describe('config:unset', () => {
     .command(['config:unset', `${SfdxPropertyKeys.API_VERSION}`, '--global', '--json'])
     .it('should handle errors with --json flag', (ctx) => {
       const response = JSON.parse(ctx.stdout);
-      expect(response.status).to.equal(1);
-      expect(response.result.failures).to.deep.equal([{ name: SfdxPropertyKeys.API_VERSION, message: 'Unset Error!' }]);
+      expect(response).to.deep.equal([
+        {
+          error: {
+            cause: {},
+            exitCode: 1,
+            name: 'Error',
+          },
+          name: SfdxPropertyKeys.API_VERSION,
+          message: 'Unset Error!',
+          success: false,
+        },
+      ]);
     });
 
   test
