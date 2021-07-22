@@ -53,7 +53,9 @@ export abstract class ConfigCommand extends SfdxCommand {
 
     this.responses.forEach((response) => {
       if (response.error) {
-        process.exitCode = 1;
+        // TODO I think throwing here is weird. I think instead, we should set the exitCode to 1
+        // but this breaks unit tests and should be discussed with the team.
+        throw response.error;
       }
     });
   }
