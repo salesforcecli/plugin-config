@@ -53,7 +53,7 @@ export abstract class ConfigCommand extends SfdxCommand {
 
     this.responses.forEach((response) => {
       if (response.error) {
-        throw response.error;
+        process.exitCode = 1;
       }
     });
   }
@@ -79,7 +79,7 @@ export abstract class ConfigCommand extends SfdxCommand {
         .filter((response) => !response.success)
         .map((failure) => ({
           name: failure.name,
-          message: failure.error.message,
+          message: failure.error.message.replace(/\.\.$/, '.'),
         })),
     };
   }

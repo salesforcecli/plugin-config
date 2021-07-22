@@ -75,7 +75,7 @@ describe('config:set NUTs', async () => {
         failures: [
           {
             name: 'randomKey',
-            message: 'Unknown config name "randomKey"',
+            message: 'Unknown config name: randomKey.',
           },
         ],
       });
@@ -93,7 +93,7 @@ describe('config:set NUTs', async () => {
         verifyValidationError(
           'apiVersion',
           '50',
-          'Invalid config value. Specify a valid Salesforce API version, for example, 42.0'
+          'Invalid config value: Specify a valid Salesforce API version, for example, 42.0.'
         );
       });
     });
@@ -108,7 +108,7 @@ describe('config:set NUTs', async () => {
         verifyValidationError(
           'maxQueryLimit',
           '-2',
-          'Invalid config value. Specify a valid positive integer, for example, 150000'
+          'Invalid config value: Specify a valid positive integer, for example, 150000.'
         );
       });
     });
@@ -126,20 +126,20 @@ describe('config:set NUTs', async () => {
         verifyValidationError(
           'instanceUrl',
           'abc.com',
-          'Invalid config value. Specify a valid Salesforce instance URL'
+          'Invalid config value: Specify a valid Salesforce instance URL.'
         );
       });
     });
 
     describe('defaultdevhubusername', () => {
       it('will fail to validate defaultdevhubusername', () => {
-        verifyValidationError('defaultdevhubusername', 'ab', 'No AuthInfo found for name ab');
+        verifyValidationError('defaultdevhubusername', 'ab', 'No AuthInfo found for name ab.');
       });
     });
 
     describe('defaultusername', () => {
       it('will fail to validate defaultusername', () => {
-        verifyValidationError('defaultusername', 'ab', 'No AuthInfo found for name ab');
+        verifyValidationError('defaultusername', 'ab', 'No AuthInfo found for name ab.');
       });
     });
 
@@ -167,7 +167,7 @@ describe('config:set NUTs', async () => {
         verifyValidationError(
           'disableTelemetry',
           'ab',
-          'Invalid config value. The config value can only be set to true or false.'
+          'Invalid config value: The config value can only be set to true or false.'
         );
       });
     });
@@ -184,7 +184,7 @@ describe('config:set NUTs', async () => {
         verifyValidationError(
           'restDeploy',
           'ab',
-          'Invalid config value. The config value can only be set to true or false.'
+          'Invalid config value: The config value can only be set to true or false.'
         );
       });
     });
