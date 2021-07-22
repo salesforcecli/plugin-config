@@ -7,9 +7,11 @@
 
 import * as path from 'path';
 import { $$, expect, test } from '@salesforce/command/lib/test';
-import { ConfigAggregator, Config } from '@salesforce/core';
+import { ConfigAggregator, SfdxPropertyKeys } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { IPlugin } from '@oclif/config';
+
+const Config = SfdxPropertyKeys;
 
 describe('config:get', () => {
   async function prepareStubs(global = true) {
@@ -86,7 +88,7 @@ describe('config:get', () => {
         const response = JSON.parse(ctx.stdout);
         expect(response.exitCode).to.equal(1);
         expect(response.status).to.equal(1);
-        expect(response.message).to.equal('Unknown config key: customKey');
+        expect(response.message).to.equal('Unknown config name: customKey.');
       });
 
     test

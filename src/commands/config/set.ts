@@ -7,7 +7,7 @@
 
 import * as os from 'os';
 import { flags, FlagsConfig } from '@salesforce/command';
-import { Config, Messages, Org, SfdxError } from '@salesforce/core';
+import { Config, Messages, Org, SfdxPropertyKeys, SfdxError } from '@salesforce/core';
 import { getString } from '@salesforce/ts-types';
 import { ConfigCommand, ConfigSetReturn } from '../../config';
 
@@ -29,13 +29,14 @@ export class Set extends ConfigCommand {
   public static aliases = ['force:config:set'];
 
   public async run(): Promise<ConfigSetReturn> {
-    const config: Config = await Config.create(Config.getDefaultOptions(this.flags.global));
-    await config.read();
+    const config: Config = await this.loadConfig();
     let value = '';
     for (const name of Object.keys(this.varargs)) {
       try {
         value = getString(this.varargs, name);
-        if ((name === Config.DEFAULT_DEV_HUB_USERNAME || name === Config.DEFAULT_USERNAME) && value) {
+        const isOrgKey =
+          name === SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME || name === SfdxPropertyKeys.DEFAULT_USERNAME;
+        if (isOrgKey && value) {
           await Org.create({ aliasOrUsername: value });
         }
         config.set(name, value);
@@ -55,5 +56,19 @@ export class Set extends ConfigCommand {
       this.output('Set Config', false);
     }
     return this.formatResults();
+  }
+
+  protected async loadConfig(): Promise<Config> {
+    try {
+      const config = await Config.create(Config.getDefaultOptions(this.flags.global));
+      await config.read();
+      return config;
+    } catch (error) {
+      if (error instanceof SfdxError) {
+        error.actions = error.actions || [];
+        error.actions.push('Run with --global to set for your entire workspace.');
+      }
+      throw error;
+    }
   }
 }

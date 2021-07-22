@@ -6,7 +6,7 @@
  */
 
 import { $$, expect, test } from '@salesforce/command/lib/test';
-import { Config, Org, AuthInfo } from '@salesforce/core';
+import { Org, SfdxPropertyKeys, Config } from '@salesforce/core';
 import { StubbedType, stubInterface, stubMethod } from '@salesforce/ts-sinon';
 import { SinonStub } from 'sinon';
 
@@ -23,10 +23,10 @@ describe('config:set', () => {
   test
     .do(async () => await prepareStubs())
     .stdout()
-    .command(['config:set', `${Config.API_VERSION}=49.0`, '--global', '--json'])
+    .command(['config:set', `${SfdxPropertyKeys.API_VERSION}=49.0`, '--global', '--json'])
     .it('should return values for all configured properties', (ctx) => {
       const result = JSON.parse(ctx.stdout).result;
-      expect(result.successes).to.deep.equal([{ name: Config.API_VERSION, value: '49.0' }]);
+      expect(result.successes).to.deep.equal([{ name: SfdxPropertyKeys.API_VERSION, value: '49.0' }]);
       expect(configStub.set.callCount).to.equal(1);
     });
 
@@ -37,10 +37,10 @@ describe('config:set', () => {
       orgCreateSpy = stubMethod($$.SANDBOX, Org, 'create').callsFake(async () => orgStub);
     })
     .stdout()
-    .command(['config:set', `${Config.DEFAULT_USERNAME}=MyUser`, '--global', '--json'])
+    .command(['config:set', `${SfdxPropertyKeys.DEFAULT_USERNAME}=MyUser`, '--global', '--json'])
     .it('should instantiate an Org when defaultusername is set', (ctx) => {
       const result = JSON.parse(ctx.stdout).result;
-      expect(result.successes).to.deep.equal([{ name: Config.DEFAULT_USERNAME, value: 'MyUser' }]);
+      expect(result.successes).to.deep.equal([{ name: SfdxPropertyKeys.DEFAULT_USERNAME, value: 'MyUser' }]);
       expect(configStub.set.callCount).to.equal(1);
       expect(orgCreateSpy.callCount).to.equal(1);
     });
@@ -52,37 +52,35 @@ describe('config:set', () => {
       orgCreateSpy = stubMethod($$.SANDBOX, Org, 'create').callsFake(async () => orgStub);
     })
     .stdout()
-    .command(['config:set', `${Config.DEFAULT_DEV_HUB_USERNAME}=MyDevhub`, '--global', '--json'])
+    .command(['config:set', `${SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME}=MyDevhub`, '--global', '--json'])
     .it('should instantiate an Org when defaultusername is set', (ctx) => {
       const result = JSON.parse(ctx.stdout).result;
-      expect(result.successes).to.deep.equal([{ name: Config.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub' }]);
+      expect(result.successes).to.deep.equal([{ name: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub' }]);
       expect(configStub.set.callCount).to.equal(1);
       expect(orgCreateSpy.callCount).to.equal(1);
     });
 
   describe('error cases', () => {
     beforeEach(() => {
-      stubMethod($$.SANDBOX, AuthInfo.prototype, 'loadAuthFromConfig').callsFake(async () => {
-        throw new Error('Error thrown from AuthInfo#loadAuthFromConfig');
-      });
+      stubMethod($$.SANDBOX, Org, 'create').rejects(new Error('Error thrown from Org#create'));
     });
 
     test
       .stdout()
-      .command(['config:set', `${Config.DEFAULT_USERNAME}=NonExistentOrg`, '--global', '--json'])
+      .command(['config:set', `${SfdxPropertyKeys.DEFAULT_USERNAME}=NonExistentOrg`, '--global', '--json'])
       .it('should handle failed org create with --json flag', (ctx) => {
         const response = JSON.parse(ctx.stdout);
         expect(response.status).to.equal(1);
         expect(response.result.failures).to.deep.equal([
-          { name: Config.DEFAULT_USERNAME, message: 'Error thrown from AuthInfo#loadAuthFromConfig' },
+          { name: SfdxPropertyKeys.DEFAULT_USERNAME, message: 'Error thrown from Org#create' },
         ]);
       });
 
     test
       .stdout()
-      .command(['config:set', `${Config.DEFAULT_USERNAME}=NonExistentOrg`, '--global'])
+      .command(['config:set', `${SfdxPropertyKeys.DEFAULT_USERNAME}=NonExistentOrg`, '--global'])
       .it('should handle failed org create with no --json flag', (ctx) => {
-        expect(ctx.stdout).to.include(Config.DEFAULT_USERNAME);
+        expect(ctx.stdout).to.include(SfdxPropertyKeys.DEFAULT_USERNAME);
         expect(ctx.stdout).to.include('NonExistentOrg');
         expect(ctx.stdout).to.include('false');
       });

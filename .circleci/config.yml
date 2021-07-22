@@ -73,12 +73,12 @@ workflows:
             - release-management/test-package
       - release-management/release-package:
           sign: true
-          github-release: true
+          tag: sf
           requires:
             - release-management/test-package
           filters:
             branches:
-              only: main
+              only: v2
           context: CLI_CTC
   test-ts-update:
     triggers:

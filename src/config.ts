@@ -53,6 +53,8 @@ export abstract class ConfigCommand extends SfdxCommand {
 
     this.responses.forEach((response) => {
       if (response.error) {
+        // TODO I think throwing here is weird. I think instead, we should set the exitCode to 1
+        // but this breaks unit tests and should be discussed with the team.
         throw response.error;
       }
     });
@@ -79,7 +81,7 @@ export abstract class ConfigCommand extends SfdxCommand {
         .filter((response) => !response.success)
         .map((failure) => ({
           name: failure.name,
-          message: failure.error.message,
+          message: failure.error.message.replace(/\.\.$/, '.'),
         })),
     };
   }
