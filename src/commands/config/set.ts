@@ -67,12 +67,17 @@ export class Set extends ConfigCommand {
       throw messages.createError('ArgumentsRequired');
     }
 
+    // Support `config set key` (to unset a key)
+    if (args.length === 1 && !args[0].includes('=')) {
+      return { [args[0]]: undefined };
+    }
+
     // Support `config set key value`
     if (args.length === 2 && !args[0].includes('=')) {
       return { [args[0]]: args[1] };
     }
 
-    // Validate the format
+    // Ensure that all args are in the right format (e.g. key=value key1=value1)
     args.forEach((arg) => {
       const split = arg.split('=');
 
