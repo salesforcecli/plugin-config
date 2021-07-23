@@ -27,13 +27,9 @@ function verifyValidationError(key: string, value: string | number, message: str
 
 function verifyKeysAndValuesJson(key: string, value: string | boolean) {
   const res = execCmd(`config set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
-  expect(res).to.deep.equal([
-    {
-      name: key,
-      value: `${value}`,
-      success: true,
-    },
-  ]);
+  const expected = [{ name: key, success: true }] as ConfigResponses;
+  if (value) expected[0].value = `${value}`;
+  expect(res).to.deep.equal(expected);
   execCmd(`config unset ${key}`);
 }
 
@@ -218,6 +214,13 @@ describe('config set NUTs', async () => {
       expect(res2).to.include('100');
 
       execCmd('config unset apiVersion maxQueryLimit');
+    });
+  });
+
+  describe('use set to unset a config key', () => {
+    it('should unset config key when no value is provided', () => {
+      execCmd<ConfigResponses>('config set apiVersion=50.0 --json', { cli: 'sf', ensureExitCode: 0 }).jsonOutput;
+      verifyKeysAndValuesJson('apiVersion', '');
     });
   });
 });
