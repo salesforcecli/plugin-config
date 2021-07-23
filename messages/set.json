@@ -4,7 +4,7 @@
   "globalLong": "Sets the configuration variables globally, so they can be used from any directory.",
   "globalHelp": "Add the --global flag to set config outside of a project.",
   "examples": [
-    "<%= config.bin => <%= command.id => target-org=me@my.org target-devhub=me@myhub.org",
+    "<%= config.bin => <%= command.id => target-org=me@my.org target-dev-hub=me@myhub.org",
     "<%= config.bin => <%= command.id => target-org=me@myhub.org -g"
   ],
   "InvalidArgumentFormat": "Setting variables must be in the format <key>=<value> or <key>=\"<value with spaces>\" but found %s."
