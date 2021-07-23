@@ -42,7 +42,7 @@ export abstract class ConfigCommand extends Command {
       success: false,
       value,
       error,
-      message: error.message.endsWith('..') ? error.message.replace('..', '.') : error.message,
+      message: error.message.replace(/\.\.$/, '.'),
     });
     process.exitCode = 1;
   }
