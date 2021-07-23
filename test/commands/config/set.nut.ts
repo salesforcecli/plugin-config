@@ -28,7 +28,7 @@ function verifyValidationError(key: string, value: string | number, message: str
 function verifyKeysAndValuesJson(key: string, value: string | boolean) {
   const res = execCmd(`config set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
   const expected = [{ name: key, success: true }] as ConfigResponses;
-  if (value) expected[0].value = `${value}`;
+  if (value !== '') expected[0].value = `${value}`;
   expect(res).to.deep.equal(expected);
   execCmd(`config unset ${key}`);
 }
