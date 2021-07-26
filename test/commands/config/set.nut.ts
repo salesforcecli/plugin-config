@@ -6,79 +6,66 @@
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from '@salesforce/command/lib/test';
+import { ConfigResponses } from '../../../src/config';
 
 let testSession: TestSession;
 
-function verifyValidationError(key: string, value: string | number, message) {
-  const expected = {
-    status: 1,
-    result: {
-      successes: [],
-      failures: [
-        {
-          name: key,
-          message,
-        },
-      ],
+function verifyValidationError(key: string, value: string | number, message: string) {
+  const expected = [
+    {
+      name: key,
+      value: `${value}`,
+      message,
+      success: false,
     },
-  };
-  const res = execCmd(`config:set ${key}=${value} --json`).jsonOutput;
+  ];
+  const res = execCmd<Array<{ error: unknown }>>(`config set ${key}=${value} --json`, { cli: 'sf' }).jsonOutput;
+  delete res[0].error;
   expect(res).to.deep.equal(expected);
-  execCmd(`config:unset ${key}`);
+  execCmd(`config unset ${key}`);
 }
 
 function verifyKeysAndValuesJson(key: string, value: string | boolean) {
-  const res = execCmd(`config:set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
-  expect(res).to.deep.equal({
-    status: 0,
-    result: {
-      successes: [
-        {
-          name: key,
-          // value will always be a string
-          value: `${value}`,
-        },
-      ],
-      failures: [],
-    },
-  });
-  execCmd(`config:unset ${key}`);
+  const res = execCmd(`config set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
+  const expected = [{ name: key, success: true }] as ConfigResponses;
+  if (value !== '') expected[0].value = `${value}`;
+  expect(res).to.deep.equal(expected);
+  execCmd(`config unset ${key}`);
 }
+
 function verifyKeysAndValuesStdout(key: string, value: string | boolean, assertions: string[]) {
-  const res = execCmd(`config:set ${key}=${value}`).shellOutput.stdout;
+  const res = execCmd(`config set ${key}=${value}`).shellOutput.stdout;
   expect(res).to.include('=== Set Config');
   assertions.forEach((assertion) => {
     expect(res).to.include(assertion);
   });
 
-  execCmd(`config:unset ${key}`);
+  execCmd(`config unset ${key}`);
 }
 
-describe('config:set NUTs', async () => {
+describe('config set NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configSetNUTs' },
+    authStrategy: 'NONE',
   });
 
-  describe('config:set errors', () => {
-    it('fails to set a randomKey with InvalidVarargsFormat error', () => {
-      const res = execCmd('config:set randomKey --json').jsonOutput;
-      expect(res.stack).to.include('InvalidVarargsFormat');
-      expect(res.status).to.equal(1);
-      expect(res.exitCode).to.equal(1);
-      expect(res.name).to.include('InvalidVarargsFormat');
+  describe('config set errors', () => {
+    it('fails to set a randomKey with InvalidArgumentFormat error', () => {
+      const res = execCmd<{ error: { name: string; exitCode: number } }>('config set randomKey --json', {
+        cli: 'sf',
+        ensureExitCode: 1,
+      }).jsonOutput;
+      expect(res.error.name).to.include('InvalidArgumentFormat');
     });
 
     it('fails to set randomKey=randomValue', () => {
-      const res = execCmd('config:set randomKey=randomValue --json').jsonOutput.result;
-      expect(res).to.deep.equal({
-        successes: [],
-        failures: [
-          {
-            name: 'randomKey',
-            message: 'Unknown config name: randomKey.',
-          },
-        ],
-      });
+      const res = execCmd<ConfigResponses>('config set randomKey=randomValue --json', {
+        ensureExitCode: 1,
+        cli: 'sf',
+      }).jsonOutput;
+      expect(res[0].name).to.equal('randomKey');
+      expect(res[0].message).to.equal('Unknown config name: randomKey.');
+      expect(res[0].success).to.be.false;
     });
   });
 
@@ -128,6 +115,18 @@ describe('config:set NUTs', async () => {
           'abc.com',
           'Invalid config value: Specify a valid Salesforce instance URL.'
         );
+      });
+    });
+
+    describe('target-org', () => {
+      it('will fail to validate target-org', () => {
+        verifyValidationError('target-org', 'ab', 'Invalid config value: org "ab" is not authenticated.');
+      });
+    });
+
+    describe('target-dev-hub', () => {
+      it('will fail to validate target-dev-hub', () => {
+        verifyValidationError('target-dev-hub', 'ab', 'Invalid config value: org "ab" is not authenticated.');
       });
     });
 
@@ -192,33 +191,36 @@ describe('config:set NUTs', async () => {
 
   describe('set two keys and values properly', () => {
     it('will set both apiVersion and maxQueryLimit in one command', () => {
-      const res = execCmd('config:set apiVersion=51.0 maxQueryLimit=100 --json').jsonOutput;
-      expect(res).to.deep.equal({
-        status: 0,
-        result: {
-          successes: [
-            {
-              name: 'apiVersion',
-              value: '51.0',
-            },
-            {
-              name: 'maxQueryLimit',
-              value: '100',
-            },
-          ],
-          failures: [],
+      const res = execCmd('config set apiVersion=51.0 maxQueryLimit=100 --json').jsonOutput;
+      expect(res).to.deep.equal([
+        {
+          name: 'apiVersion',
+          value: '51.0',
+          success: true,
         },
-      });
-      execCmd('config:unset apiVersion maxQueryLimit');
+        {
+          name: 'maxQueryLimit',
+          value: '100',
+          success: true,
+        },
+      ]);
+      execCmd('config unset apiVersion maxQueryLimit');
 
-      const res2 = execCmd('config:set apiVersion=51.0 maxQueryLimit=100', { ensureExitCode: 0 }).shellOutput.stdout;
+      const res2 = execCmd('config set apiVersion=51.0 maxQueryLimit=100', { ensureExitCode: 0 }).shellOutput.stdout;
       expect(res2).to.include('=== Set Config');
       expect(res2).to.include('apiVersion');
       expect(res2).to.include('51.0');
       expect(res2).to.include('maxQueryLimit');
       expect(res2).to.include('100');
 
-      execCmd('config:unset apiVersion maxQueryLimit');
+      execCmd('config unset apiVersion maxQueryLimit');
+    });
+  });
+
+  describe('use set to unset a config key', () => {
+    it('should unset config key when no value is provided', () => {
+      execCmd<ConfigResponses>('config set apiVersion=50.0 --json', { cli: 'sf', ensureExitCode: 0 }).jsonOutput;
+      verifyKeysAndValuesJson('apiVersion', '');
     });
   });
 });

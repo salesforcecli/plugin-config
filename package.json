@@ -5,18 +5,15 @@
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli",
   "dependencies": {
-    "@oclif/config": "^1.17.0",
-    "@salesforce/command": "^3.0.5",
-    "@salesforce/core": "^3.3.1",
+    "@oclif/core": "^0.5.26",
+    "@salesforce/core": "^3.3.3",
+    "chalk": "^4.1.1",
+    "cli-ux": "^5.6.3",
     "tslib": "^2"
   },
   "devDependencies": {
-    "@oclif/command": "^1.6.1",
-    "@oclif/dev-cli": "^1",
-    "@oclif/errors": "^1.2.2",
-    "@oclif/plugin-command-snapshot": "^2.0.0",
-    "@oclif/plugin-help": "^3.0.1",
-    "@salesforce/cli-plugins-testkit": "^1.1.5",
+    "@oclif/plugin-command-snapshot": "^2.2.2",
+    "@salesforce/cli-plugins-testkit": "^1.2.0",
     "@salesforce/dev-config": "^2.1.2",
     "@salesforce/dev-scripts": "^0.9.15",
     "@salesforce/plugin-command-reference": "^1.3.0",
@@ -38,6 +35,7 @@
     "lint-staged": "^11.0.0",
     "mocha": "^8.4.0",
     "nyc": "^15.1.0",
+    "oclif": "^2.0.0-main.1",
     "prettier": "^2.0.5",
     "pretty-quick": "^3.1.0",
     "shx": "0.3.3",
@@ -51,7 +49,8 @@
   "files": [
     "/lib",
     "/messages",
-    "/oclif.manifest.json"
+    "/oclif.manifest.json",
+    "/schemas"
   ],
   "homepage": "https://github.com/salesforcecli/plugin-config",
   "keywords": [
@@ -64,6 +63,7 @@
   "license": "BSD-3-Clause",
   "oclif": {
     "commands": "./lib/commands",
+    "topicSeparator": " ",
     "hooks": {
       "init": [
         "./lib/hooks/init/load_config_meta"
@@ -93,16 +93,17 @@
     "format": "sf-format",
     "lint": "sf-lint",
     "postpack": "shx rm -f oclif.manifest.json",
-    "posttest": "yarn lint && yarn test:deprecation-policy && yarn test:command-reference",
+    "posttest": "yarn lint && yarn test:deprecation-policy && yarn test:json-schema && yarn test:command-reference",
     "prepack": "sf-prepack",
     "prepare": "sf-install",
     "pretest": "sf-compile-test",
     "reformat": "prettier --config .prettierrc --write './*.{js,json,md}' './**/*.{ts,json,md}'",
     "test": "sf-test",
-    "test:command-reference": "./bin/run commandreference:generate --erroronwarnings",
-    "test:deprecation-policy": "./bin/run snapshot:compare",
+    "test:command-reference": "./bin/dev commandreference:generate --erroronwarnings",
+    "test:deprecation-policy": "./bin/dev snapshot:compare",
+    "test:json-schema": "./bin/dev schema:compare",
     "test:nuts": "nyc mocha \"**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel",
-    "version": "oclif-dev readme"
+    "version": "oclif readme"
   },
   "husky": {
     "hooks": {

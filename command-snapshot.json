@@ -1,37 +1,22 @@
 [
-    {
-        "command": "config:get",
-        "plugin": "@salesforce/plugin-config",
-        "flags": [
-            "json",
-            "loglevel",
-            "verbose"
-        ]
-    },
-    {
-        "command": "config:list",
-        "plugin": "@salesforce/plugin-config",
-        "flags": [
-            "json",
-            "loglevel"
-        ]
-    },
-    {
-        "command": "config:set",
-        "plugin": "@salesforce/plugin-config",
-        "flags": [
-            "global",
-            "json",
-            "loglevel"
-        ]
-    },
-    {
-        "command": "config:unset",
-        "plugin": "@salesforce/plugin-config",
-        "flags": [
-            "global",
-            "json",
-            "loglevel"
-        ]
-    }
+  {
+    "command": "config:get",
+    "plugin": "@salesforce/plugin-config",
+    "flags": ["json", "verbose"]
+  },
+  {
+    "command": "config:list",
+    "plugin": "@salesforce/plugin-config",
+    "flags": ["json"]
+  },
+  {
+    "command": "config:set",
+    "plugin": "@salesforce/plugin-config",
+    "flags": ["global", "json"]
+  },
+  {
+    "command": "config:unset",
+    "plugin": "@salesforce/plugin-config",
+    "flags": ["global", "json"]
+  }
 ]
