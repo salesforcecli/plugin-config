@@ -32,11 +32,13 @@ export class Set extends ConfigCommand {
     let value = '';
     const configs = await this.parseConfigKeysAndValues();
     for (const name of Object.keys(configs)) {
+      const isOrgKey = this.isOrgKey(name);
       try {
         value = configs[name];
-        if (this.isOrgKey(name) && value) {
-          await Org.create({ aliasOrUsername: value });
-        }
+        // core's builtin config validation requires synchronous functions but there's
+        // currently no way to validate an org synchronously. Therefore, we have to manually
+        // validate the org here and manually set the error message if it fails
+        if (isOrgKey && value) await this.validateOrg(value);
         config.set(name, value);
         this.responses.push({ name, value, success: true });
       } catch (err) {
@@ -112,5 +114,13 @@ export class Set extends ConfigCommand {
       OrgConfigProperties.TARGET_ORG,
     ] as string[];
     return orgKeys.includes(name);
+  }
+
+  private async validateOrg(value: string): Promise<void> {
+    try {
+      await Org.create({ aliasOrUsername: value });
+    } catch {
+      throw new Error(`Invalid config value: org "${value}" is not authenticated.`);
+    }
   }
 }

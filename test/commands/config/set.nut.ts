@@ -132,13 +132,13 @@ describe('config set NUTs', async () => {
 
     describe('defaultdevhubusername', () => {
       it('will fail to validate defaultdevhubusername', () => {
-        verifyValidationError('defaultdevhubusername', 'ab', 'No AuthInfo found for name ab.');
+        verifyValidationError('defaultdevhubusername', 'ab', 'Invalid config value: org "ab" is not authenticated.');
       });
     });
 
     describe('defaultusername', () => {
       it('will fail to validate defaultusername', () => {
-        verifyValidationError('defaultusername', 'ab', 'No AuthInfo found for name ab.');
+        verifyValidationError('defaultusername', 'ab', 'Invalid config value: org "ab" is not authenticated.');
       });
     });
 

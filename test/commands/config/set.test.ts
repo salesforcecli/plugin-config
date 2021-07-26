@@ -65,7 +65,7 @@ describe('config:set', () => {
   describe('error cases', () => {
     beforeEach(() => {
       stubMethod($$.SANDBOX, Org, 'create').callsFake(async () => {
-        throw new Error('Error thrown from Org.create');
+        throw new Error('No AuthInfo found');
       });
     });
 
@@ -82,7 +82,7 @@ describe('config:set', () => {
               name: 'Error',
             },
             name: SfdxPropertyKeys.DEFAULT_USERNAME,
-            message: 'Error thrown from Org.create',
+            message: 'Invalid config value: org "NonExistentOrg" is not authenticated.',
             success: false,
             value: 'NonExistentOrg',
           },
