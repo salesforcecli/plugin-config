@@ -64,7 +64,7 @@ export class Set extends ConfigCommand {
     const args = await this.resolveArguments();
 
     if (!args.length) {
-      throw messages.createError('ArgumentsRequired');
+      throw messages.createError('error.ArgumentsRequired');
     }
 
     // Support `config set key value`
@@ -77,13 +77,13 @@ export class Set extends ConfigCommand {
       const split = arg.split('=');
 
       if (split.length !== 2) {
-        throw messages.createError('InvalidArgumentFormat', [arg]);
+        throw messages.createError('error.InvalidArgumentFormat', [arg]);
       }
 
       const [name, value] = split;
 
       if (configs[name]) {
-        throw messages.createError('DuplicateArgument', [name]);
+        throw messages.createError('error.DuplicateArgument', [name]);
       }
 
       configs[name] = value || undefined;

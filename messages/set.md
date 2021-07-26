@@ -1,6 +1,6 @@
 # summary
-  
-Set one or more configuration variables, such as your default environment. 
+
+Set one or more configuration variables, such as your default environment.
 
 # description
 
@@ -10,9 +10,9 @@ Local configuration variables apply only to your current project. Global variabl
 
 The resolution order if you've set a flag value in multiple ways is as follows:
 
-	1. Flag value specified at the command line.
-	2. Local (project-level) configuration variable.
-	3. Global configuration variable.
+    1. Flag value specified at the command line.
+    2. Local (project-level) configuration variable.
+    3. Global configuration variable.
 
 Run "sf <command> --help" to get a list of configuration variables used by that command. Run "sf config list" to see the configuration variables you've already set and their level (local or global).
 
@@ -35,3 +35,15 @@ If you set a configuration variable and then run a command that uses it, the com
 # flags.global.summary
 
 Set the configuration variables globally, so they can be used from any directory.
+
+# error.InvalidArgumentFormat
+
+Setting variables must be in the format <key>=<value> or <key>=\"<value with spaces>\" but found %s.
+
+# error.DuplicateArgument
+
+Found duplicate argument %s
+
+# error.ArgumentsRequired
+
+Please provide config name(s) to set.

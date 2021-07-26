@@ -22,4 +22,4 @@ Display whether the configuration variables are set locally or globally.
 
 # error.NoConfigKeysFound
 
-Please provide config name(s) to unset.
+Please provide config name(s) to get.
