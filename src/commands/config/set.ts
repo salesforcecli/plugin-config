@@ -6,7 +6,7 @@
  */
 
 import { Flags } from '@oclif/core';
-import { Config, Messages, Org, SfdxPropertyKeys, SfdxError } from '@salesforce/core';
+import { Config, Messages, Org, SfdxPropertyKeys, SfdxError, OrgConfigProperties } from '@salesforce/core';
 import { ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -34,9 +34,7 @@ export class Set extends ConfigCommand {
     for (const name of Object.keys(configs)) {
       try {
         value = configs[name];
-        const isOrgKey =
-          name === SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME || name === SfdxPropertyKeys.DEFAULT_USERNAME;
-        if (isOrgKey && value) {
+        if (this.isOrgKey(name) && value) {
           await Org.create({ aliasOrUsername: value });
         }
         config.set(name, value);
@@ -104,5 +102,15 @@ export class Set extends ConfigCommand {
       }
       throw error;
     }
+  }
+
+  private isOrgKey(name: string): boolean {
+    const orgKeys = [
+      SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME,
+      SfdxPropertyKeys.DEFAULT_USERNAME,
+      OrgConfigProperties.TARGET_DEV_HUB,
+      OrgConfigProperties.TARGET_ORG,
+    ] as string[];
+    return orgKeys.includes(name);
   }
 }
