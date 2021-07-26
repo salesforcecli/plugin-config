@@ -69,7 +69,7 @@
         "./lib/hooks/init/load_config_meta"
       ]
     },
-    "bin": "sfdx",
+    "bin": "sf",
     "devPlugins": [
       "@oclif/plugin-help",
       "@oclif/plugin-command-snapshot",

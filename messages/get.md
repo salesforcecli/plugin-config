@@ -1,5 +1,5 @@
 # summary
-  
+
 Get the value of a configuration variable.
 
 # description
@@ -10,7 +10,7 @@ Run "sf config list" to see all the configuration variables you've set. Global c
 
 - Get the value of the "target-org" configuration variable.
 
-  <%= config.bin %> <%= command.id %> target-org 
+  <%= config.bin %> <%= command.id %> target-org
 
 - Get multiple configuration variables and display whether they're set locally or globally:
 
@@ -19,3 +19,7 @@ Run "sf config list" to see all the configuration variables you've set. Global c
 # flags.verbose.summary
 
 Display whether the configuration variables are set locally or globally.
+
+# error.NoConfigKeysFound
+
+Please provide config name(s) to unset.

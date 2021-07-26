@@ -1,5 +1,5 @@
 # summary
-  
+
 Unset local or global configuration variables.
 
 # description
@@ -19,3 +19,7 @@ Local configuration variables apply only to your current project. Global configu
 # flags.global.summary
 
 Unset the configuration variables globally, so they can no longer be used from any directory.
+
+# error.NoConfigKeysFound
+
+Please provide config name(s) to unset.

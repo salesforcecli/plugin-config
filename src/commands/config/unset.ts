@@ -14,14 +14,14 @@ const messages = Messages.loadMessages('@salesforce/plugin-config', 'unset');
 
 export class UnSet extends ConfigCommand {
   public static readonly description = messages.getMessage('description');
+  public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
   public static readonly strict = false;
 
   public static readonly flags = {
     global: Flags.boolean({
       char: 'g',
-      summary: messages.getMessage('global'),
-      description: messages.getMessage('globalLong'),
+      summary: messages.getMessage('flags.global.summary'),
     }),
   };
 
@@ -29,7 +29,7 @@ export class UnSet extends ConfigCommand {
     const { argv, flags } = await this.parse(UnSet);
 
     if (!argv || argv.length === 0) {
-      const errorMessage = messages.getMessage('NoConfigKeysFound');
+      const errorMessage = messages.getMessage('error.NoConfigKeysFound');
       throw new SfdxError(errorMessage, 'NoConfigKeysFound');
     } else {
       const config: Config = await Config.create(Config.getDefaultOptions(flags.global));

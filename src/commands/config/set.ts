@@ -14,6 +14,7 @@ const messages = Messages.loadMessages('@salesforce/plugin-config', 'set');
 
 export class Set extends ConfigCommand {
   public static readonly description = messages.getMessage('description');
+  public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
 
   public static readonly strict = false;
@@ -21,8 +22,7 @@ export class Set extends ConfigCommand {
   public static readonly flags = {
     global: Flags.boolean({
       char: 'g',
-      summary: messages.getMessage('global'),
-      description: messages.getMessage('globalLong'),
+      summary: messages.getMessage('flags.global.summary'),
     }),
   };
 
