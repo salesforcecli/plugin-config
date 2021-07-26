@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.3](https://github.com/salesforcecli/plugin-config/compare/v2.0.2...v2.0.3) (2021-07-26)
+
+
+### Bug Fixes
+
+* validate orgs during set ([d065329](https://github.com/salesforcecli/plugin-config/commit/d0653298549e204328e2bf2a5076938dbca01ea6))
+
 ### [2.0.2](https://github.com/salesforcecli/plugin-config/compare/v2.0.1...v2.0.2) (2021-07-26)
 
 
