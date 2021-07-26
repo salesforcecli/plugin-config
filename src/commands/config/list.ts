@@ -12,7 +12,10 @@ const messages = Messages.loadMessages('@salesforce/plugin-config', 'list');
 
 export default class List extends ConfigCommand {
   public static readonly description = messages.getMessage('description');
+  public static readonly summary = messages.getMessage('summary');
+  public static readonly examples = messages.getMessages('examples');
   public static flags = {};
+
   public async run(): Promise<ConfigResponses> {
     const aggregator = await ConfigAggregator.create();
 

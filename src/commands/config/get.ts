@@ -13,17 +13,20 @@ const messages = Messages.loadMessages('@salesforce/plugin-config', 'get');
 
 export class Get extends ConfigCommand {
   public static readonly description = messages.getMessage('description');
+  public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
   public static readonly strict = false;
   public static readonly flags = {
-    verbose: Flags.boolean(),
+    verbose: Flags.boolean({
+      summary: messages.getMessage('flags.verbose.summary'),
+    }),
   };
 
   public async run(): Promise<ConfigResponses> {
     const { argv, flags } = await this.parse(Get);
 
     if (!argv || argv.length === 0) {
-      const errorMessage = messages.getMessage('NoConfigKeysFound');
+      const errorMessage = messages.getMessage('error.NoConfigKeysFound');
       throw new SfdxError(errorMessage, 'NoConfigKeysFound');
     } else {
       const aggregator = await ConfigAggregator.create();
