@@ -69,117 +69,143 @@ sfdx plugins
 # Commands
 
 <!-- commands -->
-* [`sfdx config get`](#sfdx-config-get)
-* [`sfdx config list`](#sfdx-config-list)
-* [`sfdx config set`](#sfdx-config-set)
-* [`sfdx config unset`](#sfdx-config-unset)
+* [`sf config get`](#sf-config-get)
+* [`sf config list`](#sf-config-list)
+* [`sf config set`](#sf-config-set)
+* [`sf config unset`](#sf-config-unset)
 
-## `sfdx config get`
+## `sf config get`
 
-get config var values for given names
+Run "sf config list" to see all the configuration variables you've set. Global configuration variable are always displayed; local ones are displayed if you run the command in a project directory.
 
 ```
 USAGE
-  $ sfdx config get [--json] [--verbose]
+  $ sf config get [--json] [--verbose]
 
 FLAGS
-  --verbose
+  --verbose  Display whether the configuration variables are set locally or globally.
 
 GLOBAL FLAGS
   --json  format output as json
 
 DESCRIPTION
-  get config var values for given names
+  Get the value of a configuration variable.
 
-  Gets the Salesforce CLI configuration values for your default scratch org, your default Dev Hub org, your default
-  instance URL, or any combination of the three. To see your default scratch org username, include 'defaultusername'.
-
-  To see your default Dev Hub, include 'defaultdevhubusername'.
-
-  To see your default instance URL, include 'instanceUrl'.
-
-  To see the locations where your values are set, include the --verbose flag.
+  Run "sf config list" to see all the configuration variables you've set. Global configuration variable are always
+  displayed; local ones are displayed if you run the command in a project directory.
 
 EXAMPLES
-  $ sfdx config:get defaultusername
+  Get the value of the "target-org" configuration variable.
 
-  $ sfdx config:get defaultusername defaultdevhubusername instanceUrl
+    $ sf config get target-org
 
-  $ sfdx config:get defaultusername defaultdevhubusername --verbose
+  Get multiple configuration variables and display whether they're set locally or globally:
+
+    $ sf config get target-org api-version --verbose
 ```
 
-## `sfdx config list`
+## `sf config list`
 
-lists the config variables that the Salesforce CLI uses for various commands and tasks.
+Global configuration variables apply to any directory and are always displayed. If you run this command from a project directory, local configuration variables are also displayed.
 
 ```
 USAGE
-  $ sfdx config list [--json]
+  $ sf config list [--json]
 
 GLOBAL FLAGS
   --json  format output as json
 
 DESCRIPTION
-  lists the config variables that the Salesforce CLI uses for various commands and tasks.
+  List the configuration variables that you've previously set.
+
+  Global configuration variables apply to any directory and are always displayed. If you run this command from a project
+  directory, local configuration variables are also displayed.
+
+EXAMPLES
+  List both global configuration variables and those local to your project:
+
+    $ sf config list
 ```
 
-## `sfdx config set`
+## `sf config set`
 
-sets the configuration variables that the Salesforce CLI uses for various commands and tasks.
+Use configuration variables to set CLI defaults, such as your default environment or the API version you want the CLI to use. For example, if you set the "target-org" configuration variable, you don't need to specify it as a "sf deploy metadata" flag if you're deploying to your default org.
 
 ```
 USAGE
-  $ sfdx config set [--json] [-g]
+  $ sf config set [--json] [-g]
 
 FLAGS
-  -g, --global  set config var globally (to be used from any directory)
+  -g, --global  Set the configuration variables globally, so they can be used from any directory.
 
 GLOBAL FLAGS
   --json  format output as json
 
 DESCRIPTION
-  sets the configuration variables that the Salesforce CLI uses for various commands and tasks.
+  Set one or more configuration variables, such as your default environment.
 
-  Local variables apply only to your current project. Global variables apply in any directory.
+  Use configuration variables to set CLI defaults, such as your default environment or the API version you want the CLI
+  to use. For example, if you set the "target-org" configuration variable, you don't need to specify it as a "sf deploy
+  metadata" flag if you're deploying to your default org.
+
+  Local configuration variables apply only to your current project. Global variables, specified with the --global flag,
+  apply in any directory.
+
+  The resolution order if you've set a flag value in multiple ways is as follows:
+
+  1. Flag value specified at the command line.
+
+  2. Local (project-level) configuration variable.
+
+  3. Global configuration variable.
+
+  Run "sf <command> --help" to get a list of configuration variables used by that command. Run "sf config list" to see
+  the configuration variables you've already set and their level (local or global).
+
+  If you set a configuration variable and then run a command that uses it, the command output displays this information
+  at runtime.
 
 EXAMPLES
-  <%= config.bin => <%= command.id => target-org=me@my.org target-dev-hub=me@myhub.org
+  Set the local target-org configuration variable to an org username:
 
-  <%= config.bin => <%= command.id => target-org=me@myhub.org -g
+    $ sf config set target-org=me@my.org
 
-FLAG DESCRIPTIONS
-  -g, --global  set config var globally (to be used from any directory)
+  Set the local target-org configuration variable to an alias:
 
-    Sets the configuration variables globally, so they can be used from any directory.
+    $ sf config set target-org=my-scratch-org
+
+  Set the global target-org configuration variable:
+
+    $ sf config set --global target-org=my-scratch-org
 ```
 
-## `sfdx config unset`
+## `sf config unset`
 
-unsets the local and global configuration variables for the Salesforce CLI.
+Local configuration variables apply only to your current project. Global configuration variables apply in any directory.
 
 ```
 USAGE
-  $ sfdx config unset [--json] [-g]
+  $ sf config unset [--json] [-g]
 
 FLAGS
-  -g, --global  unset config var globally (to be used from any directory)
+  -g, --global  Unset the configuration variables globally, so they can no longer be used from any directory.
 
 GLOBAL FLAGS
   --json  format output as json
 
 DESCRIPTION
-  unsets the local and global configuration variables for the Salesforce CLI.
+  Unset local or global configuration variables.
 
-  Local variables apply only to your current project. Global variables apply in any directory.
+  Local configuration variables apply only to your current project. Global configuration variables apply in any
+  directory.
 
 EXAMPLES
-  $ sfdx config:unset defaultusername defaultdevhubusername
+  Unset the local "target-org" configuration variable:
 
-  $ sfdx config:unset defaultdevhubusername -g
+    $ sf config unset target-org
 
-FLAG DESCRIPTIONS
-  -g, --global  unset config var globally (to be used from any directory)
+  Unset multiple configuration variables globally:
 
-    Unsets the configuration variables globally, so they can be used from any directory.
+    $ sf config unset target-org api-version --global
 ```
 <!-- commandsstop -->

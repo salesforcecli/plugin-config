@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.5](https://github.com/salesforcecli/plugin-config/compare/v2.0.3...v2.0.5) (2021-07-27)
+
+
+### Bug Fixes
+
+* create new manifest ([7cd2f2f](https://github.com/salesforcecli/plugin-config/commit/7cd2f2f62f470c7122d4b078499f76955dd1db89))
+* use new messages ([#166](https://github.com/salesforcecli/plugin-config/issues/166)) ([4ef104e](https://github.com/salesforcecli/plugin-config/commit/4ef104e3bc14e4528c7fba6e288080b23f40df29))
+
 ### [2.0.3](https://github.com/salesforcecli/plugin-config/compare/v2.0.2...v2.0.3) (2021-07-26)
 
 
