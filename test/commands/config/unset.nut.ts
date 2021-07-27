@@ -16,7 +16,10 @@ describe('config:unset NUTs', async () => {
 
   describe('config:unset without keys', () => {
     it('errors when attempting to unset nothing', () => {
-      const res = execCmd('config:unset --json', { ensureExitCode: 1 }).jsonOutput;
+      const res = execCmd<{ stack: string; name: string; exitCode: string; commandName: string }>(
+        'config:unset --json',
+        { ensureExitCode: 1 }
+      ).jsonOutput.result;
       expect(res.stack).to.include('NoConfigKeysFound');
       delete res.stack;
       expect(res).to.deep.equal({
