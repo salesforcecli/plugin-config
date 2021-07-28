@@ -67,6 +67,7 @@ describe('config:set NUTs', async () => {
         name: string;
         exitCode: number;
         commandName: string;
+        status: string;
       };
       expect(res.stack).to.include('InvalidVarargsFormat');
       expect(res.status).to.equal(1);
