@@ -12,11 +12,17 @@ let testSession: TestSession;
 describe('config:unset NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configUnsetNUTs' },
+    authStrategy: 'NONE',
   });
 
   describe('config:unset without keys', () => {
     it('errors when attempting to unset nothing', () => {
-      const res = execCmd('config:unset --json', { ensureExitCode: 1 }).jsonOutput;
+      const res = execCmd('config:unset --json', { ensureExitCode: 1 }).jsonOutput as unknown as {
+        stack: string;
+        name: string;
+        exitCode: number;
+        commandName: string;
+      };
       expect(res.stack).to.include('NoConfigKeysFound');
       delete res.stack;
       expect(res).to.deep.equal({

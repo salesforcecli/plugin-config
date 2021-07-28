@@ -57,11 +57,18 @@ function verifyKeysAndValuesStdout(key: string, value: string | boolean, asserti
 describe('config:set NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configSetNUTs' },
+    authStrategy: 'NONE',
   });
 
   describe('config:set errors', () => {
     it('fails to set a randomKey with InvalidVarargsFormat error', () => {
-      const res = execCmd('config:set randomKey --json').jsonOutput;
+      const res = execCmd('config:set randomKey --json').jsonOutput as unknown as {
+        stack: string;
+        name: string;
+        exitCode: number;
+        commandName: string;
+        status: string;
+      };
       expect(res.stack).to.include('InvalidVarargsFormat');
       expect(res.status).to.equal(1);
       expect(res.exitCode).to.equal(1);

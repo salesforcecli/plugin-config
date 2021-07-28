@@ -12,11 +12,14 @@ let testSession: TestSession;
 describe('config:get NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configGetNUTs' },
+    authStrategy: 'NONE',
   });
 
   describe('config:get errors', () => {
     it('attempt to config get without keys', () => {
-      const res = execCmd('config:get --json', { ensureExitCode: 1 }).jsonOutput;
+      const res = execCmd('config:get --json', {
+        ensureExitCode: 1,
+      }).jsonOutput as unknown as { stack: string; name: string; exitCode: number; commandName: string };
       expect(res.stack).to.include('NoConfigKeysFound');
       expect(res.name).to.include('NoConfigKeysFound');
       expect(res.exitCode).to.equal(1);
@@ -42,6 +45,8 @@ describe('config:get NUTs', async () => {
       expect(res.jsonOutput.result[0].location).to.include('Global');
       expect(res.jsonOutput.result[0].value).to.include('51.0');
       expect(res.jsonOutput.status).to.equal(0);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       expect(res.jsonOutput.warnings).to.include('apiVersion configuration overridden at "51.0"');
     });
 
@@ -81,7 +86,9 @@ describe('config:get NUTs', async () => {
     it('gets multiple results correctly', () => {
       execCmd('config:set restDeploy=false');
       execCmd('config:set apiVersion=51.0');
-      const res = execCmd('config:get apiVersion maxQueryLimit restDeploy --json', { ensureExitCode: 0 });
+      const res = execCmd<{ result: { path: string } }>('config:get apiVersion maxQueryLimit restDeploy --json', {
+        ensureExitCode: 0,
+      });
       Object.values(res.jsonOutput.result).forEach((result) => {
         expect(result.path).to.include('sfdx-config.json');
         delete result.path;
