@@ -12,6 +12,7 @@ let testSession: TestSession;
 describe('config:get NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configGetNUTs' },
+    authStrategy: 'NONE',
   });
 
   describe('config:get errors', () => {

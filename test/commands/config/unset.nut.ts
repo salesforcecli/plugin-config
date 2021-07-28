@@ -12,6 +12,7 @@ let testSession: TestSession;
 describe('config:unset NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configUnsetNUTs' },
+    authStrategy: 'NONE',
   });
 
   describe('config:unset without keys', () => {
