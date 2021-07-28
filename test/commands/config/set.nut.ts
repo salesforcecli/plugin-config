@@ -61,7 +61,10 @@ describe('config:set NUTs', async () => {
 
   describe('config:set errors', () => {
     it('fails to set a randomKey with InvalidVarargsFormat error', () => {
-      const res = execCmd('config:set randomKey --json').jsonOutput;
+      const res =
+        execCmd<{ stack: string; name: string; exitCode: string; commandName: string; status: string }>(
+          'config:set randomKey --json'
+        ).jsonOutput.result;
       expect(res.stack).to.include('InvalidVarargsFormat');
       expect(res.status).to.equal(1);
       expect(res.exitCode).to.equal(1);
