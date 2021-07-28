@@ -108,7 +108,7 @@ EXAMPLES
   sfdx config:get defaultusername defaultdevhubusername --verbose
 ```
 
-_See code: [src/commands/config/get.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.12/src/commands/config/get.ts)_
+_See code: [src/commands/config/get.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.13/src/commands/config/get.ts)_
 
 ## `sfdx config:list [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -128,7 +128,7 @@ ALIASES
   $ sfdx force:config:list
 ```
 
-_See code: [src/commands/config/list.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.12/src/commands/config/list.ts)_
+_See code: [src/commands/config/list.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.13/src/commands/config/list.ts)_
 
 ## `sfdx config:set name=value... [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -159,7 +159,7 @@ EXAMPLES
   sfdx config:set defaultdevhubusername=me@myhub.org -g
 ```
 
-_See code: [src/commands/config/set.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.12/src/commands/config/set.ts)_
+_See code: [src/commands/config/set.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.13/src/commands/config/set.ts)_
 
 ## `sfdx config:unset [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -186,5 +186,5 @@ EXAMPLES
   sfdx config:unset defaultdevhubusername -g
 ```
 
-_See code: [src/commands/config/unset.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.12/src/commands/config/unset.ts)_
+_See code: [src/commands/config/unset.ts](https://github.com/salesforcecli/plugin-config/blob/v1.2.13/src/commands/config/unset.ts)_
 <!-- commandsstop -->
