@@ -129,11 +129,11 @@ describe('config:set NUTs', async () => {
         ]);
       });
 
-      it('will fail to validate instanceUrl', () => {
+      it('will fail to validate instanceUrl when bad URL', () => {
         verifyValidationError('instanceUrl', 'abc.com', 'Invalid URL');
       });
 
-      it('will fail to validate instanceUrl', () => {
+      it('will fail to validate instanceUrl when non-Salesforce URL', () => {
         verifyValidationError(
           'instanceUrl',
           'https://not-our-url.com',
