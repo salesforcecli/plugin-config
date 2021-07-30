@@ -130,9 +130,13 @@ describe('config:set NUTs', async () => {
       });
 
       it('will fail to validate instanceUrl', () => {
+        verifyValidationError('instanceUrl', 'abc.com', 'Invalid URL');
+      });
+
+      it('will fail to validate instanceUrl', () => {
         verifyValidationError(
           'instanceUrl',
-          'abc.com',
+          'https://not-our-url.com',
           'Invalid config value. Specify a valid Salesforce instance URL'
         );
       });
