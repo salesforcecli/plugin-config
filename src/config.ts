@@ -59,7 +59,10 @@ export abstract class ConfigCommand extends Command {
     };
 
     if (!header.includes('Unset')) {
-      columns.value = { header: 'Value' };
+      columns.value = {
+        header: 'Value',
+        get: (row): string => row.value ?? '',
+      };
     }
 
     if (!header.includes('List')) {
@@ -67,7 +70,10 @@ export abstract class ConfigCommand extends Command {
     }
 
     if (verbose) {
-      columns.location = { header: 'Location' };
+      columns.location = {
+        header: 'Location',
+        get: (row): string => row.location ?? '',
+      };
     }
 
     if (this.responses.find((msg) => msg.error)) {
@@ -76,13 +82,5 @@ export abstract class ConfigCommand extends Command {
     }
 
     cli.table(this.responses, columns);
-
-    this.responses.forEach((response) => {
-      if (response.error) {
-        // TODO I think throwing here is weird. I think instead, we should set the exitCode to 1
-        // but this breaks unit tests and should be discussed with the team.
-        // throw response.error;
-      }
-    });
   }
 }
