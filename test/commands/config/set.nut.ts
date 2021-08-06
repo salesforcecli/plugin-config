@@ -4,6 +4,7 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+import { platform } from 'os';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from '@salesforce/command/lib/test';
 
@@ -130,7 +131,11 @@ describe('config:set NUTs', async () => {
       });
 
       it('will fail to validate instanceUrl when bad URL', () => {
-        verifyValidationError('instanceUrl', 'abc.com', 'Invalid URL');
+        if (platform() === 'win32') {
+          verifyValidationError('instanceUrl', 'abc.com', 'Invalid URL: abc.com');
+        } else {
+          verifyValidationError('instanceUrl', 'abc.com', 'Invalid URL');
+        }
       });
 
       it('will fail to validate instanceUrl when non-Salesforce URL', () => {
