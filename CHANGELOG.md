@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.8](https://github.com/salesforcecli/plugin-config/compare/v2.0.7...v2.0.8) (2021-08-06)
+
+
+### Bug Fixes
+
+* dont show undefined in table ([f0e2b8a](https://github.com/salesforcecli/plugin-config/commit/f0e2b8a6a9422c4382683878b251d59b588b0c2d))
+* use new table ([ddeee6b](https://github.com/salesforcecli/plugin-config/commit/ddeee6bd5cb20f997088f49b98d7aadcbbdcc45c))
+
 ### [2.0.7](https://github.com/salesforcecli/plugin-config/compare/v2.0.6...v2.0.7) (2021-07-28)
 
 
