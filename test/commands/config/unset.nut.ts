@@ -46,7 +46,7 @@ describe('config unset NUTs', async () => {
 
     it('lists singular result correctly stdout', () => {
       const res = execCmd('config unset apiVersion').shellOutput.stdout;
-      expect(res).to.include('=== Unset Config');
+      expect(res).to.include('Unset Config');
       expect(res).to.include('apiVersion');
       expect(res).to.include('Name');
       expect(res).to.include('Success');
@@ -82,7 +82,7 @@ describe('config unset NUTs', async () => {
     it('lists multiple results correctly stdout', () => {
       execCmd('config set restDeploy=false');
       const res = execCmd('config unset restDeploy apiVersion maxQueryLimit', { ensureExitCode: 0 }).shellOutput.stdout;
-      expect(res).to.include('=== Unset Config');
+      expect(res).to.include('Unset Config');
       expect(res).to.include('apiVersion');
       expect(res).to.include('maxQueryLimit');
       expect(res).to.include('restDeploy');

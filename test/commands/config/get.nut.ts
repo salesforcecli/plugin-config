@@ -104,7 +104,7 @@ describe('config get NUTs', async () => {
 
     it('gets multiple results correctly stdout', () => {
       const res = execCmd('config get apiVersion maxQueryLimit restDeploy').shellOutput.stdout;
-      expect(res).to.include('=== Get Config');
+      expect(res).to.include('Get Config');
       expect(res).to.include('apiVersion');
       expect(res).to.include('51.0');
       expect(res).to.include('maxQueryLimit');

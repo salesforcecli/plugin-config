@@ -35,7 +35,7 @@ function verifyKeysAndValuesJson(key: string, value: string | boolean) {
 
 function verifyKeysAndValuesStdout(key: string, value: string | boolean, assertions: string[]) {
   const res = execCmd(`config set ${key}=${value}`).shellOutput.stdout;
-  expect(res).to.include('=== Set Config');
+  expect(res).to.include('Set Config');
   assertions.forEach((assertion) => {
     expect(res).to.include(assertion);
   });
@@ -207,7 +207,7 @@ describe('config set NUTs', async () => {
       execCmd('config unset apiVersion maxQueryLimit');
 
       const res2 = execCmd('config set apiVersion=51.0 maxQueryLimit=100', { ensureExitCode: 0 }).shellOutput.stdout;
-      expect(res2).to.include('=== Set Config');
+      expect(res2).to.include('Set Config');
       expect(res2).to.include('apiVersion');
       expect(res2).to.include('51.0');
       expect(res2).to.include('maxQueryLimit');
