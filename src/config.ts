@@ -9,7 +9,6 @@ import { Command } from '@oclif/core';
 import { cli } from 'cli-ux';
 import type { table } from 'cli-ux/lib/styled/table';
 import { ConfigInfo, SfdxError } from '@salesforce/core';
-import * as chalk from 'chalk';
 
 export interface Msg {
   name: string;
@@ -47,42 +46,42 @@ export abstract class ConfigCommand extends Command {
     process.exitCode = 1;
   }
 
-  protected output(header: string, verbose: boolean): void {
+  protected output(title: string, verbose: boolean): void {
     if (this.responses.length === 0) {
       this.log('No results found');
       return;
     }
 
-    cli.styledHeader(chalk.blue(header));
     const columns: table.Columns<Msg> = {
       name: { header: 'Name' },
     };
 
-    if (!header.includes('Unset')) {
-      columns.value = { header: 'Value' };
+    if (!title.includes('Unset')) {
+      columns.value = {
+        header: 'Value',
+        get: (row): string => row.value ?? '',
+      };
     }
 
-    if (!header.includes('List')) {
+    if (!title.includes('List')) {
       columns.success = { header: 'Success' };
     }
 
     if (verbose) {
-      columns.location = { header: 'Location' };
+      columns.location = {
+        header: 'Location',
+        get: (row): string => row.location ?? '',
+      };
     }
 
     if (this.responses.find((msg) => msg.error)) {
-      columns.message = { header: 'Message' };
+      columns.message = {
+        header: 'Message',
+        get: (row): string => row.message ?? '',
+      };
       this.responses.map((msg) => (msg.message = msg.error?.message));
     }
 
-    cli.table(this.responses, columns);
-
-    this.responses.forEach((response) => {
-      if (response.error) {
-        // TODO I think throwing here is weird. I think instead, we should set the exitCode to 1
-        // but this breaks unit tests and should be discussed with the team.
-        // throw response.error;
-      }
-    });
+    cli.table(this.responses, columns, { title });
   }
 }
