@@ -32,13 +32,12 @@ export class Set extends ConfigCommand {
     let value = '';
     const configs = await this.parseConfigKeysAndValues();
     for (const name of Object.keys(configs)) {
-      const isOrgKey = this.isOrgKey(name);
       try {
         value = configs[name];
         // core's builtin config validation requires synchronous functions but there's
         // currently no way to validate an org synchronously. Therefore, we have to manually
         // validate the org here and manually set the error message if it fails
-        if (isOrgKey && value) await this.validateOrg(value);
+        if (this.isOrgKey(name) && value) await this.validateOrg(value);
         config.set(name, value);
         this.responses.push({ name, value, success: true });
       } catch (err) {
@@ -106,17 +105,19 @@ export class Set extends ConfigCommand {
     }
   }
 
-  private isOrgKey(name: string): boolean {
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  public isOrgKey(name: string): boolean {
     const orgKeys = [
       SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME,
-      SfdxPropertyKeys.DEFAULT_USERNAME,
+      OrgConfigProperties.TARGET_ORG,
       OrgConfigProperties.TARGET_DEV_HUB,
       OrgConfigProperties.TARGET_ORG,
     ] as string[];
     return orgKeys.includes(name);
   }
 
-  private async validateOrg(value: string): Promise<void> {
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  public async validateOrg(value: string): Promise<void> {
     try {
       await Org.create({ aliasOrUsername: value });
     } catch {

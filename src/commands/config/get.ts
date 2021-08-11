@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { Flags } from '@oclif/core';
-import { ConfigAggregator, Messages, SfdxError } from '@salesforce/core';
+import { ConfigAggregator, Messages } from '@salesforce/core';
 import { ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -26,8 +26,7 @@ export class Get extends ConfigCommand {
     const { argv, flags } = await this.parse(Get);
 
     if (!argv || argv.length === 0) {
-      const errorMessage = messages.getMessage('error.NoConfigKeysFound');
-      throw new SfdxError(errorMessage, 'NoConfigKeysFound');
+      throw messages.createError('error.NoConfigKeysFound');
     } else {
       const aggregator = await ConfigAggregator.create();
 

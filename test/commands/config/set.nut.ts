@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import { expect } from '@salesforce/command/lib/test';
+import { expect } from 'chai';
 import { ConfigResponses } from '../../../src/config';
 
 let testSession: TestSession;
@@ -127,18 +127,6 @@ describe('config set NUTs', async () => {
     describe('target-dev-hub', () => {
       it('will fail to validate target-dev-hub', () => {
         verifyValidationError('target-dev-hub', 'ab', 'Invalid config value: org "ab" is not authenticated.');
-      });
-    });
-
-    describe('defaultdevhubusername', () => {
-      it('will fail to validate defaultdevhubusername', () => {
-        verifyValidationError('defaultdevhubusername', 'ab', 'Invalid config value: org "ab" is not authenticated.');
-      });
-    });
-
-    describe('defaultusername', () => {
-      it('will fail to validate defaultusername', () => {
-        verifyValidationError('defaultusername', 'ab', 'Invalid config value: org "ab" is not authenticated.');
       });
     });
 

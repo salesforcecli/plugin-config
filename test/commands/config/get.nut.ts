@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import { expect } from '@salesforce/command/lib/test';
+import { expect } from 'chai';
 import { ConfigResponses } from '../../../src/config';
 
 let testSession: TestSession;
