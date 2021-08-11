@@ -105,8 +105,7 @@ export class Set extends ConfigCommand {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  public isOrgKey(name: string): boolean {
+  private isOrgKey(name: string): boolean {
     const orgKeys = [
       SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME,
       OrgConfigProperties.TARGET_ORG,
@@ -116,8 +115,7 @@ export class Set extends ConfigCommand {
     return orgKeys.includes(name);
   }
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  public async validateOrg(value: string): Promise<void> {
+  private async validateOrg(value: string): Promise<void> {
     try {
       await Org.create({ aliasOrUsername: value });
     } catch {
