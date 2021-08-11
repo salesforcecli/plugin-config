@@ -32,7 +32,7 @@ export class Get extends ConfigCommand {
 
       argv.forEach((configName) => {
         try {
-          this.pushSuccess(aggregator.getInfo(configName));
+          this.pushSuccess(aggregator.getInfo(configName, true));
         } catch (err) {
           this.pushFailure(configName, err);
         }

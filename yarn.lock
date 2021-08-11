@@ -681,10 +681,10 @@
     chalk "^2.4.2"
     cli-ux "^4.9.3"
 
-"@salesforce/core@3.4.0":
-  version "3.4.0"
-  resolved "https://registry.npmjs.org/@salesforce/core/-/core-3.4.0.tgz#d596595a535e37a1f439283421c15d3739322ee9"
-  integrity sha512-+W4b+891rEfwJhdsadrWqT7Tw/+a/PiI0xvEhkmb7QZoyYJaPy8zc2Gq5mazwZYnDbdt+wMx1Q/LOpFqovQGHw==
+"@salesforce/core@3.4.1":
+  version "3.4.1"
+  resolved "https://registry.npmjs.org/@salesforce/core/-/core-3.4.1.tgz#5a1c5877aedf1a0f7abe57dc497eef2e302ca4a3"
+  integrity sha512-lT947EuelNbR21+9B62zLrNKPupM9P63B69Xi5ZKVaDEsZtk5VZM8mag7v7i5KQUS+VAM2SYVsjpq8xc3q+GRw==
   dependencies:
     "@salesforce/bunyan" "^2.0.0"
     "@salesforce/kit" "^1.5.8"
