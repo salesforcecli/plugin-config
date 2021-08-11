@@ -6,7 +6,7 @@
  */
 
 import { Flags } from '@oclif/core';
-import { Config, Messages, Org, SfdxPropertyKeys, SfdxError, OrgConfigProperties } from '@salesforce/core';
+import { Config, Messages, Org, SfdxError, OrgConfigProperties } from '@salesforce/core';
 import { ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -106,12 +106,7 @@ export class Set extends ConfigCommand {
   }
 
   private isOrgKey(name: string): boolean {
-    const orgKeys = [
-      SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME,
-      OrgConfigProperties.TARGET_ORG,
-      OrgConfigProperties.TARGET_DEV_HUB,
-      OrgConfigProperties.TARGET_ORG,
-    ] as string[];
+    const orgKeys = [OrgConfigProperties.TARGET_DEV_HUB, OrgConfigProperties.TARGET_ORG] as string[];
     return orgKeys.includes(name);
   }
 
