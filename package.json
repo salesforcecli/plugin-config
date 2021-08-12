@@ -79,7 +79,7 @@
     ],
     "topics": {
       "config": {
-        "description": "Configure Salesforce CLI."
+        "description": "Commands to configure Salesforce CLI."
       }
     }
   },
