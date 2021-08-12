@@ -7,7 +7,7 @@
 
 import * as path from 'path';
 import { $$, expect, test } from '@salesforce/command/lib/test';
-import { ConfigAggregator, SfdxPropertyKeys } from '@salesforce/core';
+import { ConfigAggregator, SfdxPropertyKeys, OrgConfigProperties } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { IPlugin } from '@oclif/config';
 
@@ -17,10 +17,10 @@ describe('config:get', () => {
   async function prepareStubs(global = true) {
     const location = global ? 'Global' : 'Local';
     stubMethod($$.SANDBOX, ConfigAggregator.prototype, 'getInfo')
-      .withArgs(SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME)
-      .returns({ key: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location })
-      .withArgs(SfdxPropertyKeys.DEFAULT_USERNAME)
-      .returns({ key: SfdxPropertyKeys.DEFAULT_USERNAME, value: 'MyUser', location })
+      .withArgs(OrgConfigProperties.TARGET_DEV_HUB)
+      .returns({ key: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location })
+      .withArgs(OrgConfigProperties.TARGET_ORG)
+      .returns({ key: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location })
       .withArgs(SfdxPropertyKeys.API_VERSION)
       .returns({ key: SfdxPropertyKeys.API_VERSION })
       .withArgs(SfdxPropertyKeys.DISABLE_TELEMETRY)
@@ -30,24 +30,24 @@ describe('config:get', () => {
   test
     .do(async () => await prepareStubs(true))
     .stdout()
-    .command(['config:get', SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, SfdxPropertyKeys.DEFAULT_USERNAME, '--json'])
+    .command(['config:get', OrgConfigProperties.TARGET_DEV_HUB, OrgConfigProperties.TARGET_ORG, '--json'])
     .it('should return values for globally configured properties', (ctx) => {
       const result = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
-        { name: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location: 'Global', success: true },
-        { name: SfdxPropertyKeys.DEFAULT_USERNAME, value: 'MyUser', location: 'Global', success: true },
+        { name: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location: 'Global', success: true },
+        { name: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location: 'Global', success: true },
       ]);
     });
 
   test
     .do(async () => await prepareStubs(false))
     .stdout()
-    .command(['config:get', SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, SfdxPropertyKeys.DEFAULT_USERNAME, '--json'])
+    .command(['config:get', OrgConfigProperties.TARGET_DEV_HUB, OrgConfigProperties.TARGET_ORG, '--json'])
     .it('should return values for locally configured properties', (ctx) => {
       const result = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
-        { name: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location: 'Local', success: true },
-        { name: SfdxPropertyKeys.DEFAULT_USERNAME, value: 'MyUser', location: 'Local', success: true },
+        { name: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location: 'Local', success: true },
+        { name: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location: 'Local', success: true },
       ]);
     });
 
@@ -71,7 +71,7 @@ describe('config:get', () => {
     .command(['config:get', '--json'])
     .it('should throw an error when no keys are provided', (ctx) => {
       const response = JSON.parse(ctx.stdout);
-      expect(response.error.name).to.equal('NoConfigKeysFound');
+      expect(response.error.name).to.equal('NoConfigKeysFoundError');
     });
 
   test

@@ -6,7 +6,7 @@
  */
 
 import { Flags } from '@oclif/core';
-import { Config, Messages, SfdxError } from '@salesforce/core';
+import { Config, Messages } from '@salesforce/core';
 import { ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -29,8 +29,7 @@ export class UnSet extends ConfigCommand {
     const { argv, flags } = await this.parse(UnSet);
 
     if (!argv || argv.length === 0) {
-      const errorMessage = messages.getMessage('error.NoConfigKeysFound');
-      throw new SfdxError(errorMessage, 'NoConfigKeysFound');
+      throw messages.createError('error.NoConfigKeysFound');
     } else {
       const config: Config = await Config.create(Config.getDefaultOptions(flags.global));
 

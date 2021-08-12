@@ -6,7 +6,7 @@
  */
 
 import { $$, expect, test } from '@salesforce/command/lib/test';
-import { Config, Org, SfdxPropertyKeys } from '@salesforce/core';
+import { Config, Org, SfdxPropertyKeys, OrgConfigProperties } from '@salesforce/core';
 import { StubbedType, stubInterface, stubMethod } from '@salesforce/ts-sinon';
 import { SinonStub } from 'sinon';
 
@@ -37,10 +37,10 @@ describe('config:set', () => {
       orgCreateSpy = stubMethod($$.SANDBOX, Org, 'create').callsFake(async () => orgStub);
     })
     .stdout()
-    .command(['config:set', `${SfdxPropertyKeys.DEFAULT_USERNAME}=MyUser`, '--global', '--json'])
-    .it('should instantiate an Org when defaultusername is set', (ctx) => {
+    .command(['config:set', `${OrgConfigProperties.TARGET_ORG}=MyUser`, '--global', '--json'])
+    .it('should instantiate an Org when target-org is set', (ctx) => {
       const result = JSON.parse(ctx.stdout);
-      expect(result).to.deep.equal([{ name: SfdxPropertyKeys.DEFAULT_USERNAME, value: 'MyUser', success: true }]);
+      expect(result).to.deep.equal([{ name: OrgConfigProperties.TARGET_ORG, value: 'MyUser', success: true }]);
       expect(configStub.set.callCount).to.equal(1);
       expect(orgCreateSpy.callCount).to.equal(1);
     });
@@ -52,12 +52,10 @@ describe('config:set', () => {
       orgCreateSpy = stubMethod($$.SANDBOX, Org, 'create').callsFake(async () => orgStub);
     })
     .stdout()
-    .command(['config:set', `${SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME}=MyDevhub`, '--global', '--json'])
-    .it('should instantiate an Org when defaultdevhubusername is set', (ctx) => {
+    .command(['config:set', `${OrgConfigProperties.TARGET_DEV_HUB}=MyDevhub`, '--global', '--json'])
+    .it('should instantiate an Org when target-dev-hub is set', (ctx) => {
       const result = JSON.parse(ctx.stdout);
-      expect(result).to.deep.equal([
-        { name: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', success: true },
-      ]);
+      expect(result).to.deep.equal([{ name: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', success: true }]);
       expect(configStub.set.callCount).to.equal(1);
       expect(orgCreateSpy.callCount).to.equal(1);
     });
@@ -71,7 +69,7 @@ describe('config:set', () => {
 
     test
       .stdout()
-      .command(['config:set', `${SfdxPropertyKeys.DEFAULT_USERNAME}=NonExistentOrg`, '--global', '--json'])
+      .command(['config:set', `${OrgConfigProperties.TARGET_ORG}=NonExistentOrg`, '--global', '--json'])
       .it('should handle failed org create with --json flag', (ctx) => {
         const response = JSON.parse(ctx.stdout);
         expect(response).to.deep.equal([
@@ -81,7 +79,7 @@ describe('config:set', () => {
               exitCode: 1,
               name: 'Error',
             },
-            name: SfdxPropertyKeys.DEFAULT_USERNAME,
+            name: OrgConfigProperties.TARGET_ORG,
             message: 'Invalid config value: org "NonExistentOrg" is not authenticated.',
             success: false,
             value: 'NonExistentOrg',
@@ -91,9 +89,9 @@ describe('config:set', () => {
 
     test
       .stdout()
-      .command(['config:set', `${SfdxPropertyKeys.DEFAULT_USERNAME}=NonExistentOrg`, '--global'])
+      .command(['config:set', `${OrgConfigProperties.TARGET_ORG}=NonExistentOrg`, '--global'])
       .it('should handle failed org create with no --json flag', (ctx) => {
-        expect(ctx.stdout).to.include(SfdxPropertyKeys.DEFAULT_USERNAME);
+        expect(ctx.stdout).to.include(OrgConfigProperties.TARGET_ORG);
         expect(ctx.stdout).to.include('NonExistentOrg');
         expect(ctx.stdout).to.include('false');
       });

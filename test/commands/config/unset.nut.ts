@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import { expect } from '@salesforce/command/lib/test';
+import { expect } from 'chai';
 
 let testSession: TestSession;
 
@@ -19,7 +19,7 @@ describe('config unset NUTs', async () => {
     it('errors when attempting to unset nothing', () => {
       const res = execCmd('config unset --json', { ensureExitCode: 1 }).jsonOutput;
       expect(res).to.deep.equal({
-        error: { exitCode: 1, name: 'NoConfigKeysFound' },
+        error: { exitCode: 1, name: 'NoConfigKeysFoundError' },
       });
     });
 

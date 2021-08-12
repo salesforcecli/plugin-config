@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { $$, expect, test } from '@salesforce/command/lib/test';
-import { Config, SfdxPropertyKeys } from '@salesforce/core';
+import { Config, OrgConfigProperties, SfdxPropertyKeys } from '@salesforce/core';
 import { StubbedType, stubInterface, stubMethod } from '@salesforce/ts-sinon';
 
 describe('config:unset', () => {
@@ -41,7 +41,7 @@ describe('config:unset', () => {
     .command([
       'config:unset',
       `${SfdxPropertyKeys.API_VERSION}`,
-      `${SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME}`,
+      `${OrgConfigProperties.TARGET_DEV_HUB}`,
       '--global',
       '--json',
     ])
@@ -49,7 +49,7 @@ describe('config:unset', () => {
       const result = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
         { name: SfdxPropertyKeys.API_VERSION, success: true },
-        { name: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, success: true },
+        { name: OrgConfigProperties.TARGET_DEV_HUB, success: true },
       ]);
       expect(configStub.unset.callCount).to.equal(2);
     });
@@ -60,7 +60,7 @@ describe('config:unset', () => {
     .command(['config:unset', '--json'])
     .it('should throw an error if no properties are provided', (ctx) => {
       const response = JSON.parse(ctx.stdout);
-      expect(response.error.name).to.equal('NoConfigKeysFound');
+      expect(response.error.name).to.equal('NoConfigKeysFoundError');
     });
 
   test
