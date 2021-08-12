@@ -86,7 +86,7 @@ FLAGS
   --verbose  Display whether the configuration variables are set locally or globally.
 
 GLOBAL FLAGS
-  --json  format output as json
+  --json  Format output as json.
 
 DESCRIPTION
   Get the value of a configuration variable.
@@ -113,7 +113,7 @@ USAGE
   $ sf config list [--json]
 
 GLOBAL FLAGS
-  --json  format output as json
+  --json  Format output as json.
 
 DESCRIPTION
   List the configuration variables that you've previously set.
@@ -139,7 +139,7 @@ FLAGS
   -g, --global  Set the configuration variables globally, so they can be used from any directory.
 
 GLOBAL FLAGS
-  --json  format output as json
+  --json  Format output as json.
 
 DESCRIPTION
   Set one or more configuration variables, such as your default environment.
@@ -191,7 +191,7 @@ FLAGS
   -g, --global  Unset the configuration variables globally, so they can no longer be used from any directory.
 
 GLOBAL FLAGS
-  --json  format output as json
+  --json  Format output as json.
 
 DESCRIPTION
   Unset local or global configuration variables.
