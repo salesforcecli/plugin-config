@@ -178,7 +178,7 @@ describe('Interoperability NUTs', async () => {
       await configShouldNotHave('.sf', OrgConfigProperties.TARGET_ORG);
     });
 
-    it('should set target-dev-hub in .sf and defaultdevhubusername in .sfdx', async () => {
+    it('should unset target-dev-hub in .sf and defaultdevhubusername in .sfdx', async () => {
       exec(`sfdx config:set defaultdevhubusername=${ORG_ALIAS}`, { silent: true });
       const result = execCmd<ConfigResponses>('config unset target-dev-hub --json', {
         ensureExitCode: 0,
@@ -191,7 +191,7 @@ describe('Interoperability NUTs', async () => {
       await configShouldNotHave('.sf', OrgConfigProperties.TARGET_DEV_HUB);
     });
 
-    it('should set apiVersion in .sf and in .sfdx', async () => {
+    it('should unset apiVersion in .sf and in .sfdx', async () => {
       exec('sfdx config:set apiVersion=52.0', { silent: true });
       const result = execCmd<ConfigResponses>('config unset apiVersion --json', {
         ensureExitCode: 0,
@@ -220,6 +220,146 @@ describe('Interoperability NUTs', async () => {
       }).jsonOutput;
       expect(result[0].success).to.be.false;
       expect(result[0].name).to.equal(SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME);
+    });
+  });
+
+  describe('sfdx config:set', () => {
+    it('should set target-org in .sf and defaultusername in .sfdx', async () => {
+      exec(`sfdx config:set defaultusername=${ORG_ALIAS}`, { silent: true });
+      await configShouldHave('.sfdx', SfdxPropertyKeys.DEFAULT_USERNAME, ORG_ALIAS);
+
+      // We can't check .sf/config.json directly because sfdx doesn't write back to sf
+      // Instead we test this by running `config get`
+      const getResult = execCmd<ConfigResponses>('config get target-org --json', {
+        ensureExitCode: 0,
+        cli: 'sf',
+      }).jsonOutput;
+      const getExpected = [
+        { name: OrgConfigProperties.TARGET_ORG, value: ORG_ALIAS, success: true, location: 'Local' },
+      ];
+      expect(getResult).to.deep.equal(getExpected);
+    });
+
+    it('should set target-dev-hub in .sf and defaultdevhubusername in .sfdx', async () => {
+      exec(`sfdx config:set defaultdevhubusername=${ORG_ALIAS}`, { silent: true });
+      await configShouldHave('.sfdx', SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, ORG_ALIAS);
+
+      // We can't check .sf/config.json directly because sfdx doesn't write back to sf
+      // Instead we test this by running `config get`
+      const getResult = execCmd<ConfigResponses>('config get target-dev-hub --json', {
+        ensureExitCode: 0,
+        cli: 'sf',
+      }).jsonOutput;
+      const getExpected = [
+        { name: OrgConfigProperties.TARGET_DEV_HUB, value: ORG_ALIAS, success: true, location: 'Local' },
+      ];
+      expect(getResult).to.deep.equal(getExpected);
+    });
+
+    it('should overwrite existing .sf configs', async () => {
+      execCmd<ConfigResponses>('config set apiVersion=51.0 --json', {
+        ensureExitCode: 0,
+        cli: 'sf',
+      });
+      await configShouldHave('.sf', SfdxPropertyKeys.API_VERSION, '51.0');
+
+      exec('sfdx config:set apiVersion=52.0', { silent: true });
+      await configShouldHave('.sfdx', SfdxPropertyKeys.API_VERSION, '52.0');
+
+      // We can't check .sf/config.json directly because sfdx doesn't write back to sf
+      // Instead we test this by running `config get`
+      const getResult = execCmd<ConfigResponses>('config get apiVersion --json', {
+        ensureExitCode: 0,
+        cli: 'sf',
+      }).jsonOutput;
+      const getExpected = [{ name: SfdxPropertyKeys.API_VERSION, value: '52.0', success: true, location: 'Local' }];
+      expect(getResult).to.deep.equal(getExpected);
+    });
+
+    it('should overwrite existing target-org config in .sf', async () => {
+      const config = { [OrgConfigProperties.TARGET_ORG]: 'foobar' };
+      // write the config file directly so that we don't have to authorize another org
+      await fs.writeJson(path.join(testSession.project.dir, '.sf', 'config.json'), config);
+      await configShouldHave('.sf', OrgConfigProperties.TARGET_ORG, 'foobar');
+
+      exec(`sfdx config:set defaultusername=${ORG_ALIAS}`, { silent: true });
+      await configShouldHave('.sfdx', SfdxPropertyKeys.DEFAULT_USERNAME, ORG_ALIAS);
+
+      // We can't check .sf/config.json directly because sfdx doesn't write back to sf
+      // Instead we test this by running `config get`
+      const getResult = execCmd<ConfigResponses>('config get target-org --json', {
+        ensureExitCode: 0,
+        cli: 'sf',
+      }).jsonOutput;
+      const getExpected = [
+        { name: OrgConfigProperties.TARGET_ORG, value: ORG_ALIAS, success: true, location: 'Local' },
+      ];
+      expect(getResult).to.deep.equal(getExpected);
+    });
+
+    it('should overwrite existing target-dev-hub config in .sf', async () => {
+      const config = { [OrgConfigProperties.TARGET_DEV_HUB]: 'foobar' };
+      // write the config file directly so that we don't have to authorize another org
+      await fs.writeJson(path.join(testSession.project.dir, '.sf', 'config.json'), config);
+      await configShouldHave('.sf', OrgConfigProperties.TARGET_DEV_HUB, 'foobar');
+
+      exec(`sfdx config:set defaultdevhubusername=${ORG_ALIAS}`, { silent: true });
+      await configShouldHave('.sfdx', SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, ORG_ALIAS);
+
+      // We can't check .sf/config.json directly because sfdx doesn't write back to sf
+      // Instead we test this by running `config get`
+      const getResult = execCmd<ConfigResponses>('config get target-dev-hub --json', {
+        ensureExitCode: 0,
+        cli: 'sf',
+      }).jsonOutput;
+      const getExpected = [
+        { name: OrgConfigProperties.TARGET_DEV_HUB, value: ORG_ALIAS, success: true, location: 'Local' },
+      ];
+      expect(getResult).to.deep.equal(getExpected);
+    });
+  });
+
+  describe('sfdx config:unset', () => {
+    it('should unset target-org in .sf and defaultusername in .sfdx', async () => {
+      const setResult = execCmd<ConfigResponses>(`config set target-org ${ORG_ALIAS} --json`, {
+        ensureExitCode: 0,
+        cli: 'sf',
+      }).jsonOutput;
+      const setExpected = [{ name: OrgConfigProperties.TARGET_ORG, value: ORG_ALIAS, success: true }];
+      expect(setResult).to.deep.equal(setExpected);
+
+      exec('sfdx config:unset defaultusername', { silent: true });
+      await configShouldNotHave('.sfdx', SfdxPropertyKeys.DEFAULT_USERNAME);
+
+      // We can't check .sf/config.json directly because sfdx doesn't write back to sf
+      // Instead we test this by running `config get`
+      const getResult = execCmd<ConfigResponses>('config get target-org --json', {
+        ensureExitCode: 0,
+        cli: 'sf',
+      }).jsonOutput;
+      const getExpected = [{ name: OrgConfigProperties.TARGET_ORG, success: true }];
+      expect(getResult).to.deep.equal(getExpected);
+    });
+
+    it('should unset target-dev-hub in .sf and defaultdevhubusername in .sfdx', async () => {
+      const setResult = execCmd<ConfigResponses>(`config set target-dev-hub ${ORG_ALIAS} --json`, {
+        ensureExitCode: 0,
+        cli: 'sf',
+      }).jsonOutput;
+      const setExpected = [{ name: OrgConfigProperties.TARGET_DEV_HUB, value: ORG_ALIAS, success: true }];
+      expect(setResult).to.deep.equal(setExpected);
+
+      exec('sfdx config:unset defaultdevhubusername', { silent: true });
+      await configShouldNotHave('.sfdx', SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME);
+
+      // We can't check .sf/config.json directly because sfdx doesn't write back to sf
+      // Instead we test this by running `config get`
+      const getResult = execCmd<ConfigResponses>('config get target-dev-hub --json', {
+        ensureExitCode: 0,
+        cli: 'sf',
+      }).jsonOutput;
+      const getExpected = [{ name: OrgConfigProperties.TARGET_DEV_HUB, success: true }];
+      expect(getResult).to.deep.equal(getExpected);
     });
   });
 });
