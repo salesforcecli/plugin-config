@@ -76,7 +76,7 @@ sfdx plugins
 
 ## `sf config get`
 
-Run "sf config list" to see all the configuration variables you've set. Global configuration variable are always displayed; local ones are displayed if you run the command in a project directory.
+Run "sf config list" to see all the configuration variables you've set. Global configuration variable are always displayed; local ones are displayed if you run the command in a project directory. Run "sf config set" to set a configuration variable.
 
 ```
 USAGE
@@ -92,7 +92,8 @@ DESCRIPTION
   Get the value of a configuration variable.
 
   Run "sf config list" to see all the configuration variables you've set. Global configuration variable are always
-  displayed; local ones are displayed if you run the command in a project directory.
+  displayed; local ones are displayed if you run the command in a project directory. Run "sf config set" to set a
+  configuration variable.
 
 EXAMPLES
   Get the value of the "target-org" configuration variable.
@@ -129,7 +130,7 @@ EXAMPLES
 
 ## `sf config set`
 
-Use configuration variables to set CLI defaults, such as your default environment or the API version you want the CLI to use. For example, if you set the "target-org" configuration variable, you don't need to specify it as a "sf deploy metadata" flag if you're deploying to your default org.
+Use configuration variables to set CLI defaults, such as your default org or the API version you want the CLI to use. For example, if you set the "target-org" configuration variable, you don't need to specify it as a "sf deploy metadata" flag if you're deploying to your default org.
 
 ```
 USAGE
@@ -142,10 +143,10 @@ GLOBAL FLAGS
   --json  Format output as json.
 
 DESCRIPTION
-  Set one or more configuration variables, such as your default environment.
+  Set one or more configuration variables, such as your default org.
 
-  Use configuration variables to set CLI defaults, such as your default environment or the API version you want the CLI
-  to use. For example, if you set the "target-org" configuration variable, you don't need to specify it as a "sf deploy
+  Use configuration variables to set CLI defaults, such as your default org or the API version you want the CLI to use.
+  For example, if you set the "target-org" configuration variable, you don't need to specify it as a "sf deploy
   metadata" flag if you're deploying to your default org.
 
   Local configuration variables apply only to your current project. Global variables, specified with the --global flag,
@@ -159,11 +160,7 @@ DESCRIPTION
 
   3. Global configuration variable.
 
-  Run "sf <command> --help" to get a list of configuration variables used by that command. Run "sf config list" to see
-  the configuration variables you've already set and their level (local or global).
-
-  If you set a configuration variable and then run a command that uses it, the command output displays this information
-  at runtime.
+  Run "sf config list" to see the configuration variables you've already set and their level (local or global).
 
 EXAMPLES
   Set the local target-org configuration variable to an org username:
