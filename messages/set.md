@@ -1,10 +1,10 @@
 # summary
 
-Set one or more configuration variables, such as your default environment.
+Set one or more configuration variables, such as your default org.
 
 # description
 
-Use configuration variables to set CLI defaults, such as your default environment or the API version you want the CLI to use. For example, if you set the "target-org" configuration variable, you don't need to specify it as a "sf deploy metadata" flag if you're deploying to your default org.
+Use configuration variables to set CLI defaults, such as your default org or the API version you want the CLI to use. For example, if you set the "target-org" configuration variable, you don't need to specify it as a "sf deploy metadata" flag if you're deploying to your default org.
 
 Local configuration variables apply only to your current project. Global variables, specified with the --global flag, apply in any directory.
 
@@ -14,9 +14,7 @@ The resolution order if you've set a flag value in multiple ways is as follows:
     2. Local (project-level) configuration variable.
     3. Global configuration variable.
 
-Run "sf <command> --help" to get a list of configuration variables used by that command. Run "sf config list" to see the configuration variables you've already set and their level (local or global).
-
-If you set a configuration variable and then run a command that uses it, the command output displays this information at runtime.
+Run "sf config list" to see the configuration variables you've already set and their level (local or global).
 
 # examples
 
