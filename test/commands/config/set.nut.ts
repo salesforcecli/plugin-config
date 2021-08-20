@@ -4,7 +4,6 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { platform } from 'os';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from '@salesforce/command/lib/test';
 
@@ -25,6 +24,16 @@ function verifyValidationError(key: string, value: string | number, message) {
   };
   const res = execCmd(`config:set ${key}=${value} --json`).jsonOutput;
   expect(res).to.deep.equal(expected);
+  execCmd(`config:unset ${key}`);
+}
+
+function verifyValidationStartsWith(key: string, value: string | number, message) {
+  const res = execCmd(`config:set ${key}=${value} --json`).jsonOutput;
+  expect(res.status).to.equal(1);
+  expect(res.result).to.have.property('successes').with.length(0);
+  expect(res.result).to.have.property('failures').with.length(1);
+  const result = res.result as { failures: [{ name: string; message: string }] };
+  expect(result.failures[0].message.startsWith(message)).to.be.true;
   execCmd(`config:unset ${key}`);
 }
 
@@ -131,11 +140,7 @@ describe('config:set NUTs', async () => {
       });
 
       it('will fail to validate instanceUrl when bad URL', () => {
-        if (platform() === 'win32') {
-          verifyValidationError('instanceUrl', 'abc.com', 'Invalid URL: abc.com');
-        } else {
-          verifyValidationError('instanceUrl', 'abc.com', 'Invalid URL');
-        }
+        verifyValidationStartsWith('instanceUrl', 'abc.com', 'Invalid URL');
       });
 
       it('will fail to validate instanceUrl when non-Salesforce URL', () => {
