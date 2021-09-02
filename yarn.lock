@@ -577,9 +577,9 @@
     safe-json-stringify "~1"
 
 "@salesforce/cli-plugins-testkit@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@salesforce/cli-plugins-testkit/-/cli-plugins-testkit-1.3.0.tgz#19466352285412065a3f4d13ff3e7a1739d6410b"
-  integrity sha512-8YLfvRZZQBDborBrrWz/QL8G5Fhx/UHcgex1kWgLNLmYnm2gaDbZBpP/TWvw8jQvyd8EKxKzivDdMBC8JIXBog==
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@salesforce/cli-plugins-testkit/-/cli-plugins-testkit-1.3.3.tgz#fffc366d4c370386ba5ec0a21671863840af3cbf"
+  integrity sha512-e5f9Ttfxu8yVCInjjjnR52t3ajNVC6cxa6bsfmLn3uiiyH/6CMjIbr9f3/Y8f2QNdbS4el9wRwkxurpm0N9G0Q==
   dependencies:
     "@salesforce/core" "^2.24.0"
     "@salesforce/kit" "^1.5.13"
@@ -605,28 +605,7 @@
     chalk "^2.4.2"
     cli-ux "^4.9.3"
 
-"@salesforce/core@^2.2.0", "@salesforce/core@^2.23.4", "@salesforce/core@^2.24.0":
-  version "2.27.0"
-  resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-2.27.0.tgz#47c036a5195839cd0efae4b3f61e551274ff66a0"
-  integrity sha512-T+fAkcSVCWn8OC/hJ5cJT1wWwUYzhQIc8xhKA3K/yLib5Y2WV9goD9D+35oZqikJRkHGiKv2uN9DsR4ip4WwXg==
-  dependencies:
-    "@salesforce/bunyan" "^2.0.0"
-    "@salesforce/kit" "^1.5.0"
-    "@salesforce/schemas" "^1.0.1"
-    "@salesforce/ts-types" "^1.5.13"
-    "@types/graceful-fs" "^4.1.5"
-    "@types/jsforce" "^1.9.29"
-    "@types/mkdirp" "^1.0.1"
-    debug "^3.1.0"
-    graceful-fs "^4.2.4"
-    jsen "0.6.6"
-    jsforce "^1.10.1"
-    jsonwebtoken "8.5.0"
-    mkdirp "1.0.4"
-    sfdx-faye "^1.0.9"
-    ts-retry-promise "^0.6.0"
-
-"@salesforce/core@^2.27.2":
+"@salesforce/core@^2.2.0", "@salesforce/core@^2.23.4", "@salesforce/core@^2.24.0", "@salesforce/core@^2.27.2":
   version "2.27.2"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-2.27.2.tgz#a5933310e3b10ef46ad8129a30190c229fe074ee"
   integrity sha512-0BeORSY0Zv+9ACNMVZm7eqcT7QH9WtfObHSWyeYnhl1D5iCnZHMyk+AVql8urddNtL5WTquuens62jdYCniVew==
