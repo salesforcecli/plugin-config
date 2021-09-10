@@ -19,17 +19,17 @@ function verifyValidationError(key: string, value: string | number, message: str
       success: false,
     },
   ];
-  const res = execCmd<Array<{ error: unknown }>>(`config set ${key}=${value} --json`, { cli: 'sf' }).jsonOutput;
-  delete res[0].error;
-  expect(res).to.deep.equal(expected);
+  const { result } = execCmd<Array<{ error: unknown }>>(`config set ${key}=${value} --json`, { cli: 'sf' }).jsonOutput;
+  delete result[0].error;
+  expect(result).to.deep.equal(expected);
   execCmd(`config unset ${key}`);
 }
 
 function verifyKeysAndValuesJson(key: string, value: string | boolean) {
-  const res = execCmd(`config set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
+  const { result } = execCmd(`config set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
   const expected = [{ name: key, success: true }] as ConfigResponses;
   if (value !== '') expected[0].value = `${value}`;
-  expect(res).to.deep.equal(expected);
+  expect(result).to.deep.equal(expected);
   execCmd(`config unset ${key}`);
 }
 
@@ -51,21 +51,21 @@ describe('config set NUTs', async () => {
 
   describe('config set errors', () => {
     it('fails to set a randomKey with InvalidArgumentFormat error', () => {
-      const res = execCmd<{ error: { name: string; exitCode: number } }>('config set randomKey --json', {
+      const res = execCmd('config set randomKey --json', {
         cli: 'sf',
         ensureExitCode: 1,
       }).jsonOutput;
-      expect(res.error.name).to.include('InvalidArgumentFormat');
+      expect(res.name).to.include('InvalidArgumentFormat');
     });
 
     it('fails to set randomKey=randomValue', () => {
-      const res = execCmd<ConfigResponses>('config set randomKey=randomValue --json', {
+      const { result } = execCmd<ConfigResponses>('config set randomKey=randomValue --json', {
         ensureExitCode: 1,
         cli: 'sf',
       }).jsonOutput;
-      expect(res[0].name).to.equal('randomKey');
-      expect(res[0].message).to.equal('Unknown config name: randomKey.');
-      expect(res[0].success).to.be.false;
+      expect(result[0].name).to.equal('randomKey');
+      expect(result[0].message).to.equal('Unknown config name: randomKey.');
+      expect(result[0].success).to.be.false;
     });
   });
 
@@ -179,8 +179,8 @@ describe('config set NUTs', async () => {
 
   describe('set two keys and values properly', () => {
     it('will set both apiVersion and maxQueryLimit in one command', () => {
-      const res = execCmd('config set apiVersion=51.0 maxQueryLimit=100 --json').jsonOutput;
-      expect(res).to.deep.equal([
+      const { result } = execCmd('config set apiVersion=51.0 maxQueryLimit=100 --json').jsonOutput;
+      expect(result).to.deep.equal([
         {
           name: 'apiVersion',
           value: '51.0',

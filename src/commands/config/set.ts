@@ -12,7 +12,7 @@ import { ConfigCommand, ConfigResponses } from '../../config';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'set');
 
-export class Set extends ConfigCommand {
+export class Set extends ConfigCommand<ConfigResponses> {
   public static readonly description = messages.getMessage('description');
   public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
