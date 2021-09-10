@@ -54,7 +54,7 @@ describe('config set NUTs', async () => {
       const res = execCmd<{ error: { name: string; exitCode: number } }>('config set randomKey --json', {
         cli: 'sf',
         ensureExitCode: 1,
-      }).jsonOutput;
+      }).jsonOutput as unknown as { error: { name: string; exitCode: number } };
       expect(res.error.name).to.include('InvalidArgumentFormat');
     });
 

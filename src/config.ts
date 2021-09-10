@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { Command } from '@oclif/core';
+import { SfCommand } from '@salesforce/command';
 import { cli } from 'cli-ux';
 import type { table } from 'cli-ux/lib/styled/table';
 import { ConfigInfo, SfdxError } from '@salesforce/core';
@@ -22,7 +22,7 @@ export interface Msg {
 
 export type ConfigResponses = Msg[];
 
-export abstract class ConfigCommand extends Command {
+export abstract class ConfigCommand<T> extends SfCommand<T> {
   protected responses: ConfigResponses = [];
 
   protected pushSuccess(configInfo: ConfigInfo): void {

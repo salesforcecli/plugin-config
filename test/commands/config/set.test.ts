@@ -25,7 +25,7 @@ describe('config:set', () => {
     .stdout()
     .command(['config:set', `${SfdxPropertyKeys.API_VERSION}=49.0`, '--global', '--json'])
     .it('should return values for all configured properties', (ctx) => {
-      const result = JSON.parse(ctx.stdout);
+      const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([{ name: SfdxPropertyKeys.API_VERSION, value: '49.0', success: true }]);
       expect(configStub.set.callCount).to.equal(1);
     });
@@ -39,7 +39,7 @@ describe('config:set', () => {
     .stdout()
     .command(['config:set', `${OrgConfigProperties.TARGET_ORG}=MyUser`, '--global', '--json'])
     .it('should instantiate an Org when target-org is set', (ctx) => {
-      const result = JSON.parse(ctx.stdout);
+      const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([{ name: OrgConfigProperties.TARGET_ORG, value: 'MyUser', success: true }]);
       expect(configStub.set.callCount).to.equal(1);
       expect(orgCreateSpy.callCount).to.equal(1);
@@ -54,7 +54,7 @@ describe('config:set', () => {
     .stdout()
     .command(['config:set', `${OrgConfigProperties.TARGET_DEV_HUB}=MyDevhub`, '--global', '--json'])
     .it('should instantiate an Org when target-dev-hub is set', (ctx) => {
-      const result = JSON.parse(ctx.stdout);
+      const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([{ name: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', success: true }]);
       expect(configStub.set.callCount).to.equal(1);
       expect(orgCreateSpy.callCount).to.equal(1);
@@ -71,8 +71,8 @@ describe('config:set', () => {
       .stdout()
       .command(['config:set', `${OrgConfigProperties.TARGET_ORG}=NonExistentOrg`, '--global', '--json'])
       .it('should handle failed org create with --json flag', (ctx) => {
-        const response = JSON.parse(ctx.stdout);
-        expect(response).to.deep.equal([
+        const { result } = JSON.parse(ctx.stdout);
+        expect(result).to.deep.equal([
           {
             error: {
               cause: {},

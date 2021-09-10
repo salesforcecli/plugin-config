@@ -22,7 +22,7 @@ describe('config:list', () => {
     .stdout()
     .command(['config:list', '--json'])
     .it('should return values for all configured properties', (ctx) => {
-      const result = JSON.parse(ctx.stdout);
+      const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
         { name: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location: 'Global', success: true },
         { name: SfdxPropertyKeys.DISABLE_TELEMETRY, value: true, location: 'Global', success: true },
@@ -38,7 +38,7 @@ describe('config:list', () => {
     .stdout()
     .command(['config:list', '--json'])
     .it('should handle no results found', (ctx) => {
-      const result = JSON.parse(ctx.stdout);
+      const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([]);
     });
 });

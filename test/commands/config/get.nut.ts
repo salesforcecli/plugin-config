@@ -18,10 +18,10 @@ describe('config get NUTs', async () => {
 
   describe('config get errors', () => {
     it('attempt to config get without keys', () => {
-      const res = execCmd<{ error: { name: string; exitCode: number } }>('config get --json', {
+      const res = execCmd('config get --json', {
         ensureExitCode: 1,
         cli: 'sf',
-      }).jsonOutput;
+      }).jsonOutput as unknown as { error: { name: string; exitCode: number } };
       expect(res.error.name).to.include('NoConfigKeysFound');
       expect(res.error.exitCode).to.equal(1);
     });

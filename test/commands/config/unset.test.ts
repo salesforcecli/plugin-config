@@ -30,7 +30,7 @@ describe('config:unset', () => {
     .stdout()
     .command(['config:unset', `${SfdxPropertyKeys.API_VERSION}`, '--global', '--json'])
     .it('should unset values for a single property', (ctx) => {
-      const result = JSON.parse(ctx.stdout);
+      const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([{ name: SfdxPropertyKeys.API_VERSION, success: true }]);
       expect(configStub.unset.callCount).to.equal(1);
     });
@@ -46,7 +46,7 @@ describe('config:unset', () => {
       '--json',
     ])
     .it('should unset values for multiple properties', (ctx) => {
-      const result = JSON.parse(ctx.stdout);
+      const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
         { name: SfdxPropertyKeys.API_VERSION, success: true },
         { name: OrgConfigProperties.TARGET_DEV_HUB, success: true },
@@ -60,7 +60,7 @@ describe('config:unset', () => {
     .command(['config:unset', '--json'])
     .it('should throw an error if no properties are provided', (ctx) => {
       const response = JSON.parse(ctx.stdout);
-      expect(response.error.name).to.equal('NoConfigKeysFoundError');
+      expect(response.name).to.equal('NoConfigKeysFoundError');
     });
 
   test
@@ -68,8 +68,8 @@ describe('config:unset', () => {
     .stdout()
     .command(['config:unset', `${SfdxPropertyKeys.API_VERSION}`, '--global', '--json'])
     .it('should handle errors with --json flag', (ctx) => {
-      const response = JSON.parse(ctx.stdout);
-      expect(response).to.deep.equal([
+      const { result } = JSON.parse(ctx.stdout);
+      expect(result).to.deep.equal([
         {
           error: {
             cause: {},

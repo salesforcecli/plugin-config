@@ -32,7 +32,7 @@ describe('config:get', () => {
     .stdout()
     .command(['config:get', OrgConfigProperties.TARGET_DEV_HUB, OrgConfigProperties.TARGET_ORG, '--json'])
     .it('should return values for globally configured properties', (ctx) => {
-      const result = JSON.parse(ctx.stdout);
+      const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
         { name: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location: 'Global', success: true },
         { name: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location: 'Global', success: true },
@@ -44,7 +44,7 @@ describe('config:get', () => {
     .stdout()
     .command(['config:get', OrgConfigProperties.TARGET_DEV_HUB, OrgConfigProperties.TARGET_ORG, '--json'])
     .it('should return values for locally configured properties', (ctx) => {
-      const result = JSON.parse(ctx.stdout);
+      const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
         { name: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location: 'Local', success: true },
         { name: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location: 'Local', success: true },
@@ -56,7 +56,7 @@ describe('config:get', () => {
     .stdout()
     .command(['config:get', SfdxPropertyKeys.API_VERSION, '--json'])
     .it('should gracefully handle unconfigured properties', (ctx) => {
-      const result = JSON.parse(ctx.stdout);
+      const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
         {
           name: SfdxPropertyKeys.API_VERSION,
@@ -71,7 +71,7 @@ describe('config:get', () => {
     .command(['config:get', '--json'])
     .it('should throw an error when no keys are provided', (ctx) => {
       const response = JSON.parse(ctx.stdout);
-      expect(response.error.name).to.equal('NoConfigKeysFoundError');
+      expect(response.name).to.equal('NoConfigKeysFoundError');
     });
 
   test
@@ -80,7 +80,7 @@ describe('config:get', () => {
     .command(['config:get', SfdxPropertyKeys.DISABLE_TELEMETRY, '--json'])
     .it('should gracefully handle failed attempts to ConfigAggregator.getInfo', (ctx) => {
       const response = JSON.parse(ctx.stdout);
-      expect(response[0].error.name).to.equal('FAILED');
+      expect(response.result[0].error.name).to.equal('FAILED');
     });
 
   describe('load custom config meta', () => {
@@ -89,7 +89,7 @@ describe('config:get', () => {
       .command(['config:get', 'customKey', '--json'])
       .it('fails when there is no matching loaded custom key', (ctx) => {
         const response = JSON.parse(ctx.stdout);
-        expect(response[0].message).to.equal('Unknown config name: customKey.');
+        expect(response.result[0].message).to.equal('Unknown config name: customKey.');
       });
 
     test
@@ -107,7 +107,7 @@ describe('config:get', () => {
       .command(['config:get', 'customKey', '--json'])
       .it('should allow custom config meta for allowedProperties', (ctx) => {
         const response = JSON.parse(ctx.stdout);
-        expect(response).to.deep.equal([
+        expect(response.result).to.deep.equal([
           {
             name: 'customKey',
             success: true,
