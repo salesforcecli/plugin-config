@@ -5,9 +5,9 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { Flags } from '@oclif/core';
+import { Flags, HelpSection } from '@oclif/core';
 import { Config, Messages, Org, SfdxError, OrgConfigProperties } from '@salesforce/core';
-import { ConfigCommand, ConfigResponses } from '../../config';
+import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'set');
@@ -25,6 +25,8 @@ export class Set extends ConfigCommand<ConfigResponses> {
       summary: messages.getMessage('flags.global.summary'),
     }),
   };
+
+  public static configurationVariablesSection?: HelpSection = CONFIG_HELP_SECTION;
 
   public async run(): Promise<ConfigResponses> {
     const { flags } = await this.parse(Set);
