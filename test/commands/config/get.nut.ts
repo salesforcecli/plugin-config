@@ -18,12 +18,12 @@ describe('config get NUTs', async () => {
 
   describe('config get errors', () => {
     it('attempt to config get without keys', () => {
-      const res = execCmd('config get --json', {
+      const result = execCmd('config get --json', {
         ensureExitCode: 1,
         cli: 'sf',
-      }).jsonOutput as unknown as { error: { name: string; exitCode: number } };
-      expect(res.error.name).to.include('NoConfigKeysFound');
-      expect(res.error.exitCode).to.equal(1);
+      }).jsonOutput;
+      expect(result.name).to.include('NoConfigKeysFound');
+      expect(result.status).to.equal(1);
     });
 
     it('attempt to config get without keys stdout', () => {
@@ -38,17 +38,23 @@ describe('config get NUTs', async () => {
     });
 
     it('gets singular config correctly', () => {
-      const res = execCmd<ConfigResponses>('config get apiVersion --json', { ensureExitCode: 0, cli: 'sf' }).jsonOutput;
-      expect(res[0].name).to.equal('apiVersion');
-      expect(res[0].location).to.equal('Global');
-      expect(res[0].value).to.equal('51.0');
-      expect(res[0].success).to.be.true;
+      const { result } = execCmd<ConfigResponses>('config get apiVersion --json', {
+        ensureExitCode: 0,
+        cli: 'sf',
+      }).jsonOutput;
+      expect(result[0].name).to.equal('apiVersion');
+      expect(result[0].location).to.equal('Global');
+      expect(result[0].value).to.equal('51.0');
+      expect(result[0].success).to.be.true;
     });
 
     it('properly overwrites config values, with local > global', () => {
       execCmd('config set apiVersion=52.0');
-      const res = execCmd<ConfigResponses>('config get apiVersion --json', { ensureExitCode: 0, cli: 'sf' }).jsonOutput;
-      expect(res).to.deep.equal([
+      const { result } = execCmd<ConfigResponses>('config get apiVersion --json', {
+        ensureExitCode: 0,
+        cli: 'sf',
+      }).jsonOutput;
+      expect(result).to.deep.equal([
         {
           name: 'apiVersion',
           location: 'Local',
@@ -80,7 +86,7 @@ describe('config get NUTs', async () => {
         cli: 'sf',
       });
 
-      expect(res.jsonOutput).to.deep.equal([
+      expect(res.jsonOutput.result).to.deep.equal([
         {
           name: 'apiVersion',
           location: 'Local',

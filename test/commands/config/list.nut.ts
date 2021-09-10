@@ -17,8 +17,8 @@ describe('config list NUTs', async () => {
 
   describe('config list with no configs set', () => {
     it('lists no config entries correctly', () => {
-      const res = execCmd('config list --json', { ensureExitCode: 0 });
-      expect(res.jsonOutput).to.deep.equal([]);
+      const { result } = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput;
+      expect(result).to.deep.equal([]);
     });
 
     it('lists no configs stdout', () => {
@@ -33,8 +33,8 @@ describe('config list NUTs', async () => {
     });
 
     it('lists singular config correctly', () => {
-      const res = execCmd('config list --json', { ensureExitCode: 0 });
-      expect(res.jsonOutput).to.deep.equal([
+      const { result } = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput;
+      expect(result).to.deep.equal([
         {
           name: 'apiVersion',
           location: 'Global',
@@ -46,8 +46,8 @@ describe('config list NUTs', async () => {
 
     it('properly overwrites config values, with local > global', () => {
       execCmd('config set apiVersion=52.0 --json');
-      const res = execCmd('config list --json', { ensureExitCode: 0 });
-      expect(res.jsonOutput).to.deep.equal([
+      const { result } = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput;
+      expect(result).to.deep.equal([
         {
           name: 'apiVersion',
           location: 'Local',
@@ -75,8 +75,8 @@ describe('config list NUTs', async () => {
 
     it('lists multiple results correctly JSON', () => {
       execCmd('config set restDeploy=false');
-      const res = execCmd('config list --json', { ensureExitCode: 0 });
-      expect(res.jsonOutput).to.deep.equal([
+      const { result } = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput;
+      expect(result).to.deep.equal([
         {
           name: 'apiVersion',
           location: 'Global',

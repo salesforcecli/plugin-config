@@ -17,10 +17,9 @@ describe('config unset NUTs', async () => {
 
   describe('config unset without keys', () => {
     it('errors when attempting to unset nothing', () => {
-      const res = execCmd('config unset --json', { ensureExitCode: 1 }).jsonOutput;
-      expect(res).to.deep.equal({
-        error: { exitCode: 1, name: 'NoConfigKeysFoundError' },
-      });
+      const result = execCmd('config unset --json', { ensureExitCode: 1 }).jsonOutput;
+      expect(result.name).to.equal('NoConfigKeysFoundError');
+      expect(result.status).to.equal(1);
     });
 
     it('prints error message', () => {
@@ -35,8 +34,8 @@ describe('config unset NUTs', async () => {
     });
 
     it('lists singular config correctly', () => {
-      const res = execCmd('config unset apiVersion --json', { ensureExitCode: 0 });
-      expect(res.jsonOutput).to.deep.equal([
+      const { result } = execCmd('config unset apiVersion --json', { ensureExitCode: 0 }).jsonOutput;
+      expect(result).to.deep.equal([
         {
           name: 'apiVersion',
           success: true,
@@ -62,8 +61,10 @@ describe('config unset NUTs', async () => {
 
     it('unsets multiple configs correctly JSON', () => {
       execCmd('config set restDeploy=false');
-      const res = execCmd('config unset restDeploy apiVersion maxQueryLimit --json', { ensureExitCode: 0 });
-      expect(res.jsonOutput).to.deep.equal([
+      const { result } = execCmd('config unset restDeploy apiVersion maxQueryLimit --json', {
+        ensureExitCode: 0,
+      }).jsonOutput;
+      expect(result).to.deep.equal([
         {
           name: 'restDeploy',
           success: true,
