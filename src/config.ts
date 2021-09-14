@@ -8,7 +8,8 @@
 import { SfCommand } from '@salesforce/command';
 import { cli } from 'cli-ux';
 import type { table } from 'cli-ux/lib/styled/table';
-import { ConfigInfo, SfdxError } from '@salesforce/core';
+import { ConfigInfo, OrgConfigProperties, SfdxError, SfdxPropertyKeys } from '@salesforce/core';
+import { toHelpSection } from '@salesforce/sf-plugins-core';
 
 export interface Msg {
   name: string;
@@ -21,6 +22,19 @@ export interface Msg {
 }
 
 export type ConfigResponses = Msg[];
+
+export const CONFIG_HELP_SECTION = toHelpSection(
+  'CONFIGURATION VARIABLES',
+  SfdxPropertyKeys.API_VERSION,
+  SfdxPropertyKeys.DISABLE_TELEMETRY,
+  SfdxPropertyKeys.INSTANCE_URL,
+  SfdxPropertyKeys.ISV_DEBUGGER_SID,
+  SfdxPropertyKeys.ISV_DEBUGGER_URL,
+  SfdxPropertyKeys.MAX_QUERY_LIMIT,
+  SfdxPropertyKeys.REST_DEPLOY,
+  OrgConfigProperties.TARGET_ORG,
+  OrgConfigProperties.TARGET_DEV_HUB
+);
 
 export abstract class ConfigCommand<T> extends SfCommand<T> {
   protected responses: ConfigResponses = [];
