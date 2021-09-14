@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.1](https://github.com/salesforcecli/plugin-config/compare/v2.2.0...v2.2.1) (2021-09-14)
+
+
+### Bug Fixes
+
+* add help section commands ([#198](https://github.com/salesforcecli/plugin-config/issues/198)) ([f57e716](https://github.com/salesforcecli/plugin-config/commit/f57e716e6f6535db6d8ed1e1475b5883228b9b81))
+* increase test timeout to 10 seconds ([#199](https://github.com/salesforcecli/plugin-config/issues/199)) ([441c358](https://github.com/salesforcecli/plugin-config/commit/441c3589d02fcf5383281d0518515fa3f68d4efb))
+
 ## [2.2.0](https://github.com/salesforcecli/plugin-config/compare/v2.1.4...v2.2.0) (2021-09-10)
 
 
