@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { SfCommand } from '@salesforce/command';
+import { SfCommand } from '@salesforce/sf-plugins-core';
 import { cli } from 'cli-ux';
 import type { table } from 'cli-ux/lib/styled/table';
 import { ConfigInfo, OrgConfigProperties, SfdxError, SfdxPropertyKeys } from '@salesforce/core';

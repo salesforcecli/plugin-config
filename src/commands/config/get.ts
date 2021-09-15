@@ -4,7 +4,7 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { Flags, HelpSection } from '@oclif/core';
+import { Flags } from '@oclif/core';
 import { ConfigAggregator, Messages } from '@salesforce/core';
 import { ConfigCommand, ConfigResponses, CONFIG_HELP_SECTION } from '../../config';
 
@@ -22,7 +22,7 @@ export class Get extends ConfigCommand<ConfigResponses> {
     }),
   };
 
-  public static configurationVariablesSection?: HelpSection = CONFIG_HELP_SECTION;
+  public static configurationVariablesSection = CONFIG_HELP_SECTION;
 
   public async run(): Promise<ConfigResponses> {
     const { argv, flags } = await this.parse(Get);

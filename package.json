@@ -5,10 +5,9 @@
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli",
   "dependencies": {
-    "@oclif/core": "^0.5.35",
-    "@salesforce/command": "^4.1.1",
-    "@salesforce/core": "3.6.0",
-    "@salesforce/sf-plugins-core": "^0.0.18",
+    "@oclif/core": "^0.5.37",
+    "@salesforce/core": "3.6.1",
+    "@salesforce/sf-plugins-core": "^0.0.22",
     "chalk": "^4.1.1",
     "cli-ux": "^5.6.3",
     "tslib": "^2"
