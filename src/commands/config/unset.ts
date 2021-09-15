@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { Flags, HelpSection } from '@oclif/core';
+import { Flags } from '@oclif/core';
 import { Config, Messages } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
 
@@ -18,7 +18,7 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
   public static readonly examples = messages.getMessages('examples');
   public static readonly strict = false;
 
-  public static configurationVariablesSection?: HelpSection = CONFIG_HELP_SECTION;
+  public static configurationVariablesSection = CONFIG_HELP_SECTION;
 
   public static readonly flags = {
     global: Flags.boolean({
