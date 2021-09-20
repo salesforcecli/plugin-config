@@ -28,7 +28,7 @@ describe('config get NUTs', async () => {
 
     it('attempt to config get without keys stdout', () => {
       const res = execCmd('config get').shellOutput.stderr;
-      expect(res).to.include('Please provide config name(s) to get.');
+      expect(res).to.include('You must provide one or more configuration variables to get. Run "sf config list" to see the configuration variables you\'ve previously set.');
     });
   });
 
