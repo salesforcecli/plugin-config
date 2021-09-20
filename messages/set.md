@@ -44,4 +44,4 @@ Found duplicate argument %s. You can specify a configuration variable only one t
 
 # error.ArgumentsRequired
 
-You must provide a configuration variable to set. Use the --help flag to view the available configuration variables.  
+You must provide one or more configuration variables to set. Use the --help flag to view the available configuration variables.  
