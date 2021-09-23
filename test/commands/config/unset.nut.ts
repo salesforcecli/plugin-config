@@ -24,7 +24,9 @@ describe('config unset NUTs', async () => {
 
     it('prints error message', () => {
       const res = execCmd('config unset').shellOutput.stderr;
-      expect(res).to.include('Please provide config name(s) to unset.');
+      expect(res.replace(/\n/g, '').replace(/\s{2,}/g, ' ')).to.include(
+        'You must provide one or more configuration variables to unset. Run "sf config list" to see the configuration variables you\'ve previously set.'
+      );
     });
   });
 

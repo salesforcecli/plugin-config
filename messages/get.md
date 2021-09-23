@@ -22,4 +22,4 @@ Display whether the configuration variables are set locally or globally.
 
 # error.NoConfigKeysFound
 
-Please provide config name(s) to get.
+You must provide one or more configuration variables to get. Run "sf config list" to see the configuration variables you've previously set. 

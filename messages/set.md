@@ -36,12 +36,12 @@ Set the configuration variables globally, so they can be used from any directory
 
 # error.InvalidArgumentFormat
 
-Setting variables must be in the format <key>=<value> or <key>=\"<value with spaces>\" but found %s.
+Set configuration variables with this format: key=value or key="value with spaces". Use the --help flag to view the available configuration variables. 
 
 # error.DuplicateArgument
 
-Found duplicate argument %s
+Found duplicate argument %s. You can specify a configuration variable only one time in a single command execution. Remove the duplicate and try again.
 
 # error.ArgumentsRequired
 
-Please provide config name(s) to set.
+You must provide one or more configuration variables to set. Use the --help flag to view the available configuration variables.  
