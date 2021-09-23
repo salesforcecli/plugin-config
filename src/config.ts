@@ -28,8 +28,6 @@ export const CONFIG_HELP_SECTION = toHelpSection(
   SfdxPropertyKeys.API_VERSION,
   SfdxPropertyKeys.DISABLE_TELEMETRY,
   SfdxPropertyKeys.INSTANCE_URL,
-  SfdxPropertyKeys.ISV_DEBUGGER_SID,
-  SfdxPropertyKeys.ISV_DEBUGGER_URL,
   SfdxPropertyKeys.MAX_QUERY_LIMIT,
   SfdxPropertyKeys.REST_DEPLOY,
   OrgConfigProperties.TARGET_ORG,
