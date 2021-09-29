@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.6](https://github.com/salesforcecli/plugin-config/compare/v2.2.5...v2.2.6) (2021-09-29)
+
+
+### Bug Fixes
+
+* bump oclif/core and plugins-core to v1 ([#205](https://github.com/salesforcecli/plugin-config/issues/205)) [skip-validate-pr] ([71f57f1](https://github.com/salesforcecli/plugin-config/commit/71f57f1df2c1bf9803452e37d36eb616bb59c213))
+
 ### [2.2.5](https://github.com/salesforcecli/plugin-config/compare/v2.2.4...v2.2.5) (2021-09-23)
 
 
