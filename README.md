@@ -76,7 +76,7 @@ sfdx plugins
 
 ## `sf config get`
 
-Run "sf config list" to see all the configuration variables you've set. Global configuration variable are always displayed; local ones are displayed if you run the command in a project directory. Run "sf config set" to set a configuration variable.
+Get the value of a configuration variable.
 
 ```
 USAGE
@@ -107,7 +107,7 @@ EXAMPLES
 
 ## `sf config list`
 
-Global configuration variables apply to any directory and are always displayed. If you run this command from a project directory, local configuration variables are also displayed.
+List the configuration variables that you've previously set.
 
 ```
 USAGE
@@ -130,7 +130,7 @@ EXAMPLES
 
 ## `sf config set`
 
-Use configuration variables to set CLI defaults, such as your default org or the API version you want the CLI to use. For example, if you set the "target-org" configuration variable, you don't need to specify it as a "sf deploy metadata" flag if you're deploying to your default org.
+Set one or more configuration variables, such as your default org.
 
 ```
 USAGE
@@ -178,7 +178,7 @@ EXAMPLES
 
 ## `sf config unset`
 
-Local configuration variables apply only to your current project. Global configuration variables apply in any directory.
+Unset local or global configuration variables.
 
 ```
 USAGE
