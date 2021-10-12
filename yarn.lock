@@ -801,10 +801,10 @@
   resolved "https://registry.npmjs.org/@salesforce/schemas/-/schemas-1.1.0.tgz#bbf94a11ee036f2b0ec6ba82306cd9565a6ba26b"
   integrity sha512-6D7DvE6nFxpLyyTnrOIbbAeCJw2r/EpinFAcMh6gU0gA/CGfSbwV/8uR3uHLYL2zCyCZLH8jJ4dZ3BzCMqc+Eg==
 
-"@salesforce/sf-plugins-core@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@salesforce/sf-plugins-core/-/sf-plugins-core-1.0.2.tgz#134b003d8665eb7599654e1af8443fee47c64938"
-  integrity sha512-zsbtB7HSjp3bikWZOT3DIIWjw8padX+BzEw+cWxTiJ7gKIVpGP//pFdWVv/jSSqpKi9ok68/7qW7KwBrqp8ksQ==
+"@salesforce/sf-plugins-core@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@salesforce/sf-plugins-core/-/sf-plugins-core-1.0.3.tgz#2e8bd7792d0e296ceb2fd3fe5f837829309bf20d"
+  integrity sha512-XbpGflrOANZsEs+nYr/BDpr5npqAehb7Nzc3SinsR26Pcr1XI6I40s5XdsNDznF3X45E+u5o6lnWJds/raC/ng==
   dependencies:
     "@oclif/core" "^1.0.1"
     "@salesforce/core" "^3.6.6"
