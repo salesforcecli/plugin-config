@@ -6,17 +6,28 @@
  */
 
 import * as path from 'path';
-import { $$, expect, test } from '@salesforce/command/lib/test';
+import { test, expect } from '@oclif/test';
 import { ConfigAggregator, SfdxPropertyKeys, OrgConfigProperties } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { IPlugin } from '@oclif/config';
+import * as sinon from 'sinon';
+import { SinonSandbox } from 'sinon';
 
 process.env.NODE_ENV = 'development';
 
 describe('config:get', () => {
+  let sandbox: SinonSandbox;
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
+
   async function prepareStubs(global = true) {
     const location = global ? 'Global' : 'Local';
-    stubMethod($$.SANDBOX, ConfigAggregator.prototype, 'getInfo')
+    stubMethod(sandbox, ConfigAggregator.prototype, 'getInfo')
       .withArgs(OrgConfigProperties.TARGET_DEV_HUB)
       .returns({ key: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location })
       .withArgs(OrgConfigProperties.TARGET_ORG)

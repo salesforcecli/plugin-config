@@ -4,25 +4,36 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { $$, expect, test } from '@salesforce/command/lib/test';
+import { test, expect } from '@oclif/test';
 import { Config, OrgConfigProperties, SfdxPropertyKeys } from '@salesforce/core';
 import { StubbedType, stubInterface, stubMethod } from '@salesforce/ts-sinon';
+import { SinonSandbox } from 'sinon';
+import * as sinon from 'sinon';
 
 describe('config:unset', () => {
   let configStub: StubbedType<Config>;
+  let sandbox: SinonSandbox;
+
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   async function prepareStubs(throwsError = false) {
     if (throwsError) {
-      configStub = stubInterface<Config>($$.SANDBOX, {
+      configStub = stubInterface<Config>(sandbox, {
         unset: () => {
           throw new Error('Unset Error!');
         },
       });
     } else {
-      configStub = stubInterface<Config>($$.SANDBOX, {});
+      configStub = stubInterface<Config>(sandbox, {});
     }
 
-    stubMethod($$.SANDBOX, Config, 'create').callsFake(async () => configStub);
+    stubMethod(sandbox, Config, 'create').callsFake(async () => configStub);
   }
 
   test

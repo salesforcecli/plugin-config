@@ -5,14 +5,25 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { $$, expect, test } from '@salesforce/command/lib/test';
+import { test, expect } from '@oclif/test';
 import { ConfigAggregator, SfdxPropertyKeys, OrgConfigProperties } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
+import { SinonSandbox } from 'sinon';
+import * as sinon from 'sinon';
 
 describe('config:list', () => {
+  let sandbox: SinonSandbox;
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
+
   test
     .do(() => {
-      stubMethod($$.SANDBOX, ConfigAggregator.prototype, 'getConfigInfo').returns([
+      stubMethod(sandbox, ConfigAggregator.prototype, 'getConfigInfo').returns([
         { key: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location: 'Global' },
         { key: SfdxPropertyKeys.DISABLE_TELEMETRY, value: true, location: 'Global' },
         { key: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location: 'Local' },
@@ -33,7 +44,7 @@ describe('config:list', () => {
 
   test
     .do(() => {
-      stubMethod($$.SANDBOX, ConfigAggregator.prototype, 'getConfigInfo').returns([]);
+      stubMethod(sandbox, ConfigAggregator.prototype, 'getConfigInfo').returns([]);
     })
     .stdout()
     .command(['config:list', '--json'])

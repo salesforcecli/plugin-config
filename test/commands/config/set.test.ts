@@ -5,19 +5,29 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { $$, expect, test } from '@salesforce/command/lib/test';
+import { test, expect } from '@oclif/test';
 import { Config, Org, SfdxPropertyKeys, OrgConfigProperties } from '@salesforce/core';
 import { StubbedType, stubInterface, stubMethod } from '@salesforce/ts-sinon';
-import { SinonStub } from 'sinon';
+import { SinonSandbox, SinonStub } from 'sinon';
+import * as sinon from 'sinon';
 
 describe('config:set', () => {
   let configStub: StubbedType<Config>;
   let orgStub: StubbedType<Org>;
   let orgCreateSpy: SinonStub;
+  let sandbox: SinonSandbox;
+
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   async function prepareStubs() {
-    configStub = stubInterface<Config>($$.SANDBOX, {});
-    stubMethod($$.SANDBOX, Config, 'create').callsFake(async () => configStub);
+    configStub = stubInterface<Config>(sandbox, {});
+    stubMethod(sandbox, Config, 'create').callsFake(async () => configStub);
   }
 
   test
@@ -33,8 +43,8 @@ describe('config:set', () => {
   test
     .do(async () => {
       await prepareStubs();
-      orgStub = stubInterface<Org>($$.SANDBOX, {});
-      orgCreateSpy = stubMethod($$.SANDBOX, Org, 'create').callsFake(async () => orgStub);
+      orgStub = stubInterface<Org>(sandbox, {});
+      orgCreateSpy = stubMethod(sandbox, Org, 'create').callsFake(async () => orgStub);
     })
     .stdout()
     .command(['config:set', `${OrgConfigProperties.TARGET_ORG}=MyUser`, '--global', '--json'])
@@ -48,8 +58,8 @@ describe('config:set', () => {
   test
     .do(async () => {
       await prepareStubs();
-      orgStub = stubInterface<Org>($$.SANDBOX, {});
-      orgCreateSpy = stubMethod($$.SANDBOX, Org, 'create').callsFake(async () => orgStub);
+      orgStub = stubInterface<Org>(sandbox, {});
+      orgCreateSpy = stubMethod(sandbox, Org, 'create').callsFake(async () => orgStub);
     })
     .stdout()
     .command(['config:set', `${OrgConfigProperties.TARGET_DEV_HUB}=MyDevhub`, '--global', '--json'])
@@ -62,7 +72,7 @@ describe('config:set', () => {
 
   describe('error cases', () => {
     beforeEach(() => {
-      stubMethod($$.SANDBOX, Org, 'create').callsFake(async () => {
+      stubMethod(sandbox, Org, 'create').callsFake(async () => {
         throw new Error('No AuthInfo found');
       });
     });
