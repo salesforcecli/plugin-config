@@ -154,13 +154,17 @@ describe('config:set NUTs', async () => {
 
     describe('defaultdevhubusername', () => {
       it('will fail to validate defaultdevhubusername', () => {
-        verifyValidationError('defaultdevhubusername', 'ab', 'No AuthInfo found for name ab');
+        verifyValidationError(
+          'defaultdevhubusername',
+          'ab',
+          'No authorization information found for devhub username ab.'
+        );
       });
     });
 
     describe('defaultusername', () => {
       it('will fail to validate defaultusername', () => {
-        verifyValidationError('defaultusername', 'ab', 'No AuthInfo found for name ab');
+        verifyValidationError('defaultusername', 'ab', 'No authorization information found for username ab.');
       });
     });
 
