@@ -9,7 +9,7 @@ import { expect } from '@salesforce/command/lib/test';
 
 let testSession: TestSession;
 
-function verifyValidationError(key: string, value: string | number, message) {
+function verifyValidationError(key: string, value: string | number) {
   const expected = {
     status: 1,
     result: {
@@ -17,12 +17,13 @@ function verifyValidationError(key: string, value: string | number, message) {
       failures: [
         {
           name: key,
-          message,
         },
       ],
     },
   };
   const res = execCmd(`config:set ${key}=${value} --json`).jsonOutput;
+  // ignore error message
+  delete res.result['failures'][0]['message'];
   expect(res).to.deep.equal(expected);
   execCmd(`config:unset ${key}`);
 }
@@ -107,11 +108,7 @@ describe('config:set NUTs', async () => {
       });
 
       it('will fail to validate apiVersion', () => {
-        verifyValidationError(
-          'apiVersion',
-          '50',
-          'Invalid config value. Specify a valid Salesforce API version, for example, 42.0'
-        );
+        verifyValidationError('apiVersion', '50');
       });
     });
 
@@ -122,11 +119,7 @@ describe('config:set NUTs', async () => {
       });
 
       it('will fail to validate maxQueryLimit', () => {
-        verifyValidationError(
-          'maxQueryLimit',
-          '-2',
-          'Invalid config value. Specify a valid positive integer, for example, 150000'
-        );
+        verifyValidationError('maxQueryLimit', '-2');
       });
     });
 
@@ -144,23 +137,19 @@ describe('config:set NUTs', async () => {
       });
 
       it('will fail to validate instanceUrl when non-Salesforce URL', () => {
-        verifyValidationError(
-          'instanceUrl',
-          'https://not-our-url.com',
-          'Invalid config value. Specify a valid Salesforce instance URL'
-        );
+        verifyValidationError('instanceUrl', 'https://not-our-url.com');
       });
     });
 
     describe('defaultdevhubusername', () => {
       it('will fail to validate defaultdevhubusername', () => {
-        verifyValidationError('defaultdevhubusername', 'ab', 'No AuthInfo found for name ab');
+        verifyValidationError('defaultdevhubusername', 'ab');
       });
     });
 
     describe('defaultusername', () => {
       it('will fail to validate defaultusername', () => {
-        verifyValidationError('defaultusername', 'ab', 'No AuthInfo found for name ab');
+        verifyValidationError('defaultusername', 'ab');
       });
     });
 
@@ -185,11 +174,7 @@ describe('config:set NUTs', async () => {
       });
 
       it('will fail to validate disableTelemetry', () => {
-        verifyValidationError(
-          'disableTelemetry',
-          'ab',
-          'Invalid config value. The config value can only be set to true or false.'
-        );
+        verifyValidationError('disableTelemetry', 'ab');
       });
     });
 
@@ -202,11 +187,7 @@ describe('config:set NUTs', async () => {
       });
 
       it('will fail to validate restDeploy', () => {
-        verifyValidationError(
-          'restDeploy',
-          'ab',
-          'Invalid config value. The config value can only be set to true or false.'
-        );
+        verifyValidationError('restDeploy', 'ab');
       });
     });
   });
