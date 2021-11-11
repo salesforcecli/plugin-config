@@ -48,7 +48,7 @@ function loadConfigMeta(plugin: IPlugin): ConfigPropertyMeta | undefined {
 }
 
 const hook: Hook<'init'> = ({ config: oclifConfig }) => {
-  const loadedConfigMetas = (oclifConfig.plugins || [])
+  const flattenedConfigMetas = (oclifConfig.plugins || [])
     .map((plugin) => {
       const configMeta = loadConfigMeta(plugin);
       if (!configMeta) {
@@ -57,9 +57,8 @@ const hook: Hook<'init'> = ({ config: oclifConfig }) => {
 
       return configMeta;
     })
-    .filter(isObject);
-
-  const flattenedConfigMetas = [...loadedConfigMetas];
+    .filter(isObject)
+    .flat();
 
   if (flattenedConfigMetas.length) {
     Config.addAllowedProperties(flattenedConfigMetas);
