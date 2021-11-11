@@ -28,7 +28,7 @@ function verifyValidationError(key: string, value: string | number) {
   execCmd(`config:unset ${key}`);
 }
 
-function verifyValidationStartsWith(key: string, value: string | number, message) {
+function verifyValidationStartsWith(key: string, value: string | number, message: string) {
   const res = execCmd(`config:set ${key}=${value} --json`).jsonOutput;
   expect(res.status).to.equal(1);
   expect(res.result).to.have.property('successes').with.length(0);

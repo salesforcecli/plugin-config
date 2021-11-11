@@ -59,7 +59,7 @@ const hook: Hook<'init'> = ({ config: oclifConfig }) => {
     })
     .filter(isObject);
 
-  const flattenedConfigMetas = [].concat(...loadedConfigMetas);
+  const flattenedConfigMetas = [...loadedConfigMetas];
 
   if (flattenedConfigMetas.length) {
     Config.addAllowedProperties(flattenedConfigMetas);
