@@ -48,7 +48,7 @@ function loadConfigMeta(plugin: Interfaces.Plugin): ConfigPropertyMeta | undefin
 }
 
 const hook: Hook<'init'> = ({ config }): Promise<void> => {
-  const loadedConfigMetas = (config.plugins || [])
+  const flattenedConfigMetas = (config.plugins || [])
     .map((plugin) => {
       const configMeta = loadConfigMeta(plugin);
       if (!configMeta) {
@@ -57,9 +57,8 @@ const hook: Hook<'init'> = ({ config }): Promise<void> => {
 
       return configMeta;
     })
-    .filter(isObject);
-
-  const flattenedConfigMetas = [].concat(...loadedConfigMetas);
+    .filter(isObject)
+    .flat();
 
   if (flattenedConfigMetas.length) {
     Config.addAllowedProperties(flattenedConfigMetas);
