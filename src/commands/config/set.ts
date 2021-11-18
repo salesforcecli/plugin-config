@@ -43,7 +43,7 @@ export class Set extends ConfigCommand<ConfigResponses> {
         config.set(name, value);
         this.responses.push({ name, value, success: true });
       } catch (err) {
-        this.pushFailure(name, err, value);
+        this.pushFailure(name, err as Error, value);
       }
     }
     await config.write();
