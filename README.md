@@ -69,18 +69,10 @@ sfdx plugins
 # Commands
 
 <!-- commands -->
-
-- [plugin-config](#plugin-config)
-  - [Install](#install)
-  - [Issues](#issues)
-  - [Contributing](#contributing)
-    - [CLA](#cla)
-    - [Build](#build)
-- [Commands](#commands)
-  - [`sf config get`](#sf-config-get)
-  - [`sf config list`](#sf-config-list)
-  - [`sf config set`](#sf-config-set)
-  - [`sf config unset`](#sf-config-unset)
+* [`sf config get`](#sf-config-get)
+* [`sf config list`](#sf-config-list)
+* [`sf config set`](#sf-config-set)
+* [`sf config unset`](#sf-config-unset)
 
 ## `sf config get`
 
@@ -213,5 +205,4 @@ EXAMPLES
 
     $ sf config unset target-org api-version --global
 ```
-
 <!-- commandsstop -->
