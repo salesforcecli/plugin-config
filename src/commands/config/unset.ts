@@ -32,7 +32,7 @@ export class UnSet extends ConfigCommand {
     if (!argv || argv.length === 0) {
       throw SfdxError.create('@salesforce/plugin-config', 'unset', 'NoConfigKeysFound');
     } else {
-      const config: Config = await Config.create(Config.getDefaultOptions(this.flags.global));
+      const config: Config = await Config.create(Config.getDefaultOptions(this.flags.global as boolean));
 
       await config.read();
       argv.forEach((key) => {

@@ -50,7 +50,7 @@ export class Get extends ConfigCommand {
         }
       });
 
-      this.output('Get Config', this.flags.verbose);
+      this.output('Get Config', this.flags.verbose as boolean);
       return results;
     }
   }
