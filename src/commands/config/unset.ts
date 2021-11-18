@@ -41,7 +41,7 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
           config.unset(key);
           this.responses.push({ name: key, success: true });
         } catch (err) {
-          this.pushFailure(key, err);
+          this.pushFailure(key, err as Error);
         }
       });
       await config.write();

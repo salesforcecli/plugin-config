@@ -36,7 +36,7 @@ export class Get extends ConfigCommand<ConfigResponses> {
         try {
           this.pushSuccess(aggregator.getInfo(configName, true));
         } catch (err) {
-          this.pushFailure(configName, err);
+          this.pushFailure(configName, err as Error);
         }
       });
 
