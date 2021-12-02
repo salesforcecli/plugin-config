@@ -2,19 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.2.48](https://github.com/salesforcecli/plugin-config/compare/v1.2.47...v1.2.48) (2021-11-18)
+## [1.3.0](https://github.com/salesforcecli/plugin-config/compare/v1.2.48...v1.3.0) (2021-12-02)
 
+### Features
+
+- bump deps ([13af5c5](https://github.com/salesforcecli/plugin-config/commit/13af5c5ec6e233db1e17d8d64d70e7fde2f14516))
+
+### [1.2.48](https://github.com/salesforcecli/plugin-config/compare/v1.2.47...v1.2.48) (2021-11-18)
 
 ### Bug Fixes
 
-* flat properly ([9bd4d78](https://github.com/salesforcecli/plugin-config/commit/9bd4d788114e9c674ea8f2037868c7cd21c182b8))
+- flat properly ([9bd4d78](https://github.com/salesforcecli/plugin-config/commit/9bd4d788114e9c674ea8f2037868c7cd21c182b8))
 
 ### [1.2.47](https://github.com/salesforcecli/plugin-config/compare/v1.2.46...v1.2.47) (2021-11-10)
 
-
 ### Bug Fixes
 
-* bump sfdx-core and fix NUT ([#230](https://github.com/salesforcecli/plugin-config/issues/230)) ([ac1c04e](https://github.com/salesforcecli/plugin-config/commit/ac1c04e16be01f57495f34ffa83d48c7b483d61d))
+- bump sfdx-core and fix NUT ([#230](https://github.com/salesforcecli/plugin-config/issues/230)) ([ac1c04e](https://github.com/salesforcecli/plugin-config/commit/ac1c04e16be01f57495f34ffa83d48c7b483d61d))
 
 ### [1.2.46](https://github.com/salesforcecli/plugin-config/compare/v1.2.45...v1.2.46) (2021-11-03)
 
@@ -30,10 +34,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [1.2.40](https://github.com/salesforcecli/plugin-config/compare/v1.2.39...v1.2.40) (2021-10-05)
 
-
 ### Bug Fixes
 
-* update deps ([c47208e](https://github.com/salesforcecli/plugin-config/commit/c47208e329d2ac9314c2625590918b948400b37e))
+- update deps ([c47208e](https://github.com/salesforcecli/plugin-config/commit/c47208e329d2ac9314c2625590918b948400b37e))
 
 ### [1.2.39](https://github.com/salesforcecli/plugin-config/compare/v1.2.38...v1.2.39) (2021-10-03)
 
