@@ -9,7 +9,7 @@ import * as path from 'path';
 import { test, expect } from '@oclif/test';
 import { ConfigAggregator, SfdxPropertyKeys, OrgConfigProperties } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
-import { IPlugin } from '@oclif/config';
+import { Plugin } from '@oclif/core';
 import * as sinon from 'sinon';
 import { SinonSandbox } from 'sinon';
 
@@ -111,7 +111,8 @@ describe('config:get', () => {
           root: mockPluginRoot,
           hooks: {},
           pjson: require(path.resolve(mockPluginRoot, 'package.json')),
-        } as IPlugin);
+          commands: [],
+        } as Plugin);
       })
       .stdout()
       .stderr()

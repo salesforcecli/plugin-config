@@ -7,9 +7,9 @@
 
 import * as path from 'path';
 import { test, expect } from '@oclif/test';
+import { Plugin } from '@oclif/core';
 import { Config } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
-import { IPlugin } from '@oclif/config';
 import * as sinon from 'sinon';
 import { SinonSandbox, SinonStub } from 'sinon';
 import tsSrcConfigMetaMock from '../config-meta-mocks/typescript-src/src/config-meta';
@@ -36,7 +36,7 @@ describe('hooks', () => {
         root: mockPluginRoot,
         hooks: {},
         pjson: require(path.resolve(mockPluginRoot, 'package.json')),
-      } as IPlugin);
+      } as Plugin);
     })
     .hook('init')
     .do(() => {
@@ -58,7 +58,7 @@ describe('hooks', () => {
         root: mockPluginRoot,
         hooks: {},
         pjson: require(path.resolve(mockPluginRoot, 'package.json')),
-      } as IPlugin);
+      } as Plugin);
     })
     .hook('init')
     .do(() => {
