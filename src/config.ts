@@ -6,12 +6,11 @@
  */
 
 import { SfCommand } from '@salesforce/sf-plugins-core';
-import { cli } from 'cli-ux';
-import type { table } from 'cli-ux/lib/styled/table';
+import { CliUx } from '@oclif/core';
 import { ConfigInfo, OrgConfigProperties, SfdxError, SfdxPropertyKeys } from '@salesforce/core';
 import { toHelpSection } from '@salesforce/sf-plugins-core';
 
-export interface Msg {
+export type Msg = {
   name: string;
   value?: string;
   success: boolean;
@@ -19,7 +18,7 @@ export interface Msg {
   path?: string;
   message?: string;
   error?: Error;
-}
+};
 
 export type ConfigResponses = Msg[];
 
@@ -64,7 +63,7 @@ export abstract class ConfigCommand<T> extends SfCommand<T> {
       return;
     }
 
-    const columns: table.Columns<Msg> = {
+    const columns: CliUx.Table.table.Columns<Msg> = {
       name: { header: 'Name' },
     };
 
@@ -94,6 +93,6 @@ export abstract class ConfigCommand<T> extends SfCommand<T> {
       this.responses.map((msg) => (msg.message = msg.error?.message));
     }
 
-    cli.table(this.responses, columns, { title });
+    this.table(this.responses, columns, { title });
   }
 }
