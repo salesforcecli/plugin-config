@@ -2,12 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [2.2.12](https://github.com/salesforcecli/plugin-config/compare/v2.2.11...v2.2.12) (2022-01-06)
+## [2.3.0](https://github.com/salesforcecli/plugin-config/compare/v2.2.12...v2.3.0) (2022-01-28)
 
+### Features
+
+- remove cli-ux ([#270](https://github.com/salesforcecli/plugin-config/issues/270)) ([bd11faf](https://github.com/salesforcecli/plugin-config/commit/bd11faf2e92fecfcb607c34bbdb96932f57c3aaf))
+
+### [2.2.12](https://github.com/salesforcecli/plugin-config/compare/v2.2.11...v2.2.12) (2022-01-06)
 
 ### Bug Fixes
 
-* add main to package.json ([#265](https://github.com/salesforcecli/plugin-config/issues/265)) ([5ba0832](https://github.com/salesforcecli/plugin-config/commit/5ba08324a0095df2b528398a342cc974e2f09052))
+- add main to package.json ([#265](https://github.com/salesforcecli/plugin-config/issues/265)) ([5ba0832](https://github.com/salesforcecli/plugin-config/commit/5ba08324a0095df2b528398a342cc974e2f09052))
 
 ### [2.2.11](https://github.com/salesforcecli/plugin-config/compare/v2.2.10...v2.2.11) (2021-11-18)
 
