@@ -5,8 +5,9 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import * as path from 'path';
+import { readJson, writeJson } from 'fs-extra';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import { SfdxPropertyKeys, fs, OrgConfigProperties } from '@salesforce/core';
+import { SfdxPropertyKeys, OrgConfigProperties } from '@salesforce/core';
 import { env } from '@salesforce/kit';
 import { AnyJson, ensureString } from '@salesforce/ts-types';
 import { expect } from 'chai';
@@ -30,7 +31,7 @@ describe('Interoperability NUTs', async () => {
 
   async function readConfig(folder: '.sf' | '.sfdx'): Promise<AnyJson> {
     const filename = folder === '.sf' ? 'config.json' : 'sfdx-config.json';
-    return fs.readJson(path.join(testSession.project.dir, folder, filename));
+    return readJson(path.join(testSession.project.dir, folder, filename)) as Promise<AnyJson>;
   }
 
   async function configShouldHave(folder: '.sf' | '.sfdx', key: string, value: AnyJson) {
@@ -279,7 +280,7 @@ describe('Interoperability NUTs', async () => {
     it('should overwrite existing target-org config in .sf', async () => {
       const config = { [OrgConfigProperties.TARGET_ORG]: 'foobar' };
       // write the config file directly so that we don't have to authorize another org
-      await fs.writeJson(path.join(testSession.project.dir, '.sf', 'config.json'), config);
+      await writeJson(path.join(testSession.project.dir, '.sf', 'config.json'), config);
       await configShouldHave('.sf', OrgConfigProperties.TARGET_ORG, 'foobar');
 
       exec(`sfdx config:set defaultusername=${ORG_ALIAS}`, { silent: true });
@@ -300,7 +301,7 @@ describe('Interoperability NUTs', async () => {
     it('should overwrite existing target-dev-hub config in .sf', async () => {
       const config = { [OrgConfigProperties.TARGET_DEV_HUB]: 'foobar' };
       // write the config file directly so that we don't have to authorize another org
-      await fs.writeJson(path.join(testSession.project.dir, '.sf', 'config.json'), config);
+      await writeJson(path.join(testSession.project.dir, '.sf', 'config.json'), config);
       await configShouldHave('.sf', OrgConfigProperties.TARGET_DEV_HUB, 'foobar');
 
       exec(`sfdx config:set defaultdevhubusername=${ORG_ALIAS}`, { silent: true });
