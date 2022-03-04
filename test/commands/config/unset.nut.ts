@@ -9,12 +9,13 @@ import { expect } from 'chai';
 
 let testSession: TestSession;
 
-describe('config unset NUTs', async () => {
-  testSession = await TestSession.create({
-    project: { name: 'configUnsetNUTs' },
-    authStrategy: 'NONE',
+describe('config unset NUTs', () => {
+  before(async () => {
+    testSession = await TestSession.create({
+      project: { name: 'configUnsetNUTs' },
+      authStrategy: 'NONE',
+    });
   });
-
   describe('config unset without keys', () => {
     it('errors when attempting to unset nothing', () => {
       const result = execCmd('config unset --json', { ensureExitCode: 1 }).jsonOutput;

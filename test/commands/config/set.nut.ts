@@ -43,10 +43,12 @@ function verifyKeysAndValuesStdout(key: string, value: string | boolean, asserti
   execCmd(`config unset ${key}`);
 }
 
-describe('config set NUTs', async () => {
-  testSession = await TestSession.create({
-    project: { name: 'configSetNUTs' },
-    authStrategy: 'NONE',
+describe.skip('config set NUTs', () => {
+  before(async () => {
+    testSession = await TestSession.create({
+      project: { name: 'configSetNUTs' },
+      authStrategy: 'NONE',
+    });
   });
 
   describe('config set errors', () => {

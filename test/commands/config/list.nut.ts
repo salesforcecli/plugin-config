@@ -9,10 +9,12 @@ import { expect } from 'chai';
 
 let testSession: TestSession;
 
-describe('config list NUTs', async () => {
-  testSession = await TestSession.create({
-    project: { name: 'configListNUTs' },
-    authStrategy: 'NONE',
+describe('config list NUTs', () => {
+  before(async () => {
+    testSession = await TestSession.create({
+      project: { name: 'configListNUTs' },
+      authStrategy: 'NONE',
+    });
   });
 
   describe('config list with no configs set', () => {
