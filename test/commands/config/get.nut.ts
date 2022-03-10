@@ -40,7 +40,7 @@ describe('config:get NUTs', async () => {
     it('gets singular config correctly', () => {
       const res = execCmd('config:get apiVersion --json', { ensureExitCode: 0 });
       // the path variable will change machine to machine, ensure it has the config file and then delete it
-      expect(res.jsonOutput.result[0].path).to.include('sfdx-config.json');
+      expect(res.jsonOutput.result[0].path).to.include('config.json');
       expect(res.jsonOutput.result[0].key).to.include('apiVersion');
       expect(res.jsonOutput.result[0].location).to.include('Global');
       expect(res.jsonOutput.result[0].value).to.include('51.0');
@@ -54,11 +54,12 @@ describe('config:get NUTs', async () => {
       execCmd('config:set apiVersion=52.0');
       const res = execCmd('config:get apiVersion --json', { ensureExitCode: 0 });
       // the path variable will change machine to machine, ensure it has the config file and then delete it
-      expect(res.jsonOutput.result[0].path).to.include('sfdx-config.json');
+      expect(res.jsonOutput.result[0].path).to.include('config.json');
       delete res.jsonOutput.result[0].path;
       expect(res.jsonOutput).to.deep.equal({
         result: [
           {
+            deprecated: false,
             key: 'apiVersion',
             location: 'Local',
             value: '52.0',
@@ -90,22 +91,25 @@ describe('config:get NUTs', async () => {
         ensureExitCode: 0,
       });
       Object.values(res.jsonOutput.result).forEach((result) => {
-        expect(result.path).to.include('sfdx-config.json');
+        expect(result.path).to.include('config.json');
         delete result.path;
       });
 
       expect(res.jsonOutput.result).to.deep.equal([
         {
+          deprecated: false,
           key: 'apiVersion',
           location: 'Local',
           value: '51.0',
         },
         {
+          deprecated: false,
           key: 'maxQueryLimit',
           location: 'Global',
           value: '100',
         },
         {
+          deprecated: false,
           key: 'restDeploy',
           location: 'Local',
           value: 'false',

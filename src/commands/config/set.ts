@@ -7,7 +7,7 @@
 
 import * as os from 'os';
 import { flags, FlagsConfig } from '@salesforce/command';
-import { Config, Messages, Org, SfdxError } from '@salesforce/core';
+import { Config, Messages, Org, OrgConfigProperties, SfdxPropertyKeys, SfError } from '@salesforce/core';
 import { getString } from '@salesforce/ts-types';
 import { ConfigCommand, ConfigSetReturn } from '../../config';
 
@@ -35,7 +35,11 @@ export class Set extends ConfigCommand {
     for (const name of Object.keys(this.varargs)) {
       try {
         value = getString(this.varargs, name);
-        if ((name === Config.DEFAULT_DEV_HUB_USERNAME || name === Config.DEFAULT_USERNAME) && value) {
+        if (
+          name === SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME ||
+          name === SfdxPropertyKeys.DEFAULT_USERNAME ||
+          ((name === OrgConfigProperties.TARGET_ORG || name === OrgConfigProperties.TARGET_DEV_HUB) && value)
+        ) {
           await Org.create({ aliasOrUsername: value });
         }
         config.set(name, value);
@@ -46,7 +50,7 @@ export class Set extends ConfigCommand {
           name,
           value,
           success: false,
-          error: err as SfdxError,
+          error: err as SfError,
         });
       }
     }

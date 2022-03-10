@@ -7,7 +7,7 @@
 import * as os from 'os';
 
 import { flags, FlagsConfig } from '@salesforce/command';
-import { Config, Messages, SfdxError } from '@salesforce/core';
+import { Config, Messages, SfError } from '@salesforce/core';
 import { ConfigCommand, ConfigSetReturn } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -27,10 +27,10 @@ export class UnSet extends ConfigCommand {
   };
 
   public async run(): Promise<ConfigSetReturn> {
-    const argv = this.parseArgs();
+    const argv = await this.parseArgs();
 
     if (!argv || argv.length === 0) {
-      throw SfdxError.create('@salesforce/plugin-config', 'unset', 'NoConfigKeysFound');
+      throw messages.createError('NoConfigKeysFound');
     } else {
       const config: Config = await Config.create(Config.getDefaultOptions(this.flags.global as boolean));
 
@@ -44,7 +44,7 @@ export class UnSet extends ConfigCommand {
           this.responses.push({
             name: key,
             success: false,
-            error: err as SfdxError,
+            error: err as SfError,
           });
         }
       });
