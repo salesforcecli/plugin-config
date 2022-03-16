@@ -7,7 +7,16 @@
 
 import * as os from 'os';
 import { flags, FlagsConfig } from '@salesforce/command';
-import { Config, Messages, Org, OrgConfigProperties, SfdxPropertyKeys, SfError } from '@salesforce/core';
+import {
+  Config,
+  Messages,
+  Org,
+  ORG_CONFIG_ALLOWED_PROPERTIES,
+  OrgConfigProperties,
+  SFDX_ALLOWED_PROPERTIES,
+  SfdxPropertyKeys,
+  SfError,
+} from '@salesforce/core';
 import { getString } from '@salesforce/ts-types';
 import { ConfigCommand, ConfigSetReturn } from '../../config';
 
@@ -29,7 +38,21 @@ export class Set extends ConfigCommand {
   public static aliases = ['force:config:set'];
 
   public async run(): Promise<ConfigSetReturn> {
+    /**
+     * override the coreV3 allowedProperties to allow all sfdx config values,
+     * regardless of if they're deprecated in 'sf' or not
+     */
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    Config.allowedProperties = [
+      ...ORG_CONFIG_ALLOWED_PROPERTIES,
+      ...SFDX_ALLOWED_PROPERTIES.map((entry) => {
+        entry.deprecated = false;
+        return entry;
+      }),
+    ];
     const config: Config = await Config.create(Config.getDefaultOptions(this.flags.global as boolean));
+
     await config.read();
     let value = '';
     for (const name of Object.keys(this.varargs)) {
