@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.1](https://github.com/salesforcecli/plugin-config/compare/v2.3.0...v2.3.1) (2022-03-21)
+
+### Bug Fixes
+
+- add aws circle context ([33294cf](https://github.com/salesforcecli/plugin-config/commit/33294cf942ee906fe65750784f3e78d7674e7e3e))
+- add caret to @salesforce/core ([c4f9dde](https://github.com/salesforcecli/plugin-config/commit/c4f9ddea03b20231fb95295129b9c337e00b65f2))
+
 ## [2.3.0](https://github.com/salesforcecli/plugin-config/compare/v2.2.12...v2.3.0) (2022-01-28)
 
 ### Features
