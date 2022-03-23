@@ -6,10 +6,11 @@
  */
 
 import { test, expect } from '@oclif/test';
-import { ConfigAggregator, SfdxPropertyKeys, OrgConfigProperties } from '@salesforce/core';
+import { ConfigAggregator, OrgConfigProperties } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { SinonSandbox } from 'sinon';
 import * as sinon from 'sinon';
+import { SfConfigProperties } from '@salesforce/core/lib/config/config';
 
 describe('config:list', () => {
   let sandbox: SinonSandbox;
@@ -25,9 +26,9 @@ describe('config:list', () => {
     .do(() => {
       stubMethod(sandbox, ConfigAggregator.prototype, 'getConfigInfo').returns([
         { key: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location: 'Global' },
-        { key: SfdxPropertyKeys.DISABLE_TELEMETRY, value: true, location: 'Global' },
+        { key: SfConfigProperties.DISABLE_TELEMETRY, value: true, location: 'Global' },
         { key: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location: 'Local' },
-        { key: SfdxPropertyKeys.API_VERSION, value: '49.0', location: 'Local' },
+        { key: OrgConfigProperties.ORG_API_VERSION, value: '49.0', location: 'Local' },
       ]);
     })
     .stdout()
@@ -36,9 +37,9 @@ describe('config:list', () => {
       const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
         { name: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location: 'Global', success: true },
-        { name: SfdxPropertyKeys.DISABLE_TELEMETRY, value: true, location: 'Global', success: true },
+        { name: SfConfigProperties.DISABLE_TELEMETRY, value: true, location: 'Global', success: true },
         { name: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location: 'Local', success: true },
-        { name: SfdxPropertyKeys.API_VERSION, value: '49.0', location: 'Local', success: true },
+        { name: OrgConfigProperties.ORG_API_VERSION, value: '49.0', location: 'Local', success: true },
       ]);
     });
 

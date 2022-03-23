@@ -29,14 +29,14 @@ describe('config list NUTs', async () => {
 
   describe('config list with singular result', () => {
     before(() => {
-      execCmd('config set apiVersion=51.0 --global');
+      execCmd('config set org-api-version=51.0 --global');
     });
 
     it('lists singular config correctly', () => {
       const { result } = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput;
       expect(result).to.deep.equal([
         {
-          name: 'apiVersion',
+          name: 'org-api-version',
           location: 'Global',
           value: '51.0',
           success: true,
@@ -45,11 +45,11 @@ describe('config list NUTs', async () => {
     });
 
     it('properly overwrites config values, with local > global', () => {
-      execCmd('config set apiVersion=52.0 --json');
+      execCmd('config set org-api-version=52.0 --json');
       const { result } = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput;
       expect(result).to.deep.equal([
         {
-          name: 'apiVersion',
+          name: 'org-api-version',
           location: 'Local',
           value: '52.0',
           success: true,
@@ -60,37 +60,37 @@ describe('config list NUTs', async () => {
     it('lists singular result correctly stdout', () => {
       const res: string = execCmd('config list').shellOutput.stdout;
       expect(res).to.include('List Config');
-      expect(res).to.include('apiVersion');
+      expect(res).to.include('org-api-version');
       expect(res).to.include('Local');
       expect(res).to.include('52.0');
-      execCmd('config unset apiVersion');
+      execCmd('config unset org-api-version');
     });
   });
 
   describe('config list with multiple results', () => {
     beforeEach(() => {
-      execCmd('config set apiVersion=51.0 --global');
-      execCmd('config set maxQueryLimit=100 --global');
+      execCmd('config set org-api-version=51.0 --global');
+      execCmd('config set org-max-query-limit=100 --global');
     });
 
     it('lists multiple results correctly JSON', () => {
-      execCmd('config set restDeploy=false');
+      execCmd('config set org-metadata-rest-deploy=false');
       const { result } = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput;
       expect(result).to.deep.equal([
         {
-          name: 'apiVersion',
+          name: 'org-api-version',
           location: 'Global',
           value: '51.0',
           success: true,
         },
         {
-          name: 'maxQueryLimit',
+          name: 'org-max-query-limit',
           location: 'Global',
           value: '100',
           success: true,
         },
         {
-          name: 'restDeploy',
+          name: 'org-metadata-rest-deploy',
           location: 'Local',
           value: 'false',
           success: true,
@@ -99,14 +99,14 @@ describe('config list NUTs', async () => {
     });
 
     it('lists multiple results correctly stdout', () => {
-      execCmd('config set restDeploy=false');
+      execCmd('config set org-metadata-rest-deploy=false');
       const res: string = execCmd('config list', { ensureExitCode: 0 }).shellOutput.stdout;
       expect(res).to.include('List Config');
-      expect(res).to.include('apiVersion');
+      expect(res).to.include('org-api-version');
       expect(res).to.include('51.0');
-      expect(res).to.include('maxQueryLimit');
+      expect(res).to.include('org-max-query-limit');
       expect(res).to.include('100');
-      expect(res).to.include('restDeploy');
+      expect(res).to.include('org-metadata-rest-deploy');
       expect(res).to.include('false');
     });
   });

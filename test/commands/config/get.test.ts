@@ -7,11 +7,12 @@
 
 import * as path from 'path';
 import { test, expect } from '@oclif/test';
-import { ConfigAggregator, SfdxPropertyKeys, OrgConfigProperties } from '@salesforce/core';
+import { ConfigAggregator, OrgConfigProperties } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { Plugin } from '@oclif/core';
 import * as sinon from 'sinon';
 import { SinonSandbox } from 'sinon';
+import { SfConfigProperties } from '@salesforce/core/lib/config/config';
 
 process.env.NODE_ENV = 'development';
 
@@ -32,9 +33,9 @@ describe('config:get', () => {
       .returns({ key: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location })
       .withArgs(OrgConfigProperties.TARGET_ORG)
       .returns({ key: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location })
-      .withArgs(SfdxPropertyKeys.API_VERSION)
-      .returns({ key: SfdxPropertyKeys.API_VERSION })
-      .withArgs(SfdxPropertyKeys.DISABLE_TELEMETRY)
+      .withArgs(OrgConfigProperties.ORG_API_VERSION)
+      .returns({ key: OrgConfigProperties.ORG_API_VERSION })
+      .withArgs(SfConfigProperties.DISABLE_TELEMETRY)
       .throws('FAILED');
   }
 
@@ -65,12 +66,12 @@ describe('config:get', () => {
   test
     .do(async () => await prepareStubs())
     .stdout()
-    .command(['config:get', SfdxPropertyKeys.API_VERSION, '--json'])
+    .command(['config:get', OrgConfigProperties.ORG_API_VERSION, '--json'])
     .it('should gracefully handle unconfigured properties', (ctx) => {
       const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
         {
-          name: SfdxPropertyKeys.API_VERSION,
+          name: OrgConfigProperties.ORG_API_VERSION,
           success: true,
         },
       ]);
@@ -88,7 +89,7 @@ describe('config:get', () => {
   test
     .do(async () => await prepareStubs())
     .stdout()
-    .command(['config:get', SfdxPropertyKeys.DISABLE_TELEMETRY, '--json'])
+    .command(['config:get', SfConfigProperties.DISABLE_TELEMETRY, '--json'])
     .it('should gracefully handle failed attempts to ConfigAggregator.getInfo', (ctx) => {
       const response = JSON.parse(ctx.stdout);
       expect(response.result[0].error.name).to.equal('FAILED');
