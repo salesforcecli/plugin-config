@@ -46,7 +46,7 @@ describe('Interoperability NUTs', async () => {
   }
 
   beforeEach(() => {
-    execCmd('config unset target-org target-dev-hub apiVersion', { ensureExitCode: 0 });
+    execCmd('config unset target-org target-dev-hub org-api-version', { ensureExitCode: 0 });
   });
 
   describe('sf config set', () => {
