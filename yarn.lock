@@ -1207,10 +1207,10 @@
     "@salesforce/ts-types" "^1.5.20"
     inquirer "^8.2.0"
 
-"@salesforce/sf-plugins-core@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.npmjs.org/@salesforce/sf-plugins-core/-/sf-plugins-core-1.8.0.tgz#37e4965c646460f257fb2f9e99e2815ab6438951"
-  integrity sha512-Ym1GpVEwv2sWv6mfSClBJHOxj29d9FXNHI3qEAv+MDfIMHuuwjHRSZLvpLGS8E7ME1q0dEJBjxmRKK++77JofA==
+"@salesforce/sf-plugins-core@^1.8.1":
+  version "1.8.1"
+  resolved "https://registry.npmjs.org/@salesforce/sf-plugins-core/-/sf-plugins-core-1.8.1.tgz#e795704a207f025192c364c64ffa321d49342ad9"
+  integrity sha512-rUBf3EA1vjB1FMBS/cb1V99jroGYZrG0LXybHQFwt9qUiHU0uq/C7o276haGRxv5X5R3LuBLGp30fNF1gTwj4g==
   dependencies:
     "@oclif/core" "^1.6.0"
     "@salesforce/core" "^3.7.9"
