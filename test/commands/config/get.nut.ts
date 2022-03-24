@@ -81,15 +81,12 @@ describe('config get NUTs', async () => {
     });
 
     it('gets multiple results correctly', () => {
-      execCmd('config set org-metadata-rest-deploy=false');
+      execCmd('config set disable-telemetry=false');
       execCmd('config set org-api-version=51.0');
-      const res = execCmd<ConfigResponses>(
-        'config get org-api-version org-max-query-limit org-metadata-rest-deploy --json',
-        {
-          ensureExitCode: 0,
-          cli: 'sf',
-        }
-      );
+      const res = execCmd<ConfigResponses>('config get org-api-version org-max-query-limit disable-telemetry --json', {
+        ensureExitCode: 0,
+        cli: 'sf',
+      });
 
       expect(res.jsonOutput.result).to.deep.equal([
         {
@@ -105,7 +102,7 @@ describe('config get NUTs', async () => {
           success: true,
         },
         {
-          name: 'org-metadata-rest-deploy',
+          name: 'disable-telemetry',
           location: 'Local',
           value: 'false',
           success: true,
@@ -114,13 +111,13 @@ describe('config get NUTs', async () => {
     });
 
     it('gets multiple results correctly stdout', () => {
-      const res = execCmd('config get org-api-version org-max-query-limit org-metadata-rest-deploy').shellOutput.stdout;
+      const res = execCmd('config get org-api-version org-max-query-limit disable-telemetry').shellOutput.stdout;
       expect(res).to.include('Get Config');
       expect(res).to.include('org-api-version');
       expect(res).to.include('51.0');
       expect(res).to.include('org-max-query-limit');
       expect(res).to.include('100');
-      expect(res).to.include('org-metadata-rest-deploy');
+      expect(res).to.include('disable-telemetry');
       expect(res).to.include('false');
     });
   });

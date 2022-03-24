@@ -159,17 +159,17 @@ describe('config set NUTs', async () => {
       });
     });
 
-    describe('org-metadata-rest-deploy', () => {
-      it('will set org-metadata-rest-deploy correctly', () => {
-        verifyKeysAndValuesJson('org-metadata-rest-deploy', 'true');
-        verifyKeysAndValuesJson('org-metadata-rest-deploy', false);
-        verifyKeysAndValuesStdout('org-metadata-rest-deploy', 'true', ['org-metadata-rest-deploy', 'true']);
-        verifyKeysAndValuesStdout('org-metadata-rest-deploy', false, ['org-metadata-rest-deploy', 'false']);
+    describe('disable-telemetry', () => {
+      it('will set disable-telemetry correctly', () => {
+        verifyKeysAndValuesJson('disable-telemetry', 'true');
+        verifyKeysAndValuesJson('disable-telemetry', false);
+        verifyKeysAndValuesStdout('disable-telemetry', 'true', ['disable-telemetry', 'true']);
+        verifyKeysAndValuesStdout('disable-telemetry', false, ['disable-telemetry', 'false']);
       });
 
-      it('will fail to validate org-metadata-rest-deploy', () => {
+      it('will fail to validate disable-telemetry', () => {
         verifyValidationError(
-          'org-metadata-rest-deploy',
+          'disable-telemetry',
           'ab',
           'Invalid config value: The config value can only be set to true or false.'
         );

@@ -74,9 +74,15 @@ describe('config list NUTs', async () => {
     });
 
     it('lists multiple results correctly JSON', () => {
-      execCmd('config set org-metadata-rest-deploy=false');
+      execCmd('config set disable-telemetry=false');
       const { result } = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput;
       expect(result).to.deep.equal([
+        {
+          name: 'disable-telemetry',
+          location: 'Local',
+          value: 'false',
+          success: true,
+        },
         {
           name: 'org-api-version',
           location: 'Global',
@@ -89,24 +95,18 @@ describe('config list NUTs', async () => {
           value: '100',
           success: true,
         },
-        {
-          name: 'org-metadata-rest-deploy',
-          location: 'Local',
-          value: 'false',
-          success: true,
-        },
       ]);
     });
 
     it('lists multiple results correctly stdout', () => {
-      execCmd('config set org-metadata-rest-deploy=false');
+      execCmd('config set disable-telemetry=false');
       const res: string = execCmd('config list', { ensureExitCode: 0 }).shellOutput.stdout;
       expect(res).to.include('List Config');
       expect(res).to.include('org-api-version');
       expect(res).to.include('51.0');
       expect(res).to.include('org-max-query-limit');
       expect(res).to.include('100');
-      expect(res).to.include('org-metadata-rest-deploy');
+      expect(res).to.include('disable-telemetry');
       expect(res).to.include('false');
     });
   });

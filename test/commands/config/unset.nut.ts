@@ -62,13 +62,13 @@ describe('config unset NUTs', async () => {
     });
 
     it('unsets multiple configs correctly JSON', () => {
-      execCmd('config set org-metadata-rest-deploy=false');
-      const { result } = execCmd('config unset org-metadata-rest-deploy org-api-version org-max-query-limit --json', {
+      execCmd('config set disable-telemetry=false');
+      const { result } = execCmd('config unset disable-telemetry org-api-version org-max-query-limit --json', {
         ensureExitCode: 0,
       }).jsonOutput;
       expect(result).to.deep.equal([
         {
-          name: 'org-metadata-rest-deploy',
+          name: 'disable-telemetry',
           success: true,
         },
         {
@@ -83,14 +83,14 @@ describe('config unset NUTs', async () => {
     });
 
     it('lists multiple results correctly stdout', () => {
-      execCmd('config set org-metadata-rest-deploy=false');
-      const res = execCmd('config unset org-metadata-rest-deploy org-api-version org-max-query-limit', {
+      execCmd('config set disable-telemetry=false');
+      const res = execCmd('config unset disable-telemetry org-api-version org-max-query-limit', {
         ensureExitCode: 0,
       }).shellOutput.stdout;
       expect(res).to.include('Unset Config');
       expect(res).to.include('org-api-version');
       expect(res).to.include('org-max-query-limit');
-      expect(res).to.include('org-metadata-rest-deploy');
+      expect(res).to.include('disable-telemetry');
     });
   });
 });
