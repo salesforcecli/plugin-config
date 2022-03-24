@@ -247,7 +247,9 @@ describe('Interoperability NUTs', async () => {
         ensureExitCode: 0,
         cli: 'sf',
       }).jsonOutput.result;
-      const getExpected = [{ name: SfdxPropertyKeys.API_VERSION, value: '52.0', success: true, location: 'Local' }];
+      const getExpected = [
+        { name: OrgConfigProperties.ORG_API_VERSION, value: '52.0', success: true, location: 'Local' },
+      ];
       expect(getResult).to.deep.equal(getExpected);
     });
 
