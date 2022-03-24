@@ -236,7 +236,7 @@ describe('Interoperability NUTs', async () => {
         ensureExitCode: 0,
         cli: 'sf',
       });
-      await configShouldHave('.sf', SfdxPropertyKeys.API_VERSION, '51.0');
+      await configShouldHave('.sf', OrgConfigProperties.ORG_API_VERSION, '51.0');
 
       exec('sfdx config:set apiVersion=52.0', { silent: true });
       await configShouldHave('.sfdx', SfdxPropertyKeys.API_VERSION, '52.0');
