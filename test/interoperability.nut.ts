@@ -243,7 +243,7 @@ describe('Interoperability NUTs', async () => {
 
       // We can't check .sf/config.json directly because sfdx doesn't write back to sf
       // Instead we test this by running `config get`
-      const getResult = execCmd<ConfigResponses>('config get apiVersion --json', {
+      const getResult = execCmd<ConfigResponses>('config get org-api-version --json', {
         ensureExitCode: 0,
         cli: 'sf',
       }).jsonOutput.result;
