@@ -232,7 +232,7 @@ describe('Interoperability NUTs', async () => {
     });
 
     it('should overwrite existing .sf configs', async () => {
-      execCmd<ConfigResponses>('config set apiVersion=51.0 --json', {
+      execCmd<ConfigResponses>('config set org-api-version=51.0 --json', {
         ensureExitCode: 0,
         cli: 'sf',
       });
