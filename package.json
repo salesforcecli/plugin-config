@@ -62,6 +62,9 @@
   ],
   "license": "BSD-3-Clause",
   "oclif": {
+    "additionalHelpFlags": [
+      "-h"
+    ],
     "commands": "./lib/commands",
     "hooks": {
       "init": [
