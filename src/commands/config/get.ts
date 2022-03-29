@@ -29,14 +29,23 @@ export class Get extends ConfigCommand {
       throw messages.createError('NoConfigKeysFound');
     } else {
       const results: ConfigInfo[] = [];
-      const aggregator = await ConfigAggregator.create();
+      const aggregator = ConfigAggregator.getInstance();
 
       argv.forEach((configName) => {
         try {
-          const configInfo = aggregator.getInfo(configName);
+          // search the sf config keys for the sfdx equivalent and use the sf version when accessing the config
+          const resolvedKey =
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+            (aggregator.allowedProperties.find((entry: { key: string }) => entry.key === configName)
+              ?.newKey as string) || configName;
+          const configInfo = aggregator.getInfo(resolvedKey);
+          // replace the sf key with the sfdx variant
+          configInfo.key = configName;
           results.push(configInfo);
           this.responses.push({
-            name: configInfo.key,
+            name: configName,
             value: configInfo.value as string | undefined,
             success: true,
             location: configInfo.location,
