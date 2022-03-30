@@ -1057,10 +1057,10 @@
     sfdx-faye "^1.0.9"
     ts-retry-promise "^0.6.0"
 
-"@salesforce/core@^3.7.3":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-3.8.0.tgz#f264fe315eefd411d5518716a52213e2a17050c3"
-  integrity sha512-q6rPyLIwQgTtDijKDGmvi7dLpI1/JUohlOZzc9/ACA9b3kAN53W/DzDviihGtXWVLaAknyPVcBfzfZvKlYoUpA==
+"@salesforce/core@^3.11.0":
+  version "3.11.0"
+  resolved "https://registry.npmjs.org/@salesforce/core/-/core-3.11.0.tgz#e1ec10189103a9133117af938156fb9f3eb2aef2"
+  integrity sha512-OqEkFfgfL2WvuzasjgrsGVa2SB00FCdfu09hPBK3URnR418+ztk283TDNOQ15AGW5oI8EWdEEKpOI+oAXmWS3A==
   dependencies:
     "@oclif/core" "^1.5.1"
     "@salesforce/bunyan" "^2.0.0"
@@ -1207,10 +1207,10 @@
     "@salesforce/ts-types" "^1.5.20"
     inquirer "^8.2.0"
 
-"@salesforce/sf-plugins-core@^1.8.1":
-  version "1.8.1"
-  resolved "https://registry.npmjs.org/@salesforce/sf-plugins-core/-/sf-plugins-core-1.8.1.tgz#e795704a207f025192c364c64ffa321d49342ad9"
-  integrity sha512-rUBf3EA1vjB1FMBS/cb1V99jroGYZrG0LXybHQFwt9qUiHU0uq/C7o276haGRxv5X5R3LuBLGp30fNF1gTwj4g==
+"@salesforce/sf-plugins-core@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.npmjs.org/@salesforce/sf-plugins-core/-/sf-plugins-core-1.9.0.tgz#c24a6aaaa793c0eeff45a2f0f4c29c9881497904"
+  integrity sha512-AVkt+wg3fJn4IRBJrdCHpHL0ZqjFPrbMWuNthSbnoF4ef91rWr9W7ZXDOpyoT+PBxDllm78/JFcw8Xr9mY+EtQ==
   dependencies:
     "@oclif/core" "^1.6.0"
     "@salesforce/core" "^3.7.9"
