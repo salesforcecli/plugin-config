@@ -46,7 +46,7 @@ describe('Interoperability NUTs', async () => {
   }
 
   beforeEach(() => {
-    execCmd('config unset target-org target-dev-hub apiVersion', { ensureExitCode: 0 });
+    execCmd('config unset target-org target-dev-hub org-api-version', { ensureExitCode: 0 });
   });
 
   describe('sf config set', () => {
@@ -72,19 +72,6 @@ describe('Interoperability NUTs', async () => {
 
       await configShouldHave('.sfdx', SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, ORG_ALIAS);
       await configShouldHave('.sf', OrgConfigProperties.TARGET_DEV_HUB, ORG_ALIAS);
-    });
-
-    it('should set apiVersion in .sf and in .sfdx', async () => {
-      const apiVersion = '52.0';
-      const { result } = execCmd<ConfigResponses>(`config set apiVersion ${apiVersion} --json`, {
-        ensureExitCode: 0,
-        cli: 'sf',
-      }).jsonOutput;
-      const expected = [{ name: SfdxPropertyKeys.API_VERSION, value: apiVersion, success: true }];
-      expect(result).to.deep.equal(expected);
-
-      await configShouldHave('.sfdx', SfdxPropertyKeys.API_VERSION, apiVersion);
-      await configShouldHave('.sf', SfdxPropertyKeys.API_VERSION, apiVersion);
     });
 
     it('should fail to set defaultusername', async () => {
@@ -192,19 +179,6 @@ describe('Interoperability NUTs', async () => {
       await configShouldNotHave('.sf', OrgConfigProperties.TARGET_DEV_HUB);
     });
 
-    it('should unset apiVersion in .sf and in .sfdx', async () => {
-      exec('sfdx config:set apiVersion=52.0', { silent: true });
-      const { result } = execCmd<ConfigResponses>('config unset apiVersion --json', {
-        ensureExitCode: 0,
-        cli: 'sf',
-      }).jsonOutput;
-      const expected = [{ name: SfdxPropertyKeys.API_VERSION, success: true }];
-      expect(result).to.deep.equal(expected);
-
-      await configShouldNotHave('.sfdx', SfdxPropertyKeys.API_VERSION);
-      await configShouldNotHave('.sf', SfdxPropertyKeys.API_VERSION);
-    });
-
     it('should fail to unset defaultusername', async () => {
       const { result } = execCmd<ConfigResponses>(`config unset defaultusername ${ORG_ALIAS} --json`, {
         ensureExitCode: 1,
@@ -258,22 +232,24 @@ describe('Interoperability NUTs', async () => {
     });
 
     it('should overwrite existing .sf configs', async () => {
-      execCmd<ConfigResponses>('config set apiVersion=51.0 --json', {
+      execCmd<ConfigResponses>('config set org-api-version=51.0 --json', {
         ensureExitCode: 0,
         cli: 'sf',
       });
-      await configShouldHave('.sf', SfdxPropertyKeys.API_VERSION, '51.0');
+      await configShouldHave('.sf', OrgConfigProperties.ORG_API_VERSION, '51.0');
 
       exec('sfdx config:set apiVersion=52.0', { silent: true });
       await configShouldHave('.sfdx', SfdxPropertyKeys.API_VERSION, '52.0');
 
       // We can't check .sf/config.json directly because sfdx doesn't write back to sf
       // Instead we test this by running `config get`
-      const getResult = execCmd<ConfigResponses>('config get apiVersion --json', {
+      const getResult = execCmd<ConfigResponses>('config get org-api-version --json', {
         ensureExitCode: 0,
         cli: 'sf',
       }).jsonOutput.result;
-      const getExpected = [{ name: SfdxPropertyKeys.API_VERSION, value: '52.0', success: true, location: 'Local' }];
+      const getExpected = [
+        { name: OrgConfigProperties.ORG_API_VERSION, value: '52.0', success: true, location: 'Local' },
+      ];
       expect(getResult).to.deep.equal(getExpected);
     });
 

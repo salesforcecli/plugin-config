@@ -70,48 +70,48 @@ describe('config set NUTs', async () => {
   });
 
   describe('setting valid configs and values', () => {
-    describe('apiVersion', () => {
-      it('will set apiVersion correctly', () => {
-        verifyKeysAndValuesJson('apiVersion', '50.0');
-        verifyKeysAndValuesStdout('apiVersion', '50.0', ['apiVersion', '50.0']);
+    describe('org-api-version', () => {
+      it('will set org-api-version correctly', () => {
+        verifyKeysAndValuesJson('org-api-version', '50.0');
+        verifyKeysAndValuesStdout('org-api-version', '50.0', ['org-api-version', '50.0']);
       });
 
-      it('will fail to validate apiVersion', () => {
+      it('will fail to validate org-api-version', () => {
         verifyValidationError(
-          'apiVersion',
+          'org-api-version',
           '50',
           'Invalid config value: Specify a valid Salesforce API version, for example, 42.0.'
         );
       });
     });
 
-    describe('maxQueryLimit', () => {
-      it('will set maxQueryLimit correctly', () => {
-        verifyKeysAndValuesJson('maxQueryLimit', '50');
-        verifyKeysAndValuesStdout('maxQueryLimit', '50', ['maxQueryLimit', '50']);
+    describe('org-max-query-limit', () => {
+      it('will set org-max-query-limit correctly', () => {
+        verifyKeysAndValuesJson('org-max-query-limit', '50');
+        verifyKeysAndValuesStdout('org-max-query-limit', '50', ['org-max-query-limit', '50']);
       });
 
-      it('will fail to validate maxQueryLimit', () => {
+      it('will fail to validate org-max-query-limit', () => {
         verifyValidationError(
-          'maxQueryLimit',
+          'org-max-query-limit',
           '-2',
           'Invalid config value: Specify a valid positive integer, for example, 150000.'
         );
       });
     });
 
-    describe('instanceUrl', () => {
-      it('will set instanceUrl correctly', () => {
-        verifyKeysAndValuesJson('instanceUrl', 'https://test.my.salesforce.com');
-        verifyKeysAndValuesStdout('instanceUrl', 'https://test.my.salesforce.com', [
-          'instanceUrl',
+    describe('org-instance-url', () => {
+      it('will set org-instance-url correctly', () => {
+        verifyKeysAndValuesJson('org-instance-url', 'https://test.my.salesforce.com');
+        verifyKeysAndValuesStdout('org-instance-url', 'https://test.my.salesforce.com', [
+          'org-instance-url',
           'https://test.my.salesforce.com',
         ]);
       });
 
-      it('will fail to validate instanceUrl when non-Salesforce URL', () => {
+      it('will fail to validate org-instance-url when non-Salesforce URL', () => {
         verifyValidationError(
-          'instanceUrl',
+          'org-instance-url',
           'abc.com',
           'Invalid config value: Specify a valid Salesforce instance URL.'
         );
@@ -130,46 +130,46 @@ describe('config set NUTs', async () => {
       });
     });
 
-    describe('isvDebuggerSid', () => {
-      it('will set isvDebuggerSid correctly', () => {
-        verifyKeysAndValuesJson('isvDebuggerSid', '12');
+    describe('org-isv-debugger-sid', () => {
+      it('will set org-isv-debugger-sid correctly', () => {
+        verifyKeysAndValuesJson('org-isv-debugger-sid', '12');
       });
     });
 
-    describe('isvDebuggerUrl', () => {
-      it('will set isvDebuggerUrl correctly', () => {
-        verifyKeysAndValuesJson('isvDebuggerUrl', '12');
+    describe('org-isv-debugger-url', () => {
+      it('will set org-isv-debugger-url correctly', () => {
+        verifyKeysAndValuesJson('org-isv-debugger-url', '12');
       });
     });
 
-    describe('disableTelemetry', () => {
-      it('will set disableTelemetry correctly', () => {
-        verifyKeysAndValuesJson('disableTelemetry', 'true');
-        verifyKeysAndValuesJson('disableTelemetry', false);
-        verifyKeysAndValuesStdout('disableTelemetry', 'true', ['disableTelemetry', 'true']);
-        verifyKeysAndValuesStdout('disableTelemetry', false, ['disableTelemetry', 'false']);
+    describe('disable-telemetry', () => {
+      it('will set disable-telemetry correctly', () => {
+        verifyKeysAndValuesJson('disable-telemetry', 'true');
+        verifyKeysAndValuesJson('disable-telemetry', false);
+        verifyKeysAndValuesStdout('disable-telemetry', 'true', ['disable-telemetry', 'true']);
+        verifyKeysAndValuesStdout('disable-telemetry', false, ['disable-telemetry', 'false']);
       });
 
-      it('will fail to validate disableTelemetry', () => {
+      it('will fail to validate disable-telemetry', () => {
         verifyValidationError(
-          'disableTelemetry',
+          'disable-telemetry',
           'ab',
           'Invalid config value: The config value can only be set to true or false.'
         );
       });
     });
 
-    describe('restDeploy', () => {
-      it('will set restDeploy correctly', () => {
-        verifyKeysAndValuesJson('restDeploy', 'true');
-        verifyKeysAndValuesJson('restDeploy', false);
-        verifyKeysAndValuesStdout('restDeploy', 'true', ['restDeploy', 'true']);
-        verifyKeysAndValuesStdout('restDeploy', false, ['restDeploy', 'false']);
+    describe('disable-telemetry', () => {
+      it('will set disable-telemetry correctly', () => {
+        verifyKeysAndValuesJson('disable-telemetry', 'true');
+        verifyKeysAndValuesJson('disable-telemetry', false);
+        verifyKeysAndValuesStdout('disable-telemetry', 'true', ['disable-telemetry', 'true']);
+        verifyKeysAndValuesStdout('disable-telemetry', false, ['disable-telemetry', 'false']);
       });
 
-      it('will fail to validate restDeploy', () => {
+      it('will fail to validate disable-telemetry', () => {
         verifyValidationError(
-          'restDeploy',
+          'disable-telemetry',
           'ab',
           'Invalid config value: The config value can only be set to true or false.'
         );
@@ -178,37 +178,38 @@ describe('config set NUTs', async () => {
   });
 
   describe('set two keys and values properly', () => {
-    it('will set both apiVersion and maxQueryLimit in one command', () => {
-      const { result } = execCmd('config set apiVersion=51.0 maxQueryLimit=100 --json').jsonOutput;
+    it('will set both org-api-version and org-max-query-limit in one command', () => {
+      const { result } = execCmd('config set org-api-version=51.0 org-max-query-limit=100 --json').jsonOutput;
       expect(result).to.deep.equal([
         {
-          name: 'apiVersion',
+          name: 'org-api-version',
           value: '51.0',
           success: true,
         },
         {
-          name: 'maxQueryLimit',
+          name: 'org-max-query-limit',
           value: '100',
           success: true,
         },
       ]);
-      execCmd('config unset apiVersion maxQueryLimit');
+      execCmd('config unset org-api-version org-max-query-limit');
 
-      const res2 = execCmd('config set apiVersion=51.0 maxQueryLimit=100', { ensureExitCode: 0 }).shellOutput.stdout;
+      const res2 = execCmd('config set org-api-version=51.0 org-max-query-limit=100', { ensureExitCode: 0 }).shellOutput
+        .stdout;
       expect(res2).to.include('Set Config');
-      expect(res2).to.include('apiVersion');
+      expect(res2).to.include('org-api-version');
       expect(res2).to.include('51.0');
-      expect(res2).to.include('maxQueryLimit');
+      expect(res2).to.include('org-max-query-limit');
       expect(res2).to.include('100');
 
-      execCmd('config unset apiVersion maxQueryLimit');
+      execCmd('config unset org-api-version org-max-query-limit');
     });
   });
 
   describe('use set to unset a config key', () => {
     it('should unset config key when no value is provided', () => {
-      execCmd<ConfigResponses>('config set apiVersion=50.0 --json', { cli: 'sf', ensureExitCode: 0 }).jsonOutput;
-      verifyKeysAndValuesJson('apiVersion', '');
+      execCmd<ConfigResponses>('config set org-api-version=50.0 --json', { cli: 'sf', ensureExitCode: 0 }).jsonOutput;
+      verifyKeysAndValuesJson('org-api-version', '');
     });
   });
 });

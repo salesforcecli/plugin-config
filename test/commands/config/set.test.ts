@@ -6,7 +6,7 @@
  */
 
 import { test, expect } from '@oclif/test';
-import { Config, Org, SfdxPropertyKeys, OrgConfigProperties } from '@salesforce/core';
+import { Config, Org, OrgConfigProperties } from '@salesforce/core';
 import { StubbedType, stubInterface, stubMethod } from '@salesforce/ts-sinon';
 import { SinonSandbox, SinonStub } from 'sinon';
 import * as sinon from 'sinon';
@@ -33,10 +33,10 @@ describe('config:set', () => {
   test
     .do(async () => await prepareStubs())
     .stdout()
-    .command(['config:set', `${SfdxPropertyKeys.API_VERSION}=49.0`, '--global', '--json'])
+    .command(['config:set', `${OrgConfigProperties.ORG_API_VERSION}=49.0`, '--global', '--json'])
     .it('should return values for all configured properties', (ctx) => {
       const { result } = JSON.parse(ctx.stdout);
-      expect(result).to.deep.equal([{ name: SfdxPropertyKeys.API_VERSION, value: '49.0', success: true }]);
+      expect(result).to.deep.equal([{ name: OrgConfigProperties.ORG_API_VERSION, value: '49.0', success: true }]);
       expect(configStub.set.callCount).to.equal(1);
     });
 
