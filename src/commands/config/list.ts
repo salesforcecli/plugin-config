@@ -14,14 +14,17 @@ export default class List extends ConfigCommand {
   public static readonly description = messages.getMessage('description');
   public static aliases = ['force:config:list'];
 
+  // no async methods
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async run(): Promise<ConfigInfo[]> {
-    const aggregator = await ConfigAggregator.create();
+    const aggregator = ConfigAggregator.getInstance();
 
     const results = aggregator.getConfigInfo().map((c) => {
       this.responses.push({
         name: c.key,
         value: c.value as string | undefined,
         location: c.location,
+        deprecated: false,
         success: true,
       });
       delete c.path;
