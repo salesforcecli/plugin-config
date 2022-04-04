@@ -40,7 +40,6 @@ describe('config:list NUTs', async () => {
       expect(res.jsonOutput).to.deep.equal({
         result: [
           {
-            deprecated: false,
             key: 'apiVersion',
             location: 'Global',
             value: '51.0',
@@ -57,7 +56,6 @@ describe('config:list NUTs', async () => {
       expect(res.jsonOutput).to.deep.equal({
         result: [
           {
-            deprecated: false,
             key: 'apiVersion',
             location: 'Local',
             value: '52.0',
@@ -90,19 +88,16 @@ describe('config:list NUTs', async () => {
       expect(res.jsonOutput).to.deep.equal({
         result: [
           {
-            deprecated: false,
             key: 'apiVersion',
             location: 'Global',
             value: '51.0',
           },
           {
-            deprecated: false,
             key: 'maxQueryLimit',
             location: 'Global',
             value: '100',
           },
           {
-            deprecated: false,
             key: 'restDeploy',
             location: 'Local',
             value: 'false',

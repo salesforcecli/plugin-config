@@ -47,7 +47,6 @@ export class Get extends ConfigCommand {
           this.responses.push({
             name: configName,
             value: configInfo.value as string | undefined,
-            deprecated: false,
             success: true,
             location: configInfo.location,
           });

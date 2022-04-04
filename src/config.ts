@@ -17,7 +17,6 @@ export interface Msg {
   success: boolean;
   location?: string;
   error?: SfError;
-  deprecated?: boolean;
 }
 
 export type ConfigSetReturn = {
