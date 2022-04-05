@@ -7,7 +7,7 @@
 
 import * as path from 'path';
 import { $$, expect, test } from '@salesforce/command/lib/test';
-import { ConfigAggregator, OrgConfigProperties, SfdxPropertyKeys } from '@salesforce/core';
+import { ConfigAggregator, SfdxPropertyKeys } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { Plugin } from '@oclif/core';
 
@@ -15,11 +15,10 @@ describe('config:get', () => {
   async function prepareStubs(global = true) {
     const location = global ? 'Global' : 'Local';
     stubMethod($$.SANDBOX, ConfigAggregator.prototype, 'getInfo')
-      // converting sfdx config keys into sf
-      .withArgs(OrgConfigProperties.TARGET_DEV_HUB)
-      .returns({ key: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location })
-      .withArgs(OrgConfigProperties.TARGET_ORG)
-      .returns({ key: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location })
+      .withArgs(SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME)
+      .returns({ key: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location })
+      .withArgs(SfdxPropertyKeys.DEFAULT_USERNAME)
+      .returns({ key: SfdxPropertyKeys.DEFAULT_USERNAME, value: 'MyUser', location })
       .withArgs(SfdxPropertyKeys.API_VERSION)
       .returns({ key: SfdxPropertyKeys.API_VERSION })
       .withArgs(SfdxPropertyKeys.DISABLE_TELEMETRY)

@@ -34,13 +34,8 @@ export class Get extends ConfigCommand {
       argv.forEach((configName) => {
         try {
           // search the sf config keys for the sfdx equivalent and use the sf version when accessing the config
-          const resolvedKey =
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-            (aggregator.allowedProperties.find((entry: { key: string }) => entry.key === configName)
-              ?.newKey as string) || configName;
-          const configInfo = aggregator.getInfo(resolvedKey);
+
+          const configInfo = aggregator.getInfo(configName);
           // replace the sf key with the sfdx variant
           configInfo.key = configName;
           results.push(configInfo);

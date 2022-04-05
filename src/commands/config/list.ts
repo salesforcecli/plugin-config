@@ -4,12 +4,26 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { ConfigAggregator, ConfigInfo, Messages, SfdxPropertyKeys } from '@salesforce/core';
+import {
+  Config,
+  ConfigAggregator,
+  ConfigInfo,
+  Messages,
+  SFDX_ALLOWED_PROPERTIES,
+  SfdxPropertyKeys,
+} from '@salesforce/core';
 import { ConfigCommand } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-config', 'list');
-
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+Config.allowedProperties = [
+  ...SFDX_ALLOWED_PROPERTIES.map((entry) => {
+    entry.deprecated = false;
+    return entry;
+  }),
+];
 export default class List extends ConfigCommand {
   public static readonly description = messages.getMessage('description');
   public static aliases = ['force:config:list'];
@@ -35,6 +49,6 @@ export default class List extends ConfigCommand {
       return c;
     });
     this.output('List Config', true);
-    return results;
+    return results.filter((result) => Object.values(SfdxPropertyKeys).includes(result.key as SfdxPropertyKeys));
   }
 }
