@@ -1036,7 +1036,7 @@
     chalk "^2.4.2"
     cli-ux "^4.9.3"
 
-"@salesforce/command@^5.0.1":
+"@salesforce/command@^5.0.4":
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/@salesforce/command/-/command-5.0.4.tgz#4f9b5d764b603bcbc23dc65c06ac54512e92a32f"
   integrity sha512-pdnvpoyW9iZBoobcmKV2vt0cRqTt1RsATf4E03L+vxX+8X39HnXoSDxAsZ8BthNj/RMuAXfftddmRAr1D99JYA==
@@ -1073,7 +1073,7 @@
     semver "^7.3.5"
     ts-retry-promise "^0.6.0"
 
-"@salesforce/core@^3.7.9", "@salesforce/core@^3.8.0":
+"@salesforce/core@^3.12.1", "@salesforce/core@^3.7.9":
   version "3.12.1"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-3.12.1.tgz#6ef20a58777a5368a5804817f11046737fa90baf"
   integrity sha512-j7WvlPwhTLBMBdnF/6Og3oqcM72tGqK99UHK/UqJpGaX0HcadnxMyL3uOMi8aAautvg4BnpfGjesn0pinqKVXw==

@@ -74,6 +74,9 @@ sfdx plugins
 - [`sfdx config:list [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configlist---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 - [`sfdx config:set name=value... [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configset-namevalue--g---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 - [`sfdx config:unset [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-configunset--g---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+- [`sfdx force:config:get [--verbose] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-forceconfigget---verbose---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+- [`sfdx force:config:list [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-forceconfiglist---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+- [`sfdx force:config:set name=value... [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-forceconfigset-namevalue--g---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 
 ## `sfdx config:get [--verbose] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -82,34 +85,39 @@ get config var values for given names
 ```
 USAGE
   $ sfdx config:get [--verbose] [--json] [--loglevel
-  trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+    trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
-OPTIONS
+FLAGS
   --json                                                                            format output as json
-
   --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
                                                                                     this command invocation
-
   --verbose                                                                         emit additional command output to
                                                                                     stdout
 
 DESCRIPTION
+  get config var values for given names
+
   Gets the Salesforce CLI configuration values for your default scratch org, your default Dev Hub org, your default
   instance URL, or any combination of the three. To see your default scratch org username, include 'defaultusername'.
+
   To see your default Dev Hub, include 'defaultdevhubusername'.
+
   To see your default instance URL, include 'instanceUrl'.
+
   To see the locations where your values are set, include the --verbose flag.
 
 ALIASES
   $ sfdx force:config:get
 
 EXAMPLES
-  sfdx config:get defaultusername
-  sfdx config:get defaultusername defaultdevhubusername instanceUrl
-  sfdx config:get defaultusername defaultdevhubusername --verbose
+  $ sfdx config:get defaultusername
+
+  $ sfdx config:get defaultusername defaultdevhubusername instanceUrl
+
+  $ sfdx config:get defaultusername defaultdevhubusername --verbose
 ```
 
-_See code: [src/commands/config/get.ts](https://github.com/salesforcecli/plugin-config/blob/v1.3.29/src/commands/config/get.ts)_
+_See code: [src/commands/config/get.ts](https://github.com/salesforcecli/plugin-config/blob/v1.4.0/src/commands/config/get.ts)_
 
 ## `sfdx config:list [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -119,17 +127,19 @@ lists the config variables that the Salesforce CLI uses for various commands and
 USAGE
   $ sfdx config:list [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
-OPTIONS
+FLAGS
   --json                                                                            format output as json
-
   --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
                                                                                     this command invocation
+
+DESCRIPTION
+  lists the config variables that the Salesforce CLI uses for various commands and tasks.
 
 ALIASES
   $ sfdx force:config:list
 ```
 
-_See code: [src/commands/config/list.ts](https://github.com/salesforcecli/plugin-config/blob/v1.3.29/src/commands/config/list.ts)_
+_See code: [src/commands/config/list.ts](https://github.com/salesforcecli/plugin-config/blob/v1.4.0/src/commands/config/list.ts)_
 
 ## `sfdx config:set name=value... [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -138,29 +148,30 @@ sets the configuration variables that the Salesforce CLI uses for various comman
 ```
 USAGE
   $ sfdx config:set name=value... [-g] [--json] [--loglevel
-  trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+    trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
-OPTIONS
+FLAGS
   -g, --global                                                                      set config var globally (to be used
                                                                                     from any directory)
-
   --json                                                                            format output as json
-
   --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
                                                                                     this command invocation
 
 DESCRIPTION
+  sets the configuration variables that the Salesforce CLI uses for various commands and tasks.
+
   Local variables apply only to your current project. Global variables apply in any directory.
 
 ALIASES
   $ sfdx force:config:set
 
 EXAMPLES
-  sfdx config:set defaultusername=me@my.org defaultdevhubusername=me@myhub.org
-  sfdx config:set defaultdevhubusername=me@myhub.org -g
+  $ sfdx config:set defaultusername=me@my.org defaultdevhubusername=me@myhub.org
+
+  $ sfdx config:set defaultdevhubusername=me@myhub.org -g
 ```
 
-_See code: [src/commands/config/set.ts](https://github.com/salesforcecli/plugin-config/blob/v1.3.29/src/commands/config/set.ts)_
+_See code: [src/commands/config/set.ts](https://github.com/salesforcecli/plugin-config/blob/v1.4.0/src/commands/config/set.ts)_
 
 ## `sfdx config:unset [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -168,25 +179,116 @@ unsets the local and global configuration variables for the Salesforce CLI.
 
 ```
 USAGE
-  $ sfdx config:unset [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+  $ sfdx config:unset [-g] [--json] [--loglevel
+    trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
-OPTIONS
+FLAGS
   -g, --global                                                                      unset config var globally (to be
                                                                                     used from any directory)
-
   --json                                                                            format output as json
-
   --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
                                                                                     this command invocation
 
 DESCRIPTION
+  unsets the local and global configuration variables for the Salesforce CLI.
+
   Local variables apply only to your current project. Global variables apply in any directory.
 
 EXAMPLES
-  sfdx config:unset defaultusername defaultdevhubusername
-  sfdx config:unset defaultdevhubusername -g
+  $ sfdx config:unset defaultusername defaultdevhubusername
+
+  $ sfdx config:unset defaultdevhubusername -g
 ```
 
-_See code: [src/commands/config/unset.ts](https://github.com/salesforcecli/plugin-config/blob/v1.3.29/src/commands/config/unset.ts)_
+_See code: [src/commands/config/unset.ts](https://github.com/salesforcecli/plugin-config/blob/v1.4.0/src/commands/config/unset.ts)_
+
+## `sfdx force:config:get [--verbose] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+
+get config var values for given names
+
+```
+USAGE
+  $ sfdx force:config:get [--verbose] [--json] [--loglevel
+    trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+
+FLAGS
+  --json                                                                            format output as json
+  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
+                                                                                    this command invocation
+  --verbose                                                                         emit additional command output to
+                                                                                    stdout
+
+DESCRIPTION
+  get config var values for given names
+
+  Gets the Salesforce CLI configuration values for your default scratch org, your default Dev Hub org, your default
+  instance URL, or any combination of the three. To see your default scratch org username, include 'defaultusername'.
+
+  To see your default Dev Hub, include 'defaultdevhubusername'.
+
+  To see your default instance URL, include 'instanceUrl'.
+
+  To see the locations where your values are set, include the --verbose flag.
+
+ALIASES
+  $ sfdx force:config:get
+
+EXAMPLES
+  $ sfdx config:get defaultusername
+
+  $ sfdx config:get defaultusername defaultdevhubusername instanceUrl
+
+  $ sfdx config:get defaultusername defaultdevhubusername --verbose
+```
+
+## `sfdx force:config:list [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+
+lists the config variables that the Salesforce CLI uses for various commands and tasks.
+
+```
+USAGE
+  $ sfdx force:config:list [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+
+FLAGS
+  --json                                                                            format output as json
+  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
+                                                                                    this command invocation
+
+DESCRIPTION
+  lists the config variables that the Salesforce CLI uses for various commands and tasks.
+
+ALIASES
+  $ sfdx force:config:list
+```
+
+## `sfdx force:config:set name=value... [-g] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+
+sets the configuration variables that the Salesforce CLI uses for various commands and tasks.
+
+```
+USAGE
+  $ sfdx force:config:set name=value... [-g] [--json] [--loglevel
+    trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+
+FLAGS
+  -g, --global                                                                      set config var globally (to be used
+                                                                                    from any directory)
+  --json                                                                            format output as json
+  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
+                                                                                    this command invocation
+
+DESCRIPTION
+  sets the configuration variables that the Salesforce CLI uses for various commands and tasks.
+
+  Local variables apply only to your current project. Global variables apply in any directory.
+
+ALIASES
+  $ sfdx force:config:set
+
+EXAMPLES
+  $ sfdx config:set defaultusername=me@my.org defaultdevhubusername=me@myhub.org
+
+  $ sfdx config:set defaultdevhubusername=me@myhub.org -g
+```
 
 <!-- commandsstop -->
