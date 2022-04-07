@@ -7,7 +7,7 @@
 
 import * as os from 'os';
 import { flags, FlagsConfig } from '@salesforce/command';
-import { ConfigAggregator, ConfigInfo, Messages, SfdxError } from '@salesforce/core';
+import { ConfigAggregator, ConfigInfo, Messages, SfError } from '@salesforce/core';
 import { ConfigCommand } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -23,20 +23,24 @@ export class Get extends ConfigCommand {
   public static aliases = ['force:config:get'];
 
   public async run(): Promise<ConfigInfo[]> {
-    const argv = this.parseArgs();
+    const argv = await this.parseArgs();
 
     if (!argv || argv.length === 0) {
-      throw SfdxError.create('@salesforce/plugin-config', 'get', 'NoConfigKeysFound', []);
+      throw messages.createError('NoConfigKeysFound');
     } else {
       const results: ConfigInfo[] = [];
-      const aggregator = await ConfigAggregator.create();
+      const aggregator = ConfigAggregator.getInstance();
 
       argv.forEach((configName) => {
         try {
+          // search the sf config keys for the sfdx equivalent and use the sf version when accessing the config
+
           const configInfo = aggregator.getInfo(configName);
+          // replace the sf key with the sfdx variant
+          configInfo.key = configName;
           results.push(configInfo);
           this.responses.push({
-            name: configInfo.key,
+            name: configName,
             value: configInfo.value as string | undefined,
             success: true,
             location: configInfo.location,
@@ -45,7 +49,7 @@ export class Get extends ConfigCommand {
           this.responses.push({
             name: configName,
             success: false,
-            error: err as SfdxError,
+            error: err as SfError,
           });
         }
       });

@@ -31,6 +31,7 @@ describe('config:unset NUTs', async () => {
         message: 'Please provide config name(s) to unset.',
         exitCode: 1,
         commandName: 'UnSet',
+        context: 'UnSet',
         warnings: [],
       });
     });

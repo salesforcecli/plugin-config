@@ -6,16 +6,17 @@
  */
 
 import { SfdxCommand } from '@salesforce/command';
-import { SfdxError } from '@salesforce/core';
+import { SfError } from '@salesforce/core';
 import { Optional } from '@salesforce/ts-types';
 import * as chalk from 'chalk';
+import { CliUx } from '@oclif/core';
 
 export interface Msg {
   name: string;
   value?: string;
   success: boolean;
   location?: string;
-  error?: SfdxError;
+  error?: SfError;
 }
 
 export type ConfigSetReturn = {
@@ -33,23 +34,23 @@ export abstract class ConfigCommand extends SfdxCommand {
     }
 
     this.ux.styledHeader(chalk.blue(header));
-    const values = {
-      columns: [{ key: 'name', label: 'Name' }],
+    const columns: CliUx.Table.table.Columns<Record<string, unknown>> = {
+      name: { header: 'Name' },
     };
 
     if (!header.includes('Unset')) {
-      values.columns.push({ key: 'value', label: 'Value' });
+      columns['value'] = { header: 'Value' };
     }
 
     if (!header.includes('List')) {
-      values.columns.push({ key: 'success', label: 'Success' });
+      columns['success'] = { header: 'Success' };
     }
 
     if (verbose) {
-      values.columns.push({ key: 'location', label: 'Location' });
+      columns['location'] = { header: 'Location' };
     }
 
-    this.ux.table(this.responses, values);
+    this.ux.table(this.responses, columns);
 
     this.responses.forEach((response) => {
       if (response.error) {
@@ -58,8 +59,8 @@ export abstract class ConfigCommand extends SfdxCommand {
     });
   }
 
-  public parseArgs(): string[] {
-    const { argv } = this.parse({
+  public async parseArgs(): Promise<string[]> {
+    const { argv } = await this.parse({
       flags: this.statics.flags,
       args: this.statics.args,
       strict: this.statics.strict,

@@ -7,55 +7,55 @@
 
 import * as path from 'path';
 import { $$, expect, test } from '@salesforce/command/lib/test';
-import { ConfigAggregator, Config } from '@salesforce/core';
+import { ConfigAggregator, SfdxPropertyKeys } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
-import { IPlugin } from '@oclif/config';
+import { Plugin } from '@oclif/core';
 
 describe('config:get', () => {
   async function prepareStubs(global = true) {
     const location = global ? 'Global' : 'Local';
     stubMethod($$.SANDBOX, ConfigAggregator.prototype, 'getInfo')
-      .withArgs(Config.DEFAULT_DEV_HUB_USERNAME)
-      .returns({ key: Config.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location })
-      .withArgs(Config.DEFAULT_USERNAME)
-      .returns({ key: Config.DEFAULT_USERNAME, value: 'MyUser', location })
-      .withArgs(Config.API_VERSION)
-      .returns({ key: Config.API_VERSION })
-      .withArgs(Config.DISABLE_TELEMETRY)
+      .withArgs(SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME)
+      .returns({ key: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location })
+      .withArgs(SfdxPropertyKeys.DEFAULT_USERNAME)
+      .returns({ key: SfdxPropertyKeys.DEFAULT_USERNAME, value: 'MyUser', location })
+      .withArgs(SfdxPropertyKeys.API_VERSION)
+      .returns({ key: SfdxPropertyKeys.API_VERSION })
+      .withArgs(SfdxPropertyKeys.DISABLE_TELEMETRY)
       .throws('FAILED');
   }
 
   test
     .do(async () => await prepareStubs(true))
     .stdout()
-    .command(['config:get', Config.DEFAULT_DEV_HUB_USERNAME, Config.DEFAULT_USERNAME, '--json'])
+    .command(['config:get', SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, SfdxPropertyKeys.DEFAULT_USERNAME, '--json'])
     .it('should return values for globally configured properties', (ctx) => {
       const result = JSON.parse(ctx.stdout).result;
       expect(result).to.deep.equal([
-        { key: Config.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location: 'Global' },
-        { key: Config.DEFAULT_USERNAME, value: 'MyUser', location: 'Global' },
+        { key: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location: 'Global' },
+        { key: SfdxPropertyKeys.DEFAULT_USERNAME, value: 'MyUser', location: 'Global' },
       ]);
     });
 
   test
     .do(async () => await prepareStubs(false))
     .stdout()
-    .command(['config:get', Config.DEFAULT_DEV_HUB_USERNAME, Config.DEFAULT_USERNAME, '--json'])
+    .command(['config:get', SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, SfdxPropertyKeys.DEFAULT_USERNAME, '--json'])
     .it('should return values for locally configured properties', (ctx) => {
       const result = JSON.parse(ctx.stdout).result;
       expect(result).to.deep.equal([
-        { key: Config.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location: 'Local' },
-        { key: Config.DEFAULT_USERNAME, value: 'MyUser', location: 'Local' },
+        { key: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location: 'Local' },
+        { key: SfdxPropertyKeys.DEFAULT_USERNAME, value: 'MyUser', location: 'Local' },
       ]);
     });
 
   test
     .do(async () => await prepareStubs())
     .stdout()
-    .command(['config:get', Config.API_VERSION, '--json'])
+    .command(['config:get', SfdxPropertyKeys.API_VERSION, '--json'])
     .it('should gracefully handle unconfigured properties', (ctx) => {
       const result = JSON.parse(ctx.stdout).result;
-      expect(result).to.deep.equal([{ key: Config.API_VERSION }]);
+      expect(result).to.deep.equal([{ key: SfdxPropertyKeys.API_VERSION }]);
     });
 
   test
@@ -71,7 +71,7 @@ describe('config:get', () => {
   test
     .do(async () => await prepareStubs())
     .stdout()
-    .command(['config:get', Config.DISABLE_TELEMETRY, '--json'])
+    .command(['config:get', SfdxPropertyKeys.DISABLE_TELEMETRY, '--json'])
     .it('should gracefully handle failed attempts to ConfigAggregator.getInfo', (ctx) => {
       const response = JSON.parse(ctx.stdout);
       expect(response.status).to.equal(1);
@@ -86,18 +86,21 @@ describe('config:get', () => {
         const response = JSON.parse(ctx.stdout);
         expect(response.exitCode).to.equal(1);
         expect(response.status).to.equal(1);
-        expect(response.message).to.equal('Unknown config key: customKey');
+        expect(response.message).to.equal('Unknown config name: customKey.');
       });
 
     test
       .loadConfig()
       .do((ctx) => {
         const mockPluginRoot = path.resolve(__dirname, '../../config-meta-mocks/typescript-src');
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        ctx.config.commands.id = 'config:get';
         ctx.config.plugins.push({
           root: mockPluginRoot,
           hooks: {},
           pjson: require(path.resolve(mockPluginRoot, 'package.json')),
-        } as IPlugin);
+        } as Plugin);
       })
       .stdout()
       .stderr()
@@ -107,6 +110,7 @@ describe('config:get', () => {
         expect(response.status).to.equal(0);
         expect(response.result).to.deep.equal([
           {
+            deprecated: false,
             key: 'customKey',
           },
         ]);

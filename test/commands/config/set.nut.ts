@@ -73,13 +73,7 @@ describe('config:set NUTs', async () => {
 
   describe('config:set errors', () => {
     it('fails to set a randomKey with InvalidVarargsFormat error', () => {
-      const res = execCmd('config:set randomKey --json').jsonOutput as unknown as {
-        stack: string;
-        name: string;
-        exitCode: number;
-        commandName: string;
-        status: string;
-      };
+      const res = execCmd('config:set randomKey --json').jsonOutput;
       expect(res.stack).to.include('InvalidVarargsFormat');
       expect(res.status).to.equal(1);
       expect(res.exitCode).to.equal(1);
@@ -93,7 +87,7 @@ describe('config:set NUTs', async () => {
         failures: [
           {
             name: 'randomKey',
-            message: 'Unknown config name "randomKey"',
+            message: 'Unknown config name: randomKey.',
           },
         ],
       });
@@ -133,7 +127,7 @@ describe('config:set NUTs', async () => {
       });
 
       it('will fail to validate instanceUrl when bad URL', () => {
-        verifyValidationStartsWith('instanceUrl', 'abc.com', 'Invalid URL');
+        verifyValidationStartsWith('instanceUrl', 'abc.com', 'Invalid config value');
       });
 
       it('will fail to validate instanceUrl when non-Salesforce URL', () => {
