@@ -8,16 +8,17 @@
 import * as os from 'os';
 import { flags, FlagsConfig } from '@salesforce/command';
 import {
-  Config,
+  // Config,
+  ConfigAggregator,
   Messages,
   Org,
   OrgConfigProperties,
-  SFDX_ALLOWED_PROPERTIES,
+  // SFDX_ALLOWED_PROPERTIES,
   SfdxPropertyKeys,
   SfError,
 } from '@salesforce/core';
 import { getString } from '@salesforce/ts-types';
-import { SfProperty } from '@salesforce/core/lib/config/config';
+// import { SfProperty } from '@salesforce/core/lib/config/config';
 import { ConfigCommand, ConfigSetReturn } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -44,19 +45,19 @@ export class Set extends ConfigCommand {
      */
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    Config.allowedProperties = [
-      ...Object.values(SfProperty).map((entry) => {
-        entry.deprecated = true;
-        return entry;
-      }),
-      ...SFDX_ALLOWED_PROPERTIES.map((entry) => {
-        entry.deprecated = false;
-        return entry;
-      }),
-    ];
-    const config: Config = await Config.create(Config.getDefaultOptions(this.flags.global as boolean));
-
-    await config.read();
+    // Config.allowedProperties = [
+    //   ...Object.values(SfProperty).map((entry) => {
+    //     entry.deprecated = true;
+    //     return entry;
+    //   }),
+    //   ...SFDX_ALLOWED_PROPERTIES.map((entry) => {
+    //     entry.deprecated = false;
+    //     return entry;
+    //   }),
+    // ];
+    const ca = ConfigAggregator.getInstance();
+    const config = this.flags.global ? ca.getGlobalConfig() : ca.getLocalConfig();
+    await config.read(true);
     let value = '';
     for (const name of Object.keys(this.varargs)) {
       try {
