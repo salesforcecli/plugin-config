@@ -4,14 +4,7 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import {
-  // Config,
-  ConfigAggregator,
-  ConfigInfo,
-  Messages,
-  // SFDX_ALLOWED_PROPERTIES,
-  SfdxPropertyKeys,
-} from '@salesforce/core';
+import { ConfigAggregator, ConfigInfo, Messages, SfdxPropertyKeys } from '@salesforce/core';
 import { ConfigCommand } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
