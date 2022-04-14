@@ -5,16 +5,15 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { Hook, IPlugin } from '@oclif/config';
-import { tsPath } from '@oclif/config/lib/ts-node';
-import { ConfigPropertyMeta, Logger } from '@salesforce/core';
-import { Config } from '@salesforce/core';
+import type { Hook, Interfaces } from '@oclif/core';
+import { tsPath } from '@oclif/core';
+import { Config, ConfigPropertyMeta, Logger } from '@salesforce/core';
 import { isObject, get } from '@salesforce/ts-types';
 
 const log = Logger.childFromRoot('plugin-config:load_config_meta');
 const OCLIF_META_PJSON_KEY = 'configMeta';
 
-function loadConfigMeta(plugin: IPlugin): ConfigPropertyMeta | undefined {
+function loadConfigMeta(plugin: Interfaces.Plugin): ConfigPropertyMeta | undefined {
   let configMetaRequireLocation: string | undefined;
 
   try {
@@ -39,6 +38,7 @@ function loadConfigMeta(plugin: IPlugin): ConfigPropertyMeta | undefined {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
     const configMetaPathModule = require(configMetaRequireLocation);
+
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
     return configMetaPathModule?.default ?? configMetaPathModule;
   } catch {
@@ -47,8 +47,8 @@ function loadConfigMeta(plugin: IPlugin): ConfigPropertyMeta | undefined {
   }
 }
 
-const hook: Hook<'init'> = ({ config: oclifConfig }) => {
-  const flattenedConfigMetas = (oclifConfig.plugins || [])
+const hook: Hook<'init'> = ({ config }): Promise<void> => {
+  const flattenedConfigMetas = (config.plugins || [])
     .map((plugin) => {
       const configMeta = loadConfigMeta(plugin);
       if (!configMeta) {
@@ -63,6 +63,8 @@ const hook: Hook<'init'> = ({ config: oclifConfig }) => {
   if (flattenedConfigMetas.length) {
     Config.addAllowedProperties(flattenedConfigMetas);
   }
+
+  return;
 };
 
 export default hook;

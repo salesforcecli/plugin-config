@@ -7,7 +7,7 @@
 
 import * as os from 'os';
 import { flags, FlagsConfig } from '@salesforce/command';
-import { ConfigAggregator, ConfigInfo, Messages, SfError } from '@salesforce/core';
+import { ConfigInfo, Messages, SfError } from '@salesforce/core';
 import { ConfigCommand } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -29,15 +29,10 @@ export class Get extends ConfigCommand {
       throw messages.createError('NoConfigKeysFound');
     } else {
       const results: ConfigInfo[] = [];
-      const aggregator = ConfigAggregator.getInstance();
 
       argv.forEach((configName) => {
         try {
-          // search the sf config keys for the sfdx equivalent and use the sf version when accessing the config
-
-          const configInfo = aggregator.getInfo(configName);
-          // replace the sf key with the sfdx variant
-          configInfo.key = configName;
+          const configInfo = this.configAggregator.getInfo(configName);
           results.push(configInfo);
           this.responses.push({
             name: configName,

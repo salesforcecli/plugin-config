@@ -7,17 +7,8 @@
 
 import * as os from 'os';
 import { flags, FlagsConfig } from '@salesforce/command';
-import {
-  Config,
-  Messages,
-  Org,
-  OrgConfigProperties,
-  SFDX_ALLOWED_PROPERTIES,
-  SfdxPropertyKeys,
-  SfError,
-} from '@salesforce/core';
+import { Config, Messages, Org, SfdxPropertyKeys, SfError } from '@salesforce/core';
 import { getString } from '@salesforce/ts-types';
-import { SfProperty } from '@salesforce/core/lib/config/config';
 import { ConfigCommand, ConfigSetReturn } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -38,22 +29,6 @@ export class Set extends ConfigCommand {
   public static aliases = ['force:config:set'];
 
   public async run(): Promise<ConfigSetReturn> {
-    /**
-     * override the coreV3 allowedProperties to allow all `sfdx` config values, and deprecate `sf` values
-     * regardless of if they're deprecated in 'sf' or not
-     */
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    Config.allowedProperties = [
-      ...Object.values(SfProperty).map((entry) => {
-        entry.deprecated = true;
-        return entry;
-      }),
-      ...SFDX_ALLOWED_PROPERTIES.map((entry) => {
-        entry.deprecated = false;
-        return entry;
-      }),
-    ];
     const config: Config = await Config.create(Config.getDefaultOptions(this.flags.global as boolean));
 
     await config.read();
@@ -62,14 +37,14 @@ export class Set extends ConfigCommand {
       try {
         value = getString(this.varargs, name);
         if (
-          name === SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME ||
-          name === SfdxPropertyKeys.DEFAULT_USERNAME ||
-          ((name === OrgConfigProperties.TARGET_ORG || name === OrgConfigProperties.TARGET_DEV_HUB) && value)
+          (name === SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME || name === SfdxPropertyKeys.DEFAULT_USERNAME) &&
+          value
         ) {
           // verify that the value passed can be used to create an Org
           await Org.create({ aliasOrUsername: value });
         }
-        config.set(name, value);
+        const configKey = Config.getPropertyConfigMeta(name)?.key || name;
+        config.set(configKey, value);
         this.responses.push({ name, value, success: true });
       } catch (err) {
         process.exitCode = 1;

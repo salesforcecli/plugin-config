@@ -6,19 +6,27 @@
  */
 
 import * as path from 'path';
-import { $$, expect, test } from '@salesforce/command/lib/test';
+import { test, expect } from '@oclif/test';
+import { Plugin } from '@oclif/core';
 import { Config } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
-import { SinonStub } from 'sinon';
-import { Plugin } from '@oclif/core';
+import * as sinon from 'sinon';
+import { SinonSandbox, SinonStub } from 'sinon';
 import tsSrcConfigMetaMock from '../config-meta-mocks/typescript-src/src/config-meta';
 import jsLibConfigMetaMock from '../config-meta-mocks/javascript-lib/lib/config-meta';
 
+process.env.NODE_ENV = 'development';
+
 describe('hooks', () => {
+  let sandbox: SinonSandbox;
   beforeEach(() => {
-    stubMethod($$.SANDBOX, Config, 'addAllowedProperties');
+    sandbox = sinon.createSandbox();
+    stubMethod(sandbox, Config, 'addAllowedProperties');
   });
 
+  afterEach(() => {
+    sandbox.restore();
+  });
   test
     .stdout()
     .loadConfig()
