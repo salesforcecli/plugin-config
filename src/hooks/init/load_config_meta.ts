@@ -48,6 +48,15 @@ function loadConfigMeta(plugin: Interfaces.Plugin): ConfigPropertyMeta | undefin
 }
 
 const hook: Hook<'init'> = ({ config }): Promise<void> => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  Config.allowedProperties = [
+    ...SFDX_ALLOWED_PROPERTIES.map((entry) => {
+      entry.deprecated = false;
+      return entry;
+    }),
+  ];
+
   const flattenedConfigMetas = (config.plugins || [])
     .map((plugin) => {
       const configMeta = loadConfigMeta(plugin);
@@ -63,15 +72,6 @@ const hook: Hook<'init'> = ({ config }): Promise<void> => {
   if (flattenedConfigMetas.length) {
     Config.addAllowedProperties(flattenedConfigMetas);
   }
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  Config.allowedProperties = [
-    ...SFDX_ALLOWED_PROPERTIES.map((entry) => {
-      entry.deprecated = false;
-      return entry;
-    }),
-  ];
 
   return;
 };
