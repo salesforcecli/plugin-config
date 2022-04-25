@@ -7,14 +7,14 @@
 
 import * as path from 'path';
 import { $$, expect, test } from '@salesforce/command/lib/test';
-import { ConfigAggregator, SfdxPropertyKeys } from '@salesforce/core';
+import { SfdxConfigAggregator, SfdxPropertyKeys } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { Plugin } from '@oclif/core';
 
 describe('config:get', () => {
   async function prepareStubs(global = true) {
     const location = global ? 'Global' : 'Local';
-    stubMethod($$.SANDBOX, ConfigAggregator.prototype, 'getInfo')
+    stubMethod($$.SANDBOX, SfdxConfigAggregator.prototype, 'getInfo')
       .withArgs(SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME)
       .returns({ key: SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, value: 'MyDevhub', location })
       .withArgs(SfdxPropertyKeys.DEFAULT_USERNAME)
