@@ -29,7 +29,7 @@ export class Set extends ConfigCommand {
   public static aliases = ['force:config:set'];
 
   public async run(): Promise<ConfigSetReturn> {
-    const config: Config = await Config.create(Config.getDefaultOptions(this.flags.global as boolean));
+    const config = await Config.create(Config.getDefaultOptions(this.flags.global as boolean));
 
     await config.read();
     let value = '';
