@@ -1073,7 +1073,32 @@
     semver "^7.3.5"
     ts-retry-promise "^0.6.0"
 
-"@salesforce/core@^3.12.1", "@salesforce/core@^3.7.9":
+"@salesforce/core@^3.15.2":
+  version "3.15.2"
+  resolved "https://registry.npmjs.org/@salesforce/core/-/core-3.15.2.tgz#5ef70b195f11508ebfbb8663d694de3f9d3c1114"
+  integrity sha512-4ppxgruHGVq6NOAo0qtRCoFyCcXjrWSQEETVNz8WgztCpL06mnAsAPEIFzE2hhGPD38ZFLyeliSIcRA0Lr6Brg==
+  dependencies:
+    "@salesforce/bunyan" "^2.0.0"
+    "@salesforce/kit" "^1.5.34"
+    "@salesforce/schemas" "^1.1.0"
+    "@salesforce/ts-types" "^1.5.20"
+    "@types/graceful-fs" "^4.1.5"
+    "@types/mkdirp" "^1.0.2"
+    "@types/semver" "^7.3.9"
+    ajv "^8.11.0"
+    archiver "^5.3.0"
+    change-case "^4.1.2"
+    debug "^3.2.7"
+    faye "^1.4.0"
+    form-data "^4.0.0"
+    graceful-fs "^4.2.9"
+    js2xmlparser "^4.0.1"
+    jsforce "2.0.0-beta.7"
+    jsonwebtoken "8.5.1"
+    mkdirp "1.0.4"
+    ts-retry-promise "^0.6.0"
+
+"@salesforce/core@^3.7.9":
   version "3.12.1"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-3.12.1.tgz#6ef20a58777a5368a5804817f11046737fa90baf"
   integrity sha512-j7WvlPwhTLBMBdnF/6Og3oqcM72tGqK99UHK/UqJpGaX0HcadnxMyL3uOMi8aAautvg4BnpfGjesn0pinqKVXw==
@@ -1566,9 +1591,9 @@ ajv@^6.10.0, ajv@^6.12.3, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^8.0.1:
+ajv@^8.0.1, ajv@^8.11.0:
   version "8.11.0"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.11.0.tgz#977e91dd96ca669f54a11e23e378e33b884a565f"
+  resolved "https://registry.npmjs.org/ajv/-/ajv-8.11.0.tgz#977e91dd96ca669f54a11e23e378e33b884a565f"
   integrity sha512-wGgprdCvMalC0BztXvitD2hC04YffAvtsUn93JbGXYLAtCUO4xd17mCCZQxUOItiBwZvJScWo8NIvQMQ71rdpg==
   dependencies:
     fast-deep-equal "^3.1.1"
