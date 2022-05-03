@@ -32,7 +32,7 @@ export class UnSet extends ConfigCommand {
     if (!argv || argv.length === 0) {
       throw messages.createError('NoConfigKeysFound');
     } else {
-      const config: Config = await Config.create(Config.getDefaultOptions(this.flags.global as boolean));
+      const config = await Config.create(Config.getDefaultOptions(this.flags.global as boolean));
 
       await config.read();
       argv.forEach((key) => {

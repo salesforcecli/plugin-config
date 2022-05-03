@@ -1079,10 +1079,10 @@
     semver "^7.3.5"
     ts-retry-promise "^0.6.0"
 
-"@salesforce/core@^3.15.3", "@salesforce/core@^3.15.4":
-  version "3.15.4"
-  resolved "https://registry.npmjs.org/@salesforce/core/-/core-3.15.4.tgz#5b0591b80c8258ee0d4ce50bc8e5acfb99a07090"
-  integrity sha512-5+MgHgaMGK/xkVM1Wh9TJTmgJFJVi4IYejhjhLKc6nJfQfGsynBjw26Vr4JroxKDsr8X4nmGI/o9IAgNWoGMtg==
+"@salesforce/core@^3.15.3", "@salesforce/core@^3.15.5":
+  version "3.15.5"
+  resolved "https://registry.npmjs.org/@salesforce/core/-/core-3.15.5.tgz#4109ca0a6e0c1ce28e5fb698feb4154d654b51c7"
+  integrity sha512-BAXi67C+2UcxZFnGSrzgw/4tcOPH4TxSEM0E+efwHWa6qHSPn9bjp6mO4Mtcrg9xCcM7NRbdco1mfWdZTv3mWw==
   dependencies:
     "@salesforce/bunyan" "^2.0.0"
     "@salesforce/kit" "^1.5.34"
