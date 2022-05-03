@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.5](https://github.com/salesforcecli/plugin-config/compare/v1.4.4...v1.4.5) (2022-05-03)
+
+### Bug Fixes
+
+- use SfdxConfigAggregator ([2f59fad](https://github.com/salesforcecli/plugin-config/commit/2f59fad7648837d44fdb50b8726b5778f7a13c25))
+
 ### [1.4.4](https://github.com/salesforcecli/plugin-config/compare/v1.4.3...v1.4.4) (2022-05-02)
 
 ### [1.4.3](https://github.com/salesforcecli/plugin-config/compare/v1.4.2...v1.4.3) (2022-05-02)
