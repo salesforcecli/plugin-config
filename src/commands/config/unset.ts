@@ -7,7 +7,7 @@
 import * as os from 'os';
 
 import { flags, FlagsConfig } from '@salesforce/command';
-import { Config, Messages, ORG_CONFIG_ALLOWED_PROPERTIES, SFDX_ALLOWED_PROPERTIES, SfError } from '@salesforce/core';
+import { Config, Messages, SfError } from '@salesforce/core';
 import { ConfigCommand, ConfigSetReturn } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -32,25 +32,13 @@ export class UnSet extends ConfigCommand {
     if (!argv || argv.length === 0) {
       throw messages.createError('NoConfigKeysFound');
     } else {
-      /**
-       * override the coreV3 allowedProperties to allow all sfdx config values,
-       * regardless of if they're deprecated in 'sf' or not
-       */
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      Config.allowedProperties = [
-        ...ORG_CONFIG_ALLOWED_PROPERTIES,
-        ...SFDX_ALLOWED_PROPERTIES.map((entry) => {
-          entry.deprecated = false;
-          return entry;
-        }),
-      ];
-      const config: Config = await Config.create(Config.getDefaultOptions(this.flags.global as boolean));
+      const config = await Config.create(Config.getDefaultOptions(this.flags.global as boolean));
 
       await config.read();
       argv.forEach((key) => {
         try {
-          config.unset(key);
+          const configKey = Config.getPropertyConfigMeta(key)?.key || key;
+          config.unset(configKey);
           this.responses.push({ name: key, success: true });
         } catch (err) {
           process.exitCode = 1;
