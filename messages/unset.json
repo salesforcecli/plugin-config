@@ -5,7 +5,7 @@
   "globalHelp": "Add the --global flag to unset config outside of a project.",
   "NoConfigKeysFound": "Please provide config name(s) to unset.",
   "examples": [
-    "sfdx config:unset defaultusername defaultdevhubusername",
-    "sfdx config:unset defaultdevhubusername -g"
+    "$ sfdx config:unset defaultusername defaultdevhubusername",
+    "$ sfdx config:unset defaultdevhubusername -g"
   ]
 }
