@@ -4,7 +4,7 @@
   "globalLong": "Sets the configuration variables globally, so they can be used from any directory.",
   "globalHelp": "Add the --global flag to set config outside of a project.",
   "examples": [
-    "sfdx config:set defaultusername=me@my.org defaultdevhubusername=me@myhub.org",
-    "sfdx config:set defaultdevhubusername=me@myhub.org -g"
+    "$ sfdx config:set defaultusername=me@my.org defaultdevhubusername=me@myhub.org",
+    "$ sfdx config:set defaultdevhubusername=me@myhub.org -g"
   ]
 }
