@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.7](https://github.com/salesforcecli/plugin-config/compare/v1.4.6...v1.4.7) (2022-05-20)
+
+### Bug Fixes
+
+- add prompt to example ([c055237](https://github.com/salesforcecli/plugin-config/commit/c055237069d01adeef7eab619af4359cec120a69))
+- add prompt to example ([e252193](https://github.com/salesforcecli/plugin-config/commit/e252193c0b69b138215bed7375e37044930c5f46))
+- add prompt to example ([75f94c9](https://github.com/salesforcecli/plugin-config/commit/75f94c94808542f6252cb54a657cd873f604a50a))
+
 ### [1.4.6](https://github.com/salesforcecli/plugin-config/compare/v1.4.5...v1.4.6) (2022-05-04)
 
 ### [1.4.5](https://github.com/salesforcecli/plugin-config/compare/v1.4.4...v1.4.5) (2022-05-03)
