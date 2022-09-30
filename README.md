@@ -2,6 +2,10 @@
 
 [![NPM](https://img.shields.io/npm/v/@salesforce/plugin-config.svg?label=@salesforce/plugin-config)](https://www.npmjs.com/package/@salesforce/plugin-config) [![CircleCI](https://circleci.com/gh/salesforcecli/plugin-config/tree/main.svg?style=shield)](https://circleci.com/gh/salesforcecli/plugin-config/tree/main) [![Downloads/week](https://img.shields.io/npm/dw/@salesforce/plugin-config.svg)](https://npmjs.org/package/@salesforce/plugin-config) [![License](https://img.shields.io/badge/License-BSD%203--Clause-brightgreen.svg)](https://raw.githubusercontent.com/salesforcecli/plugin-config/main/LICENSE.txt)
 
+> **Warning**  
+> The `2.X.X` tags of `plugin-config` have been deprecated. That code has been moved to [plugin-settings](https://github.com/salesforcecli/plugin-settings) to be used by the `sf` CLI.  
+> If a major bump is needed for `plugin-config` in the future, jump to `3.0.0`.
+
 Config commands for Salesforce CLI
 
 This plugin is bundled with the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli). For more information on the CLI, read the [getting started guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm).
