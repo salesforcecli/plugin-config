@@ -41,6 +41,8 @@ export class Set extends ConfigCommand {
           value
         ) {
           // verify that the value passed can be used to create an Org
+          // grandfathering this one; promise.all of the loop would be faster, probably not worth the effort
+          // eslint-disable-next-line no-await-in-loop
           await Org.create({ aliasOrUsername: value });
         }
         const configKey = Config.getPropertyConfigMeta(name)?.key || name;

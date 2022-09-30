@@ -26,7 +26,7 @@ describe('config:get', () => {
   }
 
   test
-    .do(async () => await prepareStubs(true))
+    .do(async () => prepareStubs(true))
     .stdout()
     .command(['config:get', SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, SfdxPropertyKeys.DEFAULT_USERNAME, '--json'])
     .it('should return values for globally configured properties', (ctx) => {
@@ -38,7 +38,7 @@ describe('config:get', () => {
     });
 
   test
-    .do(async () => await prepareStubs(false))
+    .do(async () => prepareStubs(false))
     .stdout()
     .command(['config:get', SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, SfdxPropertyKeys.DEFAULT_USERNAME, '--json'])
     .it('should return values for locally configured properties', (ctx) => {
@@ -50,7 +50,7 @@ describe('config:get', () => {
     });
 
   test
-    .do(async () => await prepareStubs())
+    .do(async () => prepareStubs())
     .stdout()
     .command(['config:get', SfdxPropertyKeys.API_VERSION, '--json'])
     .it('should gracefully handle unconfigured properties', (ctx) => {
@@ -59,7 +59,7 @@ describe('config:get', () => {
     });
 
   test
-    .do(async () => await prepareStubs())
+    .do(async () => prepareStubs())
     .stdout()
     .command(['config:get', '--json'])
     .it('should throw an error when no keys are provided', (ctx) => {
@@ -69,7 +69,7 @@ describe('config:get', () => {
     });
 
   test
-    .do(async () => await prepareStubs())
+    .do(async () => prepareStubs())
     .stdout()
     .command(['config:get', SfdxPropertyKeys.DISABLE_TELEMETRY, '--json'])
     .it('should gracefully handle failed attempts to ConfigAggregator.getInfo', (ctx) => {
