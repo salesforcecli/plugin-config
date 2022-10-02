@@ -933,13 +933,13 @@
   dependencies:
     fancy-test "^1.4.10"
 
-"@oclif/test@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@oclif/test/-/test-2.2.0.tgz#70b1b8b4c5a2272e9cef5108f8e52f1afab8e6b6"
-  integrity sha512-hykwoXt8Ml+J+mwr9cJ+xl+84gSKdF+S7MKCjM5cPGMg6uhXBuzXtMlVK91s4bZh0uPYUioYJWAeptAgTHfgHQ==
+"@oclif/test@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@oclif/test/-/test-2.2.1.tgz#1694b0b236bff1183d0e44af063e77bf6bc60f03"
+  integrity sha512-j3PdoeK86DFCmilvUZSQFdHa0o1eejlR70c9O5UqqPLGSY3Pz/11TaXB5BrfhqISIpZTUIacDlAd1Xvybft0sg==
   dependencies:
     "@oclif/core" "^1.16.4"
-    fancy-test "^2.0.0"
+    fancy-test "^2.0.2"
 
 "@octokit/auth-token@^2.4.4":
   version "2.5.0"
@@ -3436,10 +3436,10 @@ fancy-test@^1.4.10:
     nock "^13.0.0"
     stdout-stderr "^0.1.9"
 
-fancy-test@^2.0.0:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/fancy-test/-/fancy-test-2.0.2.tgz#640879553d3fd7f6ec3aab101544bc1b74e453ad"
-  integrity sha512-Feo+Hkj/sd85buCbweWrTWAntZZfAL+3v7vZ0JgV/VgpZN9+3bmIErF+mtNT+a3Ubo5Smfa30G2oLAtmMXudJw==
+fancy-test@^2.0.2:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/fancy-test/-/fancy-test-2.0.4.tgz#b7650e13598e5ad2a27f0d89ad07813bfb09d53e"
+  integrity sha512-jZbiHiJY1phazdfQkVhdBEY5aZXEydiZzFxK9VqCfrMmRw/kHPgQ6i88+nyqQwpFV3yL2mUbMe/NEfMaSfO7+g==
   dependencies:
     "@types/chai" "*"
     "@types/lodash" "*"
