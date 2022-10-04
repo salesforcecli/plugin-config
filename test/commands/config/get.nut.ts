@@ -12,17 +12,18 @@ let testSession: TestSession;
 describe('config:get NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configGetNUTs' },
-    authStrategy: 'NONE',
   });
 
   describe('config:get errors', () => {
     it('attempt to config get without keys', () => {
       const res = execCmd('config:get --json', {
         ensureExitCode: 1,
-      }).jsonOutput as unknown as { stack: string; name: string; exitCode: number; commandName: string };
+      }).jsonOutput;
       expect(res.stack).to.include('NoConfigKeysFound');
       expect(res.name).to.include('NoConfigKeysFound');
       expect(res.exitCode).to.equal(1);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       expect(res.commandName).to.include('Get');
     });
 
