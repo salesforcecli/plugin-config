@@ -101,8 +101,8 @@
     "pretest": "sf-compile-test",
     "reformat": "prettier --config .prettierrc --write './*.{js,json,md}' './**/*.{ts,json,md}'",
     "test": "sf-test",
-    "test:command-reference": "./bin/run commandreference:generate --erroronwarnings",
-    "test:deprecation-policy": "./bin/run snapshot:compare",
+    "test:command-reference": "./bin/dev commandreference:generate --erroronwarnings",
+    "test:deprecation-policy": "./bin/dev snapshot:compare",
     "test:nuts": "nyc mocha \"**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel",
     "version": "oclif readme"
   },
