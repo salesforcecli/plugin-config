@@ -21,24 +21,6 @@
     "command": "config:unset",
     "plugin": "@salesforce/plugin-config",
     "flags": ["global", "json", "loglevel"],
-    "alias": []
-  },
-  {
-    "command": "force:config:get",
-    "plugin": "@salesforce/plugin-config",
-    "flags": ["json", "loglevel", "verbose"],
-    "alias": ["force:config:get"]
-  },
-  {
-    "command": "force:config:list",
-    "plugin": "@salesforce/plugin-config",
-    "flags": ["json", "loglevel"],
-    "alias": ["force:config:list"]
-  },
-  {
-    "command": "force:config:set",
-    "plugin": "@salesforce/plugin-config",
-    "flags": ["global", "json", "loglevel"],
-    "alias": ["force:config:set"]
+    "alias": ["force:config:unset"]
   }
 ]

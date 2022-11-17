@@ -25,6 +25,7 @@ export class UnSet extends ConfigCommand {
       required: false,
     }),
   };
+  public static aliases = ['force:config:unset'];
 
   public async run(): Promise<ConfigSetReturn> {
     const argv = await this.parseArgs();
