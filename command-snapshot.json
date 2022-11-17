@@ -21,6 +21,6 @@
     "command": "config:unset",
     "plugin": "@salesforce/plugin-config",
     "flags": ["global", "json", "loglevel"],
-    "alias": []
+    "alias": ["force:config:unset"]
   }
 ]

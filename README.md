@@ -1,6 +1,6 @@
 # plugin-config
 
-[![NPM](https://img.shields.io/npm/v/@salesforce/plugin-config.svg?label=@salesforce/plugin-config)](https://www.npmjs.com/package/@salesforce/plugin-config) [![CircleCI](https://circleci.com/gh/salesforcecli/plugin-config/tree/main.svg?style=shield)](https://circleci.com/gh/salesforcecli/plugin-config/tree/main) [![Downloads/week](https://img.shields.io/npm/dw/@salesforce/plugin-config.svg)](https://npmjs.org/package/@salesforce/plugin-config) [![License](https://img.shields.io/badge/License-BSD%203--Clause-brightgreen.svg)](https://raw.githubusercontent.com/salesforcecli/plugin-config/main/LICENSE.txt)
+[![NPM](https://img.shields.io/npm/v/@salesforce/plugin-config.svg?label=@salesforce/plugin-config)](https://www.npmjs.com/package/@salesforce/plugin-config) [![Downloads/week](https://img.shields.io/npm/dw/@salesforce/plugin-config.svg)](https://npmjs.org/package/@salesforce/plugin-config) [![License](https://img.shields.io/badge/License-BSD%203--Clause-brightgreen.svg)](https://raw.githubusercontent.com/salesforcecli/plugin-config/main/LICENSE.txt)
 
 > **Warning**  
 > The `2.X.X` tags of `plugin-config` have been deprecated. That code has been moved to [plugin-settings](https://github.com/salesforcecli/plugin-settings) to be used by the `sf` CLI.  
@@ -54,11 +54,11 @@ yarn install
 yarn build
 ```
 
-To use your plugin, run using the local `./bin/run` or `./bin/run.cmd` file.
+To use your plugin, run using the local `./bin/dev` or `./bin/dev.cmd` file.
 
 ```bash
 # Run using local run file.
-./bin/run config
+./bin/dev config
 ```
 
 There should be no differences when running via the Salesforce CLI or using the local run file. However, it can be useful to link the plugin to do some additional testing or run your commands from anywhere on your machine.
