@@ -1,3 +1,12 @@
+# [1.5.0](https://github.com/salesforcecli/plugin-config/compare/1.4.23...1.5.0) (2023-01-31)
+
+
+### Features
+
+* use latest oclif/core ([#466](https://github.com/salesforcecli/plugin-config/issues/466)) ([3ddf1cb](https://github.com/salesforcecli/plugin-config/commit/3ddf1cb135a2bece99dbfe0eb0ea0f502625b54e))
+
+
+
 ## [1.4.23](https://github.com/salesforcecli/plugin-config/compare/1.4.22...1.4.23) (2023-01-08)
 
 
