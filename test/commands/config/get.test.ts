@@ -96,10 +96,13 @@ describe('config:get', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         ctx.config.commands.id = 'config:get';
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         ctx.config.plugins.push({
           root: mockPluginRoot,
           hooks: {},
           pjson: require(path.resolve(mockPluginRoot, 'package.json')),
+          name: 'sfdx-cli-ts-plugin',
         } as Plugin);
       })
       .stdout()

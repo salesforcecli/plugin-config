@@ -9,7 +9,7 @@ import { SfdxCommand } from '@salesforce/command';
 import { SfError } from '@salesforce/core';
 import { Optional } from '@salesforce/ts-types';
 import * as chalk from 'chalk';
-import { CliUx } from '@oclif/core';
+import { ux } from '@oclif/core';
 
 export interface Msg {
   name: string;
@@ -34,7 +34,7 @@ export abstract class ConfigCommand extends SfdxCommand {
     }
 
     this.ux.styledHeader(chalk.blue(header));
-    const columns: CliUx.Table.table.Columns<Record<string, unknown>> = {
+    const columns: ux.Table.table.Columns<Record<string, unknown>> = {
       name: { header: 'Name' },
     };
 
