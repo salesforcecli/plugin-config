@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-config",
   "description": "configure the Salesforce CLI",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "author": "Salesforce",
   "main": "lib/index.js",
   "bugs": "https://github.com/forcedotcom/cli",
